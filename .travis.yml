@@ -1,0 +1,8 @@
+language: java
+
+test:app:
+    script:
+    - mvn clean install
+notifications:
+  email:
+    - eadgyo@gmail.com
