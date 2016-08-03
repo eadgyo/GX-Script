@@ -64,7 +64,7 @@ public class ValidateNoInterdependency extends ValidatorModel
         }
     }
 
-    private boolean allTraitedEntities(Collection<Entity> entities, Set<Entity> treatedEntities)
+    private boolean areAllTraitedEntities(Collection<Entity> entities, Set<Entity> treatedEntities)
     {
         for (Entity inputEntity : entities)
         {
@@ -84,7 +84,7 @@ public class ValidateNoInterdependency extends ValidatorModel
         Collection<Entity> inputEntities = testedEntity.getAllInputEntities();
 
         // If all of the blocks input are treated
-        if (allTraitedEntities(inputEntities, treatedEntities))
+        if (areAllTraitedEntities(inputEntities, treatedEntities))
         {
             // Add not treated entities to the stack of next treated entities and clone his on lane entities
             EntityAndOnLane insertedEntityAndLane = new EntityAndOnLane(testedEntity, new HashSet<>(onLaneEntities));

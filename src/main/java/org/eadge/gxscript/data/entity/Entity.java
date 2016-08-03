@@ -50,10 +50,96 @@ public abstract class Entity
     public abstract Entity getInputEntity(int index);
 
     /**
+     * Get the index of the input linked to one entity or -1 if it's not a input entity
+     * @param entity linked to input entity
+     * @return index of the linked to input entity, or -1 if entity is not link on input
+     */
+    public abstract int getIndexOfInputEntity(Entity entity);
+
+    /**
+     * Get the index of the output linked to one entity or -1 if it's not a output entity
+     * @param entity linked to output entity
+     * @return index of the linked to output entity, or -1 if entity is not link on output
+     */
+    public abstract int getIndexOfOutputEntityOnInput(int index, Entity entity);
+
+    /**
      * Get all the input entities
      * @return all input entities
      */
     public abstract Collection<Entity> getAllInputEntities();
+
+    /**
+     * Check if entity have necessary input
+     * @return true if entity have enough input, false otherwise
+     */
+    public boolean hasAllNeededInput()
+    {
+        // Check if all needed input are linked
+        for (Integer indexNeededInput : indexesNeededInputs)
+        {
+            // If there is one input entity
+            if (getInputEntity(indexNeededInput) == null)
+            {
+                // It miss needed input
+                return false;
+            }
+        }
+
+        // All needed inputs has one entity
+        return true;
+    }
+
+    /**
+     * Check if the input at the index is valid
+     * @param index input index
+     * @return true if the input is valid, false otherwise
+     */
+    public boolean isValidInput(int index)
+    {
+        Entity inputEntity = getInputEntity(index);
+
+        // If input is not linked
+        if (inputEntity == null)
+            return true;
+
+        // Get his linked index
+        int indexOfOutputEntity = getIndexOfOutputEntityOnInput(index, inputEntity);
+
+        // If they are partially linked
+        if (indexOfOutputEntity == -1)
+        {
+            // There is a problem
+            return false;
+        }
+
+        // If they have no matching intput/output types
+        if (getInputClass(index) != inputEntity.getInputClass(indexOfOutputEntity))
+        {
+            // Types are not matching
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if all the inputs of are valid
+     * @return true if inputs are valid, false otherwise
+     */
+    public boolean hasValidInput()
+    {
+        // Check for all inputs
+        for (int index = 0; index < getNumberOfInput(); index++)
+        {
+            // If the input is not valid
+            if (!isValidInput(index))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     //----------------------------
     //----------- Output ---------
@@ -86,31 +172,25 @@ public abstract class Entity
     public abstract Collection<Entity> getOutputEntities(int index);
 
     /**
+     * Get the index of the output linked to one entity or -1 if it's not a output entity
+     * @param entity linked to output entity
+     * @return index of the linked to output entity, or -1 if entity is not link on output
+     */
+    public abstract int getIndexOfOutputEntity(Entity entity);
+
+    /**
+     * Get the index of the input linked to one entity or -1 if it's not a input entity
+     * @param index entity output index
+     * @param entity linked to input entity
+     * @return index of the linked to input entity, or -1 if entity is not link on input
+     */
+    public abstract int getIndexOfInputEntityOnOutput(int index, Entity entity);
+
+    /**
      * Get all the output entities
      * @return output entities keeping separated by output lane
      */
     public abstract Collection<Collection<Entity>> getAllOutputEntities();
-
-    /**
-     * Check if entity have necessary input
-     * @return true if entity have enough input, false otherwise
-     */
-    public boolean hasAllNeededInput()
-    {
-        // Check if all needed input are linked
-        for (Integer indexNeededInput : indexesNeededInputs)
-        {
-            // If there is one input entity
-            if (getInputEntity(indexNeededInput) == null)
-            {
-                // It miss needed input
-                return false;
-            }
-        }
-
-        // All needed inputs has one entity
-        return true;
-    }
 
     /**
      * Get all the output entities
@@ -126,5 +206,55 @@ public abstract class Entity
             allOutputEntities.addAll(entities);
         }
         return allOutputEntities;
+    }
+
+    /**
+     * Check if the output at the index is valid
+     * @param index output index
+     * @return true if the output is valid, false otherwise
+     */
+    public boolean isValidOutput(int index)
+    {
+        Collection<Entity> outputEntities = getOutputEntities(index);
+
+        // For all connected blocks
+        for (Entity outputEntity : outputEntities)
+        {
+            // Get his linked index
+            int indexOfInputEntity = getIndexOfInputEntityOnOutput(index, outputEntity);
+
+            // If they are partially linked
+            if (indexOfInputEntity == -1)
+            {
+                // There is a problem
+                return false;
+            }
+
+            // If they have no matching intput/output types
+            if (outputEntity.getInputClass(indexOfInputEntity) != getOutputClass(index))
+            {
+                // Types are not matching
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check if all the outputs of are valid
+     * @return true if outputs are valid, false otherwise
+     */
+    public boolean hasValidOutput()
+    {
+        // Check for all outputs
+        for (int index = 0; index < getNumberOfOutput(); index++)
+        {
+            // If the input is not valid
+            if (!isValidOutput(index))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
