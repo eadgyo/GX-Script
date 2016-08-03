@@ -3,26 +3,17 @@ package org.eadge.gxscript.tools.validator;
 import org.eadge.gxscript.data.entity.Entity;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by eadgyo on 03/08/16.
  *
  * Check if there are no entities alone
  */
-public class ValidateEntityHaveInput implements ValidatorModel
+public class ValidateEntityHaveInput extends ValidatorModel
 {
-    private Set<Entity> entitiesWithError = new HashSet<>();
-
-    public Collection<Entity> getEntitiesWithError()
-    {
-        return entitiesWithError;
-    }
-
     public boolean validate(Collection<Entity> entities)
     {
-        entitiesWithError.clear();
+        super.validate(entities);
 
         // Check if all entities have necessary input
         for (Entity entity : entities)

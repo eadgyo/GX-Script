@@ -1,5 +1,6 @@
 package org.eadge.gxscript.data.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -109,5 +110,21 @@ public abstract class Entity
 
         // All needed inputs has one entity
         return true;
+    }
+
+    /**
+     * Get all the output entities
+     * @return output entities
+     */
+    public Collection<Entity> getAllOutputEntitiesCollection()
+    {
+        Collection<Entity> allOutputEntities = new ArrayList<>();
+        Collection<Collection<Entity>> allOutputEntitiesSeparated = getAllOutputEntities();
+
+        for (Collection<Entity> entities : allOutputEntitiesSeparated)
+        {
+            allOutputEntities.addAll(entities);
+        }
+        return allOutputEntities;
     }
 }
