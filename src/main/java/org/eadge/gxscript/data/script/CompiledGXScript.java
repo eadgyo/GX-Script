@@ -5,4 +5,6 @@ package org.eadge.gxscript.data.script;
  */
 public class CompiledGXScript
 {
+
+
 }

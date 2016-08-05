@@ -1,4 +1,4 @@
-package org.eadge.gxscript.tools.data;
+package org.eadge.gxscript.data.imbrication;
 
 import org.eadge.gxscript.data.entity.Entity;
 import org.eadge.gxscript.data.entity.imbricate.ImbricatedEntity;
