@@ -1,6 +1,7 @@
 package org.eadge.gxscript.tools.check.validator;
 
 import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.script.RawGXScript;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,7 +19,7 @@ public abstract class ValidatorModel
         return entitiesWithError;
     }
 
-    public boolean validate(Collection<Entity> entities)
+    public boolean validate(RawGXScript rawGXScript)
     {
         entitiesWithError.clear();
 

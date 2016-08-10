@@ -1,6 +1,7 @@
 package org.eadge.gxscript.tools.check.validator;
 
 import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.*;
@@ -93,9 +94,11 @@ public class ValidateNoInterdependency extends ValidatorModel
     }
 
     @Override
-    public boolean validate(Collection<Entity> entities)
+    public boolean validate(RawGXScript rawGXScript)
     {
-        super.validate(entities);
+        super.validate(rawGXScript);
+
+        Collection<Entity> entities = rawGXScript.getEntities();
 
         Set<Entity> treatedEntities = new HashSet<>();
 

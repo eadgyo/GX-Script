@@ -1,81 +1,72 @@
 package org.eadge.gxscript.tools.check.validator;
 
 import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.imbrication.StartImbricationEntity;
+import org.eadge.gxscript.data.imbrication.ImbricationNode;
+import org.eadge.gxscript.data.script.RawGXScript;
+import org.eadge.gxscript.tools.Tools;
 
 import java.util.Collection;
 
 /**
- * Created by eadgyo on 03/08/16.
+ * Created by eadgyo on 09/08/16.
  *
- * Checks if entities using imbrication like if, for... don't use future variable or variable created in other
- * imbrication level. For example one variable created in else part and used in if part.
+ * Validate imbrications
  */
 public class ValidateImbrication extends ValidatorModel
 {
     @Override
-    public boolean validate(Collection<Entity> entities)
+    public boolean validate(RawGXScript rawGXScript)
     {
-        super.validate(entities);
+        super.validate(rawGXScript);
+
+        Collection<Entity> entities = rawGXScript.getEntities();
+        Collection<Entity> startingEntities = rawGXScript.getStartingEntities();
 
         // Create level 0 of imbrication, it's the root of the tree
         // All entities are in this level
+        ImbricationNode root = new ImbricationNode(entities);
 
-        // Get starting entities
         // Add them to the to be treated stack
+        root.addAllToBeTreated(startingEntities);
 
         // While all entities have not been processed
-        while ()
+        while (root.hasFinishedProcess())
         {
             // While to be treated stack is not empty
-            while ()
+            while (root.isToBeTreatedEmpty())
             {
                 // Get the first element
+                Entity beingTreated = root.popToBeTreated();
+
                 // Get his level of imbrication
+                ImbricationNode highestImbricationNode = root.getHighestImbricationNode(beingTreated);
 
                 // If entity have in input, entities not in lower or equal imbrication level
-                if ()
+                Entity inputNotInLowerOrEqualLevel = highestImbricationNode.getInputNotInLowerOrEqualLevel(beingTreated);
+                if (inputNotInLowerOrEqualLevel != null)
                 {
                     // Entity can be in a removed, higher or parallels imbricated level
-
-                    // Stop the process
-                    // Add this entity and the input entity not in lower or equal imbrication
+                    // Add being treated entity and entity not found
+                    entitiesWithError.add(beingTreated);
+                    entitiesWithError.add(inputNotInLowerOrEqualLevel);
                     return false;
                 }
 
                 // If the entity is a start imbrication entity
-                if ()
+                if (beingTreated instanceof StartImbricationEntity)
                 {
-                    // Push one level of imbrication in actual entity's imbrication
-                    // Search and add all imbricated entities in new imbrication
-
-                    // Add all imbricated output entities which have all their input block treated in lower or equal
-                    // imbrication level
+                    // Start a new imbrication node on top of the highest imbrication node
+                    highestImbricationNode.startImbricationNode((StartImbricationEntity) beingTreated);
                 }
                 else
                 {
                     // It's a normal entity
-                    // Add it to already treated list of his imbrication
-
-                    // Add all output entities which have all their input block treated in lower or equal imbrication
-                    // level
+                    highestImbricationNode.treatEntity(beingTreated);
                 }
             }
 
-            // Get all imbrication leaves
-
-            // For all imbrications leaves
-            for ()
-            {
-                // If leaf have all entities processed at their level
-                if ()
-                {
-                    // Remove already treated elements from elements of the lower ones
-                    // Add the starting entity to already treated list of his imbrication
-
-                    // Add all NOT imbricated output entities of starting imbrication entiy which have all their
-                    // input block treated in lower or equal imbrication level
-                }
-            }
+            Tools.endImbrication(root);
         }
         return true;
     }
