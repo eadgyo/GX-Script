@@ -2,6 +2,7 @@ package org.eadge.gxscript.data.script.address;
 
 /**
  * Created by eadgyo on 10/08/16.
+ *
  */
 public class Address implements Cloneable
 {

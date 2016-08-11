@@ -18,4 +18,9 @@ public class DataAddress extends Address
     {
         return (DataAddress) super.clone();
     }
+
+    public void setAddress(DataAddress address)
+    {
+        setAddress(address.getAddress());
+    }
 }

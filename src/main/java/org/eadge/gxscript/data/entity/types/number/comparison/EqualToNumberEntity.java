@@ -1,21 +1,27 @@
 package org.eadge.gxscript.data.entity.types.number.comparison;
 
 import org.eadge.gxscript.data.entity.DefaultEntity;
-import org.eadge.gxscript.data.func.types.number.comparison.EqualToNumberFunc;
 import org.eadge.gxscript.data.script.Func;
+import org.eadge.gxscript.data.script.Program;
+import org.eadge.gxscript.tools.check.NumberComparator;
 
 /**
  * Created by eadgyo on 03/08/16.
+ *
+ * Equal to number entity
  */
 public class EqualToNumberEntity extends DefaultEntity
 {
+    private static final int V0_INPUT_INDEX = 0;
+    private static final int V1_INPUT_INDEX = 1;
+
     public EqualToNumberEntity()
     {
         super("Equal");
 
-        addInputEntry("v0", Number.class);
+        addInputEntry(V0_INPUT_INDEX, "v0", Number.class);
 
-        addInputEntry("v1", Number.class);
+        addInputEntry(V1_INPUT_INDEX, "v1", Number.class);
 
         addOutputEntry("Result", Boolean.class);
 
@@ -25,6 +31,23 @@ public class EqualToNumberEntity extends DefaultEntity
     @Override
     public Func getFunc()
     {
-        return new EqualToNumberFunc();
+        return new Func()
+        {
+            @Override
+            public void run(Program program)
+            {
+                // Get variables
+                Object[] objects = program.loadCurrentParametersObjects();
+
+                Number v0 = (Number) objects[V0_INPUT_INDEX];
+                Number v1 = (Number) objects[V1_INPUT_INDEX];
+
+                NumberComparator numberComparator = new NumberComparator();
+
+                @SuppressWarnings("unchecked") Boolean areEquals = numberComparator.compare(v0, v1) == 0;
+
+                program.pushInMemory(areEquals);
+            }
+        };
     }
 }

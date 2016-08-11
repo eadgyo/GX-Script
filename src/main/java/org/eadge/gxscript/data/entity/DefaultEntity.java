@@ -93,6 +93,8 @@ public abstract class DefaultEntity implements Entity
         this.name = name;
     }
 
+    public String getInputName(int index) { return inputsNames.get(index); }
+
     @Override
     public Class getInputClass(int index)
     {
@@ -115,6 +117,27 @@ public abstract class DefaultEntity implements Entity
     public Entity getInputEntity(int index)
     {
         return inputEntities.get(index);
+    }
+
+    public int getInputIndex(String name)
+    {
+        for (int inputIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
+        {
+            if (getInputName(inputIndex).equals(name))
+            {
+                return inputIndex;
+            }
+        }
+        return -1;
+    }
+
+    public Entity getInputEntity(String name)
+    {
+        int inputIndex = getInputIndex(name);
+        if (inputIndex != -1)
+            return getInputEntity(inputIndex);
+        else
+            return null;
     }
 
     @Override
@@ -157,6 +180,32 @@ public abstract class DefaultEntity implements Entity
     public int getNumberOfOutputs()
     {
         return outputClasses.size();
+    }
+
+    public String getOutputName(int index)
+    {
+        return outputsNames.get(index);
+    }
+
+    public int getOutputIndex(String name)
+    {
+        for (int outputIndex = 0; outputIndex < getNumberOfOutputs(); outputIndex++)
+        {
+            if (getOutputName(outputIndex).equals(name))
+            {
+                return outputIndex;
+            }
+        }
+        return -1;
+    }
+
+    public Collection<Entity> getOutputEntities(String name)
+    {
+        int outputIndex = getOutputIndex(name);
+        if (outputIndex != -1)
+            return getOutputEntities(outputIndex);
+        else
+            return null;
     }
 
     @Override
@@ -520,6 +569,7 @@ public abstract class DefaultEntity implements Entity
             }
         }
     }
+
 
     /**
      * Create a link between this entity considered as output and one other input entity

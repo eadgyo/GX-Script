@@ -18,4 +18,9 @@ public class FuncAddress extends Address
     {
         return (FuncAddress) super.clone();
     }
+
+    public void setAddress(FuncAddress address)
+    {
+        setAddress(address.getAddress());
+    }
 }

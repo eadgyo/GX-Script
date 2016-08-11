@@ -1,11 +1,7 @@
 package org.eadge.gxscript.tools.run;
 
 import org.eadge.gxscript.data.script.CompiledGXScript;
-import org.eadge.gxscript.data.script.Func;
-import org.eadge.gxscript.data.script.address.FuncAddress;
-import org.eadge.gxscript.data.script.address.FuncDataAddresses;
-
-import java.util.ArrayDeque;
+import org.eadge.gxscript.data.script.Program;
 
 /**
  * Created by eadgyo on 02/08/16.
@@ -16,28 +12,17 @@ public class GXRunner
 {
     public void run(CompiledGXScript compiledGXScript)
     {
-        // Create function pointer
-        FuncAddress currFuncAddress = new FuncAddress(0);
-
-        // Create stack of data
-        ArrayDeque<Object> memoryStack = new ArrayDeque<>();
-
-        // Get list of func and correspond parameters
-        Func[] funcs = compiledGXScript.getCalledFunctions();
-        FuncDataAddresses[] funcsParameters = compiledGXScript.getCalledFunctionsParameters();
+        // Create program memory and add pointer reading first function
+        Program program = new Program(compiledGXScript.getCalledFunctions(), compiledGXScript.getCalledFunctionsParameters());
 
         // While there are functions left
-        while (currFuncAddress.getAddress() < funcs.length)
+        while (!program.hasFinished())
         {
             // Get function and corresponding parameters
-            Func currentFunc = funcs[currFuncAddress.getAddress()];
-            FuncDataAddresses funcParameters = funcsParameters[currFuncAddress.getAddress()];
+            program.callCurrentFunc();
 
-            // Call function
-            currentFunc.run(funcs, funcsParameters, currFuncAddress, memoryStack);
-
-            // Move func pointer down
-            currFuncAddress.addOffset(1);
+            // Go to next function
+            program.nextFuncAddress();
         }
     }
 }

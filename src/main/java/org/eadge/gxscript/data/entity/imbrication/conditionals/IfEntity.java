@@ -1,7 +1,6 @@
 package org.eadge.gxscript.data.entity.imbrication.conditionals;
 
 import org.eadge.gxscript.data.entity.DefaultStartImbricationEntity;
-import org.eadge.gxscript.data.func.conditionals.IfFunc;
 import org.eadge.gxscript.data.script.Func;
 
 /**
@@ -30,6 +29,6 @@ public class IfEntity extends DefaultStartImbricationEntity
     @Override
     public Func getFunc()
     {
-        return new IfFunc();
+        return null; //new IfFunc();
     }
 }

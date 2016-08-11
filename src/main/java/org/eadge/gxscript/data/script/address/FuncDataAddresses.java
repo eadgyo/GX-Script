@@ -19,7 +19,7 @@ public class FuncDataAddresses
         return inputsAddresses.length;
     }
 
-    public Address getInputAddress(int index)
+    public DataAddress getInputAddress(int index)
     {
         return inputsAddresses[index];
     }
