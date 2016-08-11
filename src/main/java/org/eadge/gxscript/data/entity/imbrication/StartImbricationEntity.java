@@ -16,14 +16,21 @@ import java.util.Map;
  *
  * Model for imbrication blocks.
  */
-public abstract class StartImbricationEntity extends Entity
+public interface StartImbricationEntity extends Entity
 {
     /**
      * Get the number of parallels imbrication
      *
      * @return number of parallels imbrication
      */
-    public abstract int getNumberOfParallelsImbrications();
+    int getNumberOfParallelsImbrications();
+
+    /**
+     * Get the imbrication of one output or -1 if output is not imbricated
+     * @param index output index
+     * @return imbrication of output or -1 if output is not imbricated
+     */
+    int getOutputImbrication(int index);
 
     /**
      * Check if one output is in imbrication process
@@ -32,7 +39,7 @@ public abstract class StartImbricationEntity extends Entity
      *
      * @return true if the index is pointing toward an output in imbrication, false otherwise
      */
-    public abstract boolean isInImbrication(int index);
+    boolean isInImbrication(int index);
 
     /**
      * Get output entities that are in the imbrication of this entity
@@ -41,14 +48,14 @@ public abstract class StartImbricationEntity extends Entity
      *
      * @return all output entities in imbrication of this entity
      */
-    public abstract Collection<Entity> getImbricatedOutputs(int index);
+    Collection<Entity> getImbricatedOutputs(int index);
 
     /**
      * Get output entities that are NOT in the imbrication of this entity
      *
      * @return all output entities NOT in imbrication of this entity
      */
-    public abstract Collection<Entity> getNotImbricatedOutputs();
+    Collection<Entity> getNotImbricatedOutputs();
 
     /**
      * Create and alloc imbricated outputs
@@ -58,19 +65,19 @@ public abstract class StartImbricationEntity extends Entity
      *
      * @return created outputs addresses
      */
-    public abstract OutputAddresses createAndAllocImbricatedOutputs(int imbricationOutputIndex,
+    OutputAddresses createAndAllocImbricatedOutputs(int imbricationOutputIndex,
                                                                     DataAddress currentDataAddress);
 
     /**
      * Default add funcs and funcs params
      *
-     * @param calledFunctions              list of called function
-     * @param calledFunctionsParameters    list of used called function data
      * @param addressesMap                 map to link entity to corresponding entity output addresses
      * @param imbricatedStartFuncAddresses addresses of imbricated addresses
+     * @param calledFunctions              list of called function
+     * @param calledFunctionsParameters    list of used called function data
      */
-    public abstract void addFuncsAndSaveOutputs(ArrayList<Func> calledFunctions,
-                                                ArrayList<FuncDataAddresses> calledFunctionsParameters,
-                                                Map<Entity, OutputAddresses> addressesMap,
-                                                FuncAddress[] imbricatedStartFuncAddresses);
+    void addFuncsAndSaveOutputs(Map<Entity, OutputAddresses> addressesMap,
+                                FuncAddress[] imbricatedStartFuncAddresses,
+                                ArrayList<Func> calledFunctions,
+                                ArrayList<FuncDataAddresses> calledFunctionsParameters);
 }

@@ -6,10 +6,12 @@ import java.util.Map;
 
 /**
  * Created by eadgyo on 10/08/16.
+ *
+ * Output addresses mapped to output indices
  */
 public class OutputAddresses
 {
-    private Map<Integer, Address> outputAddresses;
+    private Map<Integer, DataAddress> outputAddresses;
 
     public OutputAddresses()
     {
@@ -21,19 +23,19 @@ public class OutputAddresses
         return outputAddresses.size();
     }
 
-    public Address getOutputAddress(int index)
+    public DataAddress getOutputAddress(int index)
     {
         return outputAddresses.get(index);
     }
 
-    public void addOutputAddress(int index, Address address)
+    public void addOutputAddress(int index, DataAddress address)
     {
         outputAddresses.put(index, address);
     }
 
     public void addOffset(Address offset)
     {
-        Collection<Address> values = outputAddresses.values();
+        Collection<DataAddress> values = outputAddresses.values();
         for (Address address : values)
         {
             address.addOffset(offset);

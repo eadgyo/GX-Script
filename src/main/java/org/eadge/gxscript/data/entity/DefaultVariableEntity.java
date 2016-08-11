@@ -9,12 +9,21 @@ import java.util.Set;
  * Variable entity model
  * Variable have input and output as entity, but also have modified lane
  */
-public abstract class DefaultVariableEntity extends DefaultEntity
+public abstract class DefaultVariableEntity extends DefaultEntity implements VariableEntity
 {
     /**
      * Holds output modifiable
      */
     private Set<Integer> indicesModifiableOutputs = new HashSet<>();
+
+    public DefaultVariableEntity(String name)
+    {
+        super(name);
+    }
+
+    public DefaultVariableEntity()
+    {
+    }
 
     //----------------------------
     //-------- Modified ----------
@@ -56,9 +65,9 @@ public abstract class DefaultVariableEntity extends DefaultEntity
     }
 
     @Override
-    protected void addOutputEntry(int outputIndex, Class cl)
+    protected void addOutputEntry(int outputIndex, String outputName, Class cl)
     {
-        super.addOutputEntry(outputIndex, cl);
+        super.addOutputEntry(outputIndex, outputName, cl);
 
         // If the output is a variable
         if (isVariableOutput(outputIndex))
@@ -68,14 +77,14 @@ public abstract class DefaultVariableEntity extends DefaultEntity
         }
     }
 
-    protected void addModifiableOutputEntry(Class cl)
+    public void addModifiableOutputEntry(String outputName, Class cl)
     {
-        addModifiableOutputEntry(getNumberOfOutputs(), cl);
+        addModifiableOutputEntry(getNumberOfOutputs(), outputName, cl);
     }
 
-    protected void addModifiableOutputEntry(int outputIndex, Class cl)
+    public void addModifiableOutputEntry(int outputIndex, String outputName, Class cl)
     {
-        super.addOutputEntry(outputIndex, cl);
+        super.addOutputEntry(outputIndex, outputName, cl);
 
         indicesModifiableOutputs.add(outputIndex);
     }

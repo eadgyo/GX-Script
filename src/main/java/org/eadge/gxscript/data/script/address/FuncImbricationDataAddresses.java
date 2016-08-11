@@ -2,6 +2,7 @@ package org.eadge.gxscript.data.script.address;
 
 /**
  * Created by eadgyo on 10/08/16.
+ *
  */
 public class FuncImbricationDataAddresses extends FuncDataAddresses
 {
@@ -33,6 +34,16 @@ public class FuncImbricationDataAddresses extends FuncDataAddresses
         for (FuncAddress startImbricationsFuncAddress : startImbricationsFuncAddresses)
         {
             startImbricationsFuncAddress.addOffset(offset);
+        }
+    }
+
+    public void setImbricationsAddresses(FuncAddress imbricationsAddresses[])
+    {
+        assert (imbricationsAddresses.length == numberOfImbrications());
+
+        for (int imbricationIndex = 0; imbricationIndex < imbricationsAddresses.length; imbricationIndex++)
+        {
+            startImbricationsFuncAddresses[imbricationIndex] = imbricationsAddresses[imbricationIndex];
         }
     }
 }

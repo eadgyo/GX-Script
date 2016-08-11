@@ -133,7 +133,7 @@ public class ImbricationNodeC extends ImbricationNode
         FuncAddress[] funcAddresses = getFuncAddresses(imbricationNodeCs);
 
         // Add funcs and funcsData of start imbrication entity
-        startImbricationEntity.addFuncsAndSaveOutputs(calledFunctions, calledFunctionsParameters, outputAddressesMap, funcAddresses);
+        startImbricationEntity.addFuncsAndSaveOutputs(outputAddressesMap, funcAddresses, calledFunctions, calledFunctionsParameters);
 
         // Create func imbricated entities
         treatNotImbricatedOutputs(startImbricationEntity);

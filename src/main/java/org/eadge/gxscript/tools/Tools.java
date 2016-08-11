@@ -127,4 +127,16 @@ public class Tools
             }
         }
     }
+
+    /**
+     * Check if classes are equals or input class derived from output class
+     * @param inputClass input class
+     * @param outputClass output class
+     * @return true if classes are equals or input class derived from output class
+     */
+    public static boolean isEqualOrDerivedFrom(Class inputClass, Class outputClass)
+    {
+        //noinspection unchecked
+        return outputClass.isAssignableFrom(inputClass);
+    }
 }

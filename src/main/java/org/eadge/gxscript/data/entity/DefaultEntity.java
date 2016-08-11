@@ -1,5 +1,10 @@
 package org.eadge.gxscript.data.entity;
 
+import org.eadge.gxscript.data.script.Func;
+import org.eadge.gxscript.data.script.address.DataAddress;
+import org.eadge.gxscript.data.script.address.FuncDataAddresses;
+import org.eadge.gxscript.data.script.address.OutputAddresses;
+import org.eadge.gxscript.tools.Tools;
 import org.eadge.gxscript.tools.check.exception.NotMatchingInputOutputClasses;
 
 import java.util.*;
@@ -9,8 +14,15 @@ import java.util.*;
  *
  * Default entity model
  */
-public abstract class DefaultEntity extends Entity
+public abstract class DefaultEntity implements Entity
 {
+    protected String name;
+
+    /**
+     * Names of inputs
+     */
+    protected ArrayList<String> inputsNames = new ArrayList<>();
+
     /**
      * Indices of all needed inputs
      */
@@ -30,6 +42,11 @@ public abstract class DefaultEntity extends Entity
      * Linked on input entities
      */
     protected ArrayList<Entity> inputEntities = new ArrayList<>();
+
+    /**
+     * Names of outputs
+     */
+    protected ArrayList<String> outputsNames = new ArrayList<>();
 
     /**
      * Hold the outputs indices of the inputs entities
@@ -55,6 +72,26 @@ public abstract class DefaultEntity extends Entity
      * Hold the inputs indices of the outputs entities
      */
     protected ArrayList<Map<Entity, Integer>> inputFromOutputEntitiesIndices = new ArrayList<>();
+
+    public DefaultEntity(String name)
+    {
+        this.name = name;
+    }
+
+    public DefaultEntity()
+    {
+        this.name = "";
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
     @Override
     public Class getInputClass(int index)
@@ -177,19 +214,19 @@ public abstract class DefaultEntity extends Entity
         return indicesVariableInputs.contains(inputIndex);
     }
 
-    protected void addInputEntry(Class cl)
+    protected void addInputEntry(String inputName, Class cl)
     {
-        addInputEntry(getNumberOfInputs(), cl);
+        addInputEntry(getNumberOfInputs(), inputName, cl);
     }
 
-    protected void addInputEntryNotNeeded(Class cl)
+    protected void addInputEntryNotNeeded(String inputName, Class cl)
     {
-        addInputEntryNotNeeded(getNumberOfInputs(), cl);
+        addInputEntryNotNeeded(getNumberOfInputs(), inputName, cl);
     }
 
-    protected void addInputEntry(int inputIndex, Class cl)
+    protected void addInputEntry(int inputIndex, String inputName, Class cl)
     {
-        addInputEntryNotNeeded(inputIndex, cl);
+        addInputEntryNotNeeded(inputIndex, inputName, cl);
         indicesNeededInputs.add(inputIndex);
     }
 
@@ -208,9 +245,10 @@ public abstract class DefaultEntity extends Entity
     /**
      * Add not needed input entry at the given index
      * @param inputIndex input index
+     * @param inputName name of input entry
      * @param cl class of the input, void if it's just a link to another entity
      */
-    protected void addInputEntryNotNeeded(int inputIndex, Class cl)
+    protected void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl)
     {
         // If add between two existing input entries
         if (inputIndex != getNumberOfInputs())
@@ -226,6 +264,7 @@ public abstract class DefaultEntity extends Entity
         inputEntities.add(inputIndex, null);
         outputFromInputEntitiesIndices.add(inputIndex, -1);
         inputClasses.add(inputIndex, cl);
+        inputsNames.add(inputIndex, inputName);
     }
 
     /**
@@ -241,6 +280,7 @@ public abstract class DefaultEntity extends Entity
         inputEntities.remove(inputIndex);
         outputFromInputEntitiesIndices.remove(inputIndex);
         inputClasses.remove(inputIndex);
+        inputsNames.remove(inputIndex);
 
         if (inputIndex != getNumberOfInputs())
         {
@@ -311,17 +351,18 @@ public abstract class DefaultEntity extends Entity
         }
     }
 
-    protected void addOutputEntry(Class cl)
+    protected void addOutputEntry(String outputName, Class cl)
     {
-        addOutputEntry(getNumberOfOutputs(), cl);
+        addOutputEntry(getNumberOfOutputs(), outputName, cl);
     }
 
     /**
      * Add not needed output entry at the given index
      * @param outputIndex output index
+     * @param outputName name of output entry
      * @param cl class of the output, void if it's just a link to another entity
      */
-    protected void addOutputEntry(int outputIndex, Class cl)
+    protected void addOutputEntry(int outputIndex, String outputName, Class cl)
     {
         // If add between two existing outputs entries
         if (outputIndex != getNumberOfOutputs())
@@ -337,6 +378,7 @@ public abstract class DefaultEntity extends Entity
         outputEntities.add(outputIndex, new HashSet<Entity>());
         inputFromOutputEntitiesIndices.add(outputIndex, new HashMap<Entity, Integer>());
         outputClasses.add(outputIndex, cl);
+        outputsNames.add(outputIndex, outputName);
     }
 
     /**
@@ -355,6 +397,7 @@ public abstract class DefaultEntity extends Entity
         indicesVariableOutputs.remove(outputIndex);
         outputEntities.remove(outputIndex);
         outputClasses.remove(outputIndex);
+        outputsNames.remove(outputIndex);
 
         if (outputIndex != getNumberOfOutputs())
         {
@@ -373,7 +416,8 @@ public abstract class DefaultEntity extends Entity
     {
         try
         {
-            if (getInputClass(inputIndex) != entity.getOutputClass(entityOutput))
+            // If they have not matching classes
+            if (!Tools.isEqualOrDerivedFrom(getInputClass(inputIndex), entity.getOutputClass(entityOutput)))
                 throw new NotMatchingInputOutputClasses();
         }
         catch (NotMatchingInputOutputClasses notMatchingInputOutputClasses)
@@ -433,5 +477,282 @@ public abstract class DefaultEntity extends Entity
     public void changeIndexOfInputFromEntityOnOutput(int outputIndex, Entity outputEntity, int newInputIndex)
     {
         inputFromOutputEntitiesIndices.get(outputIndex).put(outputEntity, newInputIndex);
+    }
+
+    /**
+     * Create collection of addresses containing parameters addresses of function
+     * @param addressesMap map to get input memory stack
+     * @return created parameters addresses of function
+     */
+    protected FuncDataAddresses createFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap)
+    {
+        FuncDataAddresses funcDataAddresses = new FuncDataAddresses(getNumberOfInputs());
+        initFuncDataAddresses(addressesMap, funcDataAddresses);
+        return funcDataAddresses;
+    }
+
+    /**
+     * Fill parameters addresses of funcion
+     * @param addressesMap map to get input memory stack
+     * @param funcDataAddresses filled parameters addresses of function
+     */
+    protected void initFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap, FuncDataAddresses funcDataAddresses)
+    {
+        // For each variable input
+        for (int inputIndex = 0, variableIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
+        {
+            // If the input is taking variable
+            if (isVariableInput(inputIndex))
+            {
+                // Get variable address
+                Entity inputEntity = getInputEntity(inputIndex);
+
+                // Get corresponding outputs addresses
+                OutputAddresses outputAddresses = addressesMap.get(inputEntity);
+
+                // Get the output index of this variable
+                int outputIndex = getIndexOfOutputFromEntityOnInput(inputIndex);
+
+                // Set address variable address
+                funcDataAddresses.setInputAddress(variableIndex, outputAddresses.getOutputAddress(outputIndex));
+
+                variableIndex++;
+            }
+        }
+    }
+
+    /**
+     * Create a link between this entity considered as output and one other input entity
+     * @param outputIndex output index
+     * @param entityInput other entity input index
+     * @param entity input entity
+     */
+    public void linkAsOutput(int outputIndex, int entityInput, Entity entity)
+    {
+        entity.linkAsInput(entityInput, outputIndex, this);
+    }
+
+    /**
+     * Remove link on output at the given output index
+     * @param outputIndex output index
+     * @param entity removed link on output entity
+     */
+    public void unlinkAsOutput(int outputIndex, Entity entity)
+    {
+        int inputIndex = getIndexOfInputFromEntityOnOutput(outputIndex, entity);
+        entity.unlinkAsInput(inputIndex);
+    }
+
+    /**
+     * Default add funcs and funcs params
+     *
+     * @param calledFunctions          list of called function
+     * @param calledFunctionAddresses list of used called function data
+     * @param addressesMap                      map to link entity to corresponding entity output addresses
+     */
+    public void addFuncsAndSaveOutputs(ArrayList<Func> calledFunctions,
+                                       ArrayList<FuncDataAddresses> calledFunctionAddresses,
+                                       Map<Entity, OutputAddresses> addressesMap)
+    {
+        // Get func and add it to called functions
+        Func func = getFunc();
+        calledFunctions.add(func);
+
+        // Link input to corresponding outputs addresses and add it to called function addresses
+        FuncDataAddresses funcDataAddresses = createAndLinkFuncDataAddresses(addressesMap);
+        calledFunctionAddresses.add(funcDataAddresses);
+    }
+
+    /**
+     * Create outputs and alloc outputs in stack
+     * @param currentDataAddress current address on stack of data addresses
+     * @return created output addresses
+     */
+    public OutputAddresses createAndAllocOutputs(DataAddress currentDataAddress)
+    {
+        OutputAddresses outputAddresses = new OutputAddresses();
+
+        for (int outputIndex = 0; outputIndex < getNumberOfOutputs(); outputIndex++)
+        {
+            if (isVariableOutput(outputIndex))
+            {
+                // Take this address
+                outputAddresses.addOutputAddress(outputIndex, currentDataAddress.clone());
+
+                // Alloc a new address
+                currentDataAddress.alloc();
+            }
+        }
+
+        return outputAddresses;
+    }
+
+    /**
+     * Create funcDataAddresses and link inputs to the corresponding outputs addresses
+     * @param addressesMap map entity to outputAddresses
+     * @return created and linked func data addresses
+     */
+    public FuncDataAddresses createAndLinkFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap)
+    {
+        // Create function data addresses (inputs of the entity)
+        FuncDataAddresses funcDataAddresses = new FuncDataAddresses(getNumberOfVariableInput());
+
+        // Link data addresses
+        for (int inputIndex = 0, variableIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
+        {
+            if (isVariableInput(inputIndex))
+            {
+                Entity inputEntity = getInputEntity(inputIndex);
+
+                // If the entity is linked at this input
+                if (inputEntity != null)
+                {
+                    // Get the corresponding outputs addresses
+                    OutputAddresses outputAddresses = addressesMap.get(inputEntity);
+
+                    assert (outputAddresses != null);
+
+                    int outputIndex = getIndexOfOutputFromEntityOnInput(inputIndex);
+
+                    // Get the address of the corresponding output/input link
+                    DataAddress outputAddress = outputAddresses.getOutputAddress(outputIndex);
+
+                    // Store the output address, use variable index instead of input index
+                    funcDataAddresses.setInputAddress(variableIndex, outputAddress);
+                }
+                else
+                {
+                    // Use variable index instead of input index, funcDataAddresses doesn't contain non
+                    // variables inputs
+                    funcDataAddresses.setInputAddress(variableIndex, null);
+                }
+
+                variableIndex++;
+            }
+        }
+        return funcDataAddresses;
+    }
+    /**
+     * Get all the output entities
+     *
+     * @return output entities
+     */
+    public Collection<Entity> getAllOutputEntitiesCollection()
+    {
+        Collection<Entity>             allOutputEntities          = new ArrayList<>();
+        Collection<? extends Collection<Entity>> allOutputEntitiesSeparated = getAllOutputEntities();
+
+        for (Collection<Entity> entities : allOutputEntitiesSeparated)
+        {
+            allOutputEntities.addAll(entities);
+        }
+        return allOutputEntities;
+    }
+
+    /**
+     * Check if the output at the index is valid
+     *
+     * @param index output index
+     *
+     * @return true if the output is valid, false otherwise
+     */
+    public boolean isValidOutput(int index)
+    {
+        Collection<Entity> outputEntities = getOutputEntities(index);
+
+        // For all connected blocks
+        for (Entity outputEntity : outputEntities)
+        {
+            // Get his linked index
+            int indexOfInputEntity = getIndexOfInputFromEntityOnOutput(index, outputEntity);
+
+            // If they are partially linked
+            if (indexOfInputEntity == -1)
+            {
+                // There is a problem
+                return false;
+            }
+
+            // If they have no matching intput/output types
+            if (!Tools.isEqualOrDerivedFrom(outputEntity.getInputClass(indexOfInputEntity), getOutputClass(index)))
+            {
+                // Types are not matching
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check if all the inputs of are valid
+     *
+     * @return true if inputs are valid, false otherwise
+     */
+    public boolean hasValidInput()
+    {
+        // Check for all inputs
+        for (int index = 0; index < getNumberOfInputs(); index++)
+        {
+            // If the input is not valid
+            if (!isValidInput(index))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check if the input at the index is valid
+     *
+     * @param inputIndex input index
+     *
+     * @return true if the input is valid, false otherwise
+     */
+    public boolean isValidInput(int inputIndex)
+    {
+        Entity inputEntity = getInputEntity(inputIndex);
+
+        // If input is not linked
+        if (inputEntity == null)
+            return true;
+
+        // Get his linked index
+        int indexOfOutputEntity = getIndexOfOutputFromEntityOnInput(inputIndex);
+
+        // If they are partially linked
+        if (indexOfOutputEntity == -1)
+        {
+            // There is a problem
+            return false;
+        }
+
+        // If they have no matching intput/output types
+        if (!Tools.isEqualOrDerivedFrom(getInputClass(inputIndex), inputEntity.getInputClass(indexOfOutputEntity)))
+        {
+            // Types are not matching
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if all the outputs of are valid
+     *
+     * @return true if outputs are valid, false otherwise
+     */
+    public boolean hasValidOutput()
+    {
+        // Check for all outputs
+        for (int index = 0; index < getNumberOfOutputs(); index++)
+        {
+            // If the input is not valid
+            if (!isValidOutput(index))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

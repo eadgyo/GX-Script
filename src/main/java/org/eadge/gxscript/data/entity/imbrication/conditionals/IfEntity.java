@@ -1,6 +1,7 @@
 package org.eadge.gxscript.data.entity.imbrication.conditionals;
 
-import org.eadge.gxscript.data.entity.DefaultEntity;
+import org.eadge.gxscript.data.entity.DefaultStartImbricationEntity;
+import org.eadge.gxscript.data.func.conditionals.IfFunc;
 import org.eadge.gxscript.data.script.Func;
 
 /**
@@ -8,22 +9,27 @@ import org.eadge.gxscript.data.script.Func;
  *
  * If entity block
  */
-public class IfEntity extends DefaultEntity
+public class IfEntity extends DefaultStartImbricationEntity
 {
     public IfEntity()
     {
-        addInputEntry(Boolean.class);
+        super("If");
+
+        addInputEntry("Test", Boolean.class);
 
         // Success
-        addOutputEntry(Void.class);
+        addImbricatedOutputEntry(0, "Success", Void.class);
 
         // Fail
-        addOutputEntry(Void.class);
+        addImbricatedOutputEntry(1, "Fail", Void.class);
+
+        // Continue
+        addOutputEntry("Continue", Void.class);
     }
 
     @Override
     public Func getFunc()
     {
-        return null;
+        return new IfFunc();
     }
 }

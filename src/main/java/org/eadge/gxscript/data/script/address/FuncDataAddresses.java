@@ -3,15 +3,15 @@ package org.eadge.gxscript.data.script.address;
 /**
  * Created by eadgyo on 03/08/16.
  *
- * Function used inputs and outputs used addresses
+ * Holds data inputs addresses on memory stack, used to call function
  */
 public class FuncDataAddresses
 {
-    private Address[] inputsAddresses;
+    private DataAddress[] inputsAddresses;
 
     public FuncDataAddresses(int numberOfInputs)
     {
-        inputsAddresses = new Address[numberOfInputs];
+        inputsAddresses = new DataAddress[numberOfInputs];
     }
 
     public int numberOfInputs()
@@ -24,7 +24,7 @@ public class FuncDataAddresses
         return inputsAddresses[index];
     }
 
-    public void setInputAddress(int index, Address address)
+    public void setInputAddress(int index, DataAddress address)
     {
         inputsAddresses[index] = address;
     }
