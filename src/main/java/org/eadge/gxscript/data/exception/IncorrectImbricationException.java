@@ -1,4 +1,4 @@
-package org.eadge.gxscript.tools.check.exception;
+package org.eadge.gxscript.data.exception;
 
 import org.eadge.gxscript.data.entity.Entity;
 

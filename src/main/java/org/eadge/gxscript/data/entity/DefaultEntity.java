@@ -5,7 +5,7 @@ import org.eadge.gxscript.data.script.address.DataAddress;
 import org.eadge.gxscript.data.script.address.FuncDataAddresses;
 import org.eadge.gxscript.data.script.address.OutputAddresses;
 import org.eadge.gxscript.tools.Tools;
-import org.eadge.gxscript.tools.check.exception.NotMatchingInputOutputClasses;
+import org.eadge.gxscript.data.exception.NotMatchingInputOutputClasses;
 
 import java.util.*;
 
@@ -465,17 +465,21 @@ public abstract class DefaultEntity implements Entity
     {
         try
         {
+            // Get classes
+            Class inputClass = getInputClass(inputIndex);
+            Class outputClass = entity.getOutputClass(entityOutput);
+
             // If they have not matching classes
-            if (!Tools.isEqualOrDerivedFrom(getInputClass(inputIndex), entity.getOutputClass(entityOutput)))
+            if (!Tools.isEqualOrDerivedFrom(outputClass, inputClass))
                 throw new NotMatchingInputOutputClasses();
+
+            addLinkInput(inputIndex, entityOutput, entity);
+            entity.addLinkOutput(entityOutput, inputIndex, this);
         }
         catch (NotMatchingInputOutputClasses notMatchingInputOutputClasses)
         {
             notMatchingInputOutputClasses.printStackTrace();
         }
-
-        addLinkInput(inputIndex, entityOutput, entity);
-        entity.addLinkOutput(entityOutput, inputIndex, this);
     }
 
     @Override
@@ -724,7 +728,7 @@ public abstract class DefaultEntity implements Entity
             }
 
             // If they have no matching intput/output types
-            if (!Tools.isEqualOrDerivedFrom(outputEntity.getInputClass(indexOfInputEntity), getOutputClass(index)))
+            if (!Tools.isEqualOrDerivedFrom(getOutputClass(index), outputEntity.getInputClass(indexOfInputEntity)))
             {
                 // Types are not matching
                 return false;
@@ -778,7 +782,7 @@ public abstract class DefaultEntity implements Entity
         }
 
         // If they have no matching intput/output types
-        if (!Tools.isEqualOrDerivedFrom(getInputClass(inputIndex), inputEntity.getInputClass(indexOfOutputEntity)))
+        if (!Tools.isEqualOrDerivedFrom(inputEntity.getOutputClass(indexOfOutputEntity), getInputClass(inputIndex)))
         {
             // Types are not matching
             return false;

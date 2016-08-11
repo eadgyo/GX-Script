@@ -13,4 +13,6 @@ public class MemoryStack extends ArrayList<Object>
     {
         return super.get(dataAddress.getAddress());
     }
+
+    public void set(DataAddress dataAddress, Object object) { set(dataAddress.getAddress(), object); }
 }

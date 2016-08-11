@@ -1,4 +1,4 @@
-package org.eadge.gxscript.tools.check.exception;
+package org.eadge.gxscript.data.exception;
 
 /**
  * Created by eadgyo on 11/08/16.

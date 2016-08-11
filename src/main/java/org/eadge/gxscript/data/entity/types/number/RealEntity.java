@@ -12,24 +12,34 @@ import org.eadge.gxscript.data.script.Program;
  */
 public class RealEntity extends DefaultVariableEntity
 {
-    private final static int SET_INPUT_INDEX  = 0;
+    public final static int SET_INPUT_INDEX  = 0;
+    public final static int NEXT_INPUT_INDEX = 1;
+
+    public final static int REAL_OUTPUT_INDEX = 0;
 
     /**
      * Float holding default value
      */
-    private float defaultFloat = 0;
+    private Float defaultFloat = 0f;
+
+    public RealEntity(float defaultFloat)
+    {
+        this();
+
+        this.defaultFloat = defaultFloat;
+    }
 
     public RealEntity()
     {
         super("Create Real");
 
         // Inputs
-        addInputEntryNotNeeded(SET_INPUT_INDEX, "Set", Float.class);
+        addInputEntryNotNeeded(SET_INPUT_INDEX, "Set", Number.class);
 
-        addInputEntry("", Void.class);
+        addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Output
-        addOutputEntry("Variable", Float.class);
+        addOutputEntry(REAL_OUTPUT_INDEX, "Variable", Float.class);
     }
 
     @Override
@@ -54,26 +64,35 @@ public class RealEntity extends DefaultVariableEntity
                 }
             };
         }
-        else // Else value is a default value
+        else
         {
+            // Use default value
             return new Func()
             {
+                private float real;
+
+                public Func init(float real)
+                {
+                    this.real = real;
+                    return this;
+                }
+
                 @Override
                 public void run(Program program)
                 {
-                    program.pushInMemory(defaultFloat);
+                    program.pushInMemory(real);
                 }
-            };
+            }.init(defaultFloat);
 
         }
     }
 
-    public float getDefaultFloat()
+    public Float getDefaultFloat()
     {
         return defaultFloat;
     }
 
-    public void setDefaultFloat(float defaultFloat)
+    public void setDefaultFloat(Float defaultFloat)
     {
         this.defaultFloat = defaultFloat;
     }

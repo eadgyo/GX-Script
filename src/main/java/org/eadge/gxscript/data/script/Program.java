@@ -4,6 +4,7 @@ import org.eadge.gxscript.data.script.address.DataAddress;
 import org.eadge.gxscript.data.script.address.FuncAddress;
 import org.eadge.gxscript.data.script.address.FuncDataAddresses;
 import org.eadge.gxscript.data.script.address.FuncImbricationDataAddresses;
+import org.eadge.gxscript.data.exception.HasPassedTargetAddressException;
 
 /**
  * Created by eadgyo on 11/08/16.
@@ -65,10 +66,22 @@ public class Program
         return memoryStack.get(dataAddress);
     }
 
+    public void setObject(DataAddress dataAddress, Object object) { memoryStack.set(dataAddress, object); }
+
     // Current Func Address
     public void setCurrentFuncAddress(FuncAddress currentFuncAddress)
     {
         this.currentFuncAddress.setAddress(currentFuncAddress);
+    }
+
+    public boolean hasPassedAddress(FuncAddress testedFuncAddress)
+    {
+        return currentFuncAddress.isAfter(testedFuncAddress);
+    }
+
+    public boolean isOnAddress(FuncAddress testedFuncAddress)
+    {
+        return currentFuncAddress.equals(testedFuncAddress);
     }
 
     public FuncAddress getCurrentFuncAddress()
@@ -125,5 +138,26 @@ public class Program
     public boolean hasFinished()
     {
         return currentFuncAddress.getAddress() >= funcsStack.size();
+    }
+
+    public void runFromAndUntil(FuncAddress sourceAddress, FuncAddress targetAddress)
+    {
+        assert (sourceAddress.isBefore(targetAddress));
+
+        setCurrentFuncAddress(sourceAddress);
+
+        while (!isOnAddress(targetAddress) && !hasPassedAddress(targetAddress))
+        {
+            // Call the current pointed function
+            callCurrentFunc();
+
+            // Go to next function
+            nextFuncAddress();
+        }
+
+        if (hasPassedAddress(targetAddress))
+        {
+            throw new HasPassedTargetAddressException();
+        }
     }
 }

@@ -12,8 +12,11 @@ import org.eadge.gxscript.tools.check.NumberComparator;
  */
 public class EqualToNumberEntity extends DefaultEntity
 {
-    private static final int V0_INPUT_INDEX = 0;
-    private static final int V1_INPUT_INDEX = 1;
+    public static final int V0_INPUT_INDEX = 0;
+    public static final int V1_INPUT_INDEX = 1;
+
+    public final static int RESULT_OUTPUT_INDEX = 0;
+    public final static int CONTINUE_OUTPUT_INDEX = 1;
 
     public EqualToNumberEntity()
     {
@@ -23,9 +26,9 @@ public class EqualToNumberEntity extends DefaultEntity
 
         addInputEntry(V1_INPUT_INDEX, "v1", Number.class);
 
-        addOutputEntry("Result", Boolean.class);
+        addOutputEntry(RESULT_OUTPUT_INDEX, "Result", Boolean.class);
 
-        addOutputEntry("Continue", Void.class);
+        addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
     }
 
     @Override

@@ -12,13 +12,14 @@ import java.util.Set;
  */
 public class RawGXScript
 {
-    private Set<Entity> entities;
-    private Set<Entity> startingEntities;
+    private Set<Entity> entities = new HashSet<>();
+    private Set<Entity> startingEntities = new HashSet<>();
 
     public RawGXScript()
     {
-        this.entities = new HashSet<>();
     }
+
+    public void addEntity(Entity entity) { entities.add(entity); }
 
     public Collection<Entity> getEntities()
     {

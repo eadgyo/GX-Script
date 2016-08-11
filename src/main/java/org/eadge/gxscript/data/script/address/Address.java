@@ -61,4 +61,19 @@ public class Address implements Cloneable
     {
         address += offset.getAddress();
     }
+
+    public boolean isAfter(FuncAddress testedFuncAddress)
+    {
+        return address > testedFuncAddress.getAddress();
+    }
+
+    public boolean isBefore(FuncAddress testedFuncAddress)
+    {
+        return address < testedFuncAddress.getAddress();
+    }
+
+    public boolean equals(FuncAddress testedFuncAddress)
+    {
+        return address == testedFuncAddress.getAddress();
+    }
 }

@@ -18,7 +18,7 @@ public class GXRunner
         // While there are functions left
         while (!program.hasFinished())
         {
-            // Get function and corresponding parameters
+            // Call the current pointed function
             program.callCurrentFunc();
 
             // Go to next function
