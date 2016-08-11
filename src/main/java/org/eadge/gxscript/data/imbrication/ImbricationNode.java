@@ -312,7 +312,7 @@ public class ImbricationNode
     public boolean hasAllInputsTreatedAtLevelOrLower(Entity entity)
     {
         // Check for each inputs
-        for (int inputIndex = 0; inputIndex < entity.getNumberOfInput(); inputIndex++)
+        for (int inputIndex = 0; inputIndex < entity.getNumberOfInputs(); inputIndex++)
         {
             // If it's not treated at an actual or lower level
             if (!wasTreatedLowerRecursive(entity.getInputEntity(inputIndex)))

@@ -17,21 +17,6 @@ import java.util.*;
  */
 public abstract class Entity
 {
-    /**
-     * Indices of all needed inputs
-     */
-    protected Set<Integer> indicesNeededInputs = new HashSet<>();
-
-    /**
-     * Indices of all outputs returning variables
-     */
-    protected ArrayList<Integer> indicesVariableOutputs = new ArrayList<>();
-
-    /**
-     * Indices of all inputs taking variables
-     */
-    protected ArrayList<Integer> indicesVariableInputs = new ArrayList<>();
-
     //----------------------------
     //---------- Input -----------
     //----------------------------
@@ -57,7 +42,15 @@ public abstract class Entity
      *
      * @return number of input objects
      */
-    public abstract int getNumberOfInput();
+    public abstract int getNumberOfInputs();
+
+    /**
+     * Check if one entity is contained at the input
+     * @param inputIndex input index
+     * @param entity tested entity
+     * @return true if entity is contained at input index, false otherwise
+     */
+    public abstract boolean inputContains(int inputIndex, Entity entity);
 
     /**
      * Get the input entity at the index or null if there are no entities
@@ -69,22 +62,13 @@ public abstract class Entity
     public abstract Entity getInputEntity(int index);
 
     /**
-     * Get the index of the input linked to one entity or -1 if it's not a input entity
-     *
-     * @param entity linked to input entity
-     *
-     * @return index of the linked to input entity, or -1 if entity is not link on input
-     */
-    public abstract int getIndexOfInputEntity(Entity entity);
-
-    /**
      * Get the index of the output linked to one entity or -1 if it's not a output entity
      *
-     * @param entity linked to output entity
+     * @param inputIndex used input index
      *
      * @return index of the linked to output entity, or -1 if entity is not link on output
      */
-    public abstract int getIndexOfOutputEntityOnInput(int index, Entity entity);
+    public abstract int getIndexOfOutputFromEntityOnInput(int inputIndex);
 
     /**
      * Get all the input entities
@@ -98,40 +82,25 @@ public abstract class Entity
      *
      * @return true if entity have enough input, false otherwise
      */
-    public boolean hasAllNeededInput()
-    {
-        // Check if all needed input are linked
-        for (Integer indexNeededInput : indicesNeededInputs)
-        {
-            // If there is one input entity
-            if (getInputEntity(indexNeededInput) == null)
-            {
-                // It miss needed input
-                return false;
-            }
-        }
-
-        // All needed inputs has one entity
-        return true;
-    }
+    public abstract boolean hasAllNeededInput();
 
     /**
      * Check if the input at the index is valid
      *
-     * @param index input index
+     * @param inputIndex input index
      *
      * @return true if the input is valid, false otherwise
      */
-    public boolean isValidInput(int index)
+    public boolean isValidInput(int inputIndex)
     {
-        Entity inputEntity = getInputEntity(index);
+        Entity inputEntity = getInputEntity(inputIndex);
 
         // If input is not linked
         if (inputEntity == null)
             return true;
 
         // Get his linked index
-        int indexOfOutputEntity = getIndexOfOutputEntityOnInput(index, inputEntity);
+        int indexOfOutputEntity = getIndexOfOutputFromEntityOnInput(inputIndex);
 
         // If they are partially linked
         if (indexOfOutputEntity == -1)
@@ -141,7 +110,7 @@ public abstract class Entity
         }
 
         // If they have no matching intput/output types
-        if (getInputClass(index) != inputEntity.getInputClass(indexOfOutputEntity))
+        if (getInputClass(inputIndex) != inputEntity.getInputClass(indexOfOutputEntity))
         {
             // Types are not matching
             return false;
@@ -151,6 +120,44 @@ public abstract class Entity
     }
 
     /**
+     * Add link on input
+     * DO NOT USE THIS ALONE
+     * @param inputIndex output index
+     * @param entity added entity
+     * @param entityOutputIndex corresponding output index
+     */
+    public abstract void addLinkInput(int inputIndex, int entityOutputIndex, Entity entity);
+
+    /**
+     * Remove one entity link on input at the given index
+     * DO NOT USE THIS ALONE
+     * @param inputIndex input entry to remove entity
+     */
+    public abstract void removeLinkInput(int inputIndex);
+
+    /**
+     * Modify the information on the linked index of one inputEntity
+     * @param inputIndex input index
+     * @param newOutputIndex updated output index
+     */
+    public abstract void changeIndexOfOutputFromEntityOnInput(int inputIndex, int newOutputIndex);
+
+    /**
+     * Create a link between this entity considered as input and one other output entity
+     * @param inputIndex input index
+     * @param entityOutput other entity output index
+     * @param entity output entity
+     */
+    public abstract void linkAsInput(int inputIndex, int entityOutput, Entity entity);
+
+
+    /**
+     * Remove link on input at the given input index
+     * @param inputIndex input index
+     */
+    public abstract void unlinkAsInput(int inputIndex);
+
+    /**
      * Check if all the inputs of are valid
      *
      * @return true if inputs are valid, false otherwise
@@ -158,7 +165,7 @@ public abstract class Entity
     public boolean hasValidInput()
     {
         // Check for all inputs
-        for (int index = 0; index < getNumberOfInput(); index++)
+        for (int index = 0; index < getNumberOfInputs(); index++)
         {
             // If the input is not valid
             if (!isValidInput(index))
@@ -168,6 +175,33 @@ public abstract class Entity
         }
         return true;
     }
+
+    /**
+     * Get number of output returning variables
+     *
+     * @return number of output returning variables
+     */
+    public abstract int getNumberOfVariableOutput();
+
+    /**
+     * Check if an input takes variable
+     * @param inputIndex input index
+     * @return true if input takes variable, false otherwise
+     */
+    public abstract boolean isVariableInput(int inputIndex);
+
+    /**
+     * Check if an input at the given index is necessary
+     * @param inputIndex input index
+     * @return true if the input at index is needed, false otherwise
+     */
+    public abstract boolean isInputNeeded(int inputIndex);
+
+    /**
+     * Get all necessary inputs index
+     * @return all necessary inputs index
+     */
+    public abstract Collection<Integer> getAllInputsNeeded();
 
     //----------------------------
     //----------- Output ---------
@@ -194,7 +228,7 @@ public abstract class Entity
      *
      * @return number of output objects
      */
-    public abstract int getNumberOfOutput();
+    public abstract int getNumberOfOutputs();
 
     /**
      * Get the output entities at the index
@@ -206,30 +240,29 @@ public abstract class Entity
     public abstract Collection<Entity> getOutputEntities(int index);
 
     /**
-     * Get the index of the output linked to one entity or -1 if it's not a output entity
-     *
-     * @param entity linked to output entity
-     *
-     * @return index of the linked to output entity, or -1 if entity is not link on output
+     * Check if one entity is contained at the output
+     * @param outputIndex output index
+     * @param entity tested entity
+     * @return true if entity is contained at output index, false otherwise
      */
-    public abstract int getIndexOfOutputEntity(Entity entity);
+    public abstract boolean outputContains(int outputIndex, Entity entity);
 
     /**
      * Get the index of the input linked to one entity or -1 if it's not a input entity
      *
      * @param index  entity output index
-     * @param entity linked to input entity
+     * @param outputEntity linked to input entity
      *
      * @return index of the linked to input entity, or -1 if entity is not link on input
      */
-    public abstract int getIndexOfInputEntityOnOutput(int index, Entity entity);
+    public abstract int getIndexOfInputFromEntityOnOutput(int index, Entity outputEntity);
 
     /**
      * Get all the output entities
      *
      * @return output entities keeping separated by output lane
      */
-    public abstract Collection<Collection<Entity>> getAllOutputEntities();
+    public abstract Collection<? extends Collection<Entity>> getAllOutputEntities();
 
     /**
      * Get all the output entities
@@ -239,7 +272,7 @@ public abstract class Entity
     public Collection<Entity> getAllOutputEntitiesCollection()
     {
         Collection<Entity>             allOutputEntities          = new ArrayList<>();
-        Collection<Collection<Entity>> allOutputEntitiesSeparated = getAllOutputEntities();
+        Collection<? extends Collection<Entity>> allOutputEntitiesSeparated = getAllOutputEntities();
 
         for (Collection<Entity> entities : allOutputEntitiesSeparated)
         {
@@ -263,7 +296,7 @@ public abstract class Entity
         for (Entity outputEntity : outputEntities)
         {
             // Get his linked index
-            int indexOfInputEntity = getIndexOfInputEntityOnOutput(index, outputEntity);
+            int indexOfInputEntity = getIndexOfInputFromEntityOnOutput(index, outputEntity);
 
             // If they are partially linked
             if (indexOfInputEntity == -1)
@@ -290,7 +323,7 @@ public abstract class Entity
     public boolean hasValidOutput()
     {
         // Check for all outputs
-        for (int index = 0; index < getNumberOfOutput(); index++)
+        for (int index = 0; index < getNumberOfOutputs(); index++)
         {
             // If the input is not valid
             if (!isValidOutput(index))
@@ -302,75 +335,72 @@ public abstract class Entity
     }
 
     /**
+     * Get number of input taking variables
+     *
+     * @return number of input taking variables
+     */
+    public abstract int getNumberOfVariableInput();
+
+    /**
+     * Check if an output gives variable
+     * @param outputIndex output index
+     * @return true if output gives variable, false otherwise
+     */
+    public abstract boolean isVariableOutput(int outputIndex);
+
+    /**
+     * Remove one entity link on output at the given index
+     * DO NOT USE THIS ALONE
+     * @param outputIndex output entry to remove entity
+     * @param entity removed entity
+     */
+    public abstract void removeLinkOutput(int outputIndex, Entity entity);
+
+    /**
+     * Modify the information on the linked index of one outputEntity
+     * @param outputIndex output index
+     * @param outputEntity output entity
+     * @param newInputIndex updated input index
+     */
+    public abstract void changeIndexOfInputFromEntityOnOutput(int outputIndex, Entity outputEntity, int newInputIndex);
+
+    /**
+     * Add link on output
+     * DO NOT USE THIS ALONE
+     * @param outputIndex output index
+     * @param inputEntityIndex corresponding input index
+     * @param entity added entity
+     */
+    public abstract void addLinkOutput(int outputIndex, int inputEntityIndex, Entity entity);
+
+    /**
+     * Create a link between this entity considered as output and one other input entity
+     * @param outputIndex output index
+     * @param entityInput other entity input index
+     * @param entity input entity
+     */
+    public void linkAsOutput(int outputIndex, int entityInput, Entity entity)
+    {
+        entity.linkAsInput(entityInput, outputIndex, this);
+    }
+
+    /**
+     * Remove link on output at the given output index
+     * @param outputIndex output index
+     * @param entity removed link on output entity
+     */
+    public void unlinkAsOutput(int outputIndex, Entity entity)
+    {
+        int inputIndex = getIndexOfInputFromEntityOnOutput(outputIndex, entity);
+        entity.unlinkAsInput(inputIndex);
+    }
+
+    /**
      * Get the func of the entity
      *
      * @return used func
      */
     public abstract Func getFunc();
-
-    /**
-     * Get number of output returning variables
-     *
-     * @return number of output returning variables
-     */
-    public int getNumberOfVariableOutput()
-    {
-        return indicesVariableOutputs.size();
-    }
-
-    /**
-     * Get all output indices returning variables
-     *
-     * @return output indices returning variables
-     */
-    public Collection<Integer> getVariableOutputIndices()
-    {
-        return indicesVariableOutputs;
-    }
-
-    /**
-     * Get nth input variable index
-     *
-     * @param i nth input variable
-     *
-     * @return nth input variable index
-     */
-    public int getVariableInputIndex(int i)
-    {
-        return indicesVariableInputs.get(i);
-    }
-
-    /**
-     * Get number of input taking variables
-     *
-     * @return number of input taking variables
-     */
-    public int getNumberOfVariableInput()
-    {
-        return indicesVariableInputs.size();
-    }
-
-    /**
-     * Get all input indices taking variables
-     *
-     * @return input indices taking variables
-     */
-    public Collection<Integer> getVariableInputIndices()
-    {
-        return indicesVariableInputs;
-    }
-
-    /**
-     * Get nth output variable index
-     *
-     * @param i nth output variable
-     *
-     * @return nth output variable index
-     */
-    public int getVariableOutputIndex(int i)
-    {
-        return indicesVariableOutputs.get(i);
-    }
 
     /**
      * Default add funcs and funcs params
@@ -401,13 +431,16 @@ public abstract class Entity
     {
         OutputAddresses outputAddresses = new OutputAddresses();
 
-        for (int i = 0; i < getNumberOfVariableOutput(); i++)
+        for (int outputIndex = 0; outputIndex < getNumberOfOutputs(); outputIndex++)
         {
-            // Take this address
-            outputAddresses.addOutputAddress(getVariableOutputIndex(i), currentDataAddress.clone());
+            if (isVariableOutput(outputIndex))
+            {
+                // Take this address
+                outputAddresses.addOutputAddress(outputIndex, currentDataAddress.clone());
 
-            // Alloc a new address
-            currentDataAddress.alloc();
+                // Alloc a new address
+                currentDataAddress.alloc();
+            }
         }
 
         return outputAddresses;
@@ -424,33 +457,36 @@ public abstract class Entity
         FuncDataAddresses funcDataAddresses = new FuncDataAddresses(getNumberOfVariableInput());
 
         // Link data addresses
-        for (int variableIndex = 0; variableIndex < getNumberOfVariableInput(); variableIndex++)
+        for (int inputIndex = 0, variableIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
-            int absoluteInputIndex = getVariableInputIndex(variableIndex);
-
-            Entity inputEntity = getInputEntity(absoluteInputIndex);
-
-            // If the entity is linked at this input
-            if (inputEntity != null)
+            if (isVariableInput(inputIndex))
             {
-                // Get the corresponding outputs addresses
-                OutputAddresses outputAddresses = addressesMap.get(inputEntity);
+                Entity inputEntity = getInputEntity(inputIndex);
 
-                assert (outputAddresses != null);
+                // If the entity is linked at this input
+                if (inputEntity != null)
+                {
+                    // Get the corresponding outputs addresses
+                    OutputAddresses outputAddresses = addressesMap.get(inputEntity);
 
-                int outputIndex = getIndexOfOutputEntityOnInput(absoluteInputIndex, inputEntity);
+                    assert (outputAddresses != null);
 
-                // Get the address of the corresponding output/input link
-                Address outputAddress = outputAddresses.getOutputAddress(outputIndex);
+                    int outputIndex = getIndexOfOutputFromEntityOnInput(inputIndex);
 
-                // Store the output address
-                funcDataAddresses.setInputAddress(variableIndex, outputAddress);
-            }
-            else
-            {
-                // Use variable index instead of absolute input index, funcDataAddresses doesn't contain non
-                // variables inputs
-                funcDataAddresses.setInputAddress(variableIndex, null);
+                    // Get the address of the corresponding output/input link
+                    Address outputAddress = outputAddresses.getOutputAddress(outputIndex);
+
+                    // Store the output address, use variable index instead of input index
+                    funcDataAddresses.setInputAddress(variableIndex, outputAddress);
+                }
+                else
+                {
+                    // Use variable index instead of input index, funcDataAddresses doesn't contain non
+                    // variables inputs
+                    funcDataAddresses.setInputAddress(variableIndex, null);
+                }
+
+                variableIndex++;
             }
         }
         return funcDataAddresses;

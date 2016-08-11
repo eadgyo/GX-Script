@@ -31,7 +31,7 @@ public class Tools
         for (Entity entity : entities)
         {
             // If entity has no linked entity block at input
-            if (entity.getNumberOfInput() == 0)
+            if (entity.getNumberOfInputs() == 0)
             {
                 // This entity is a starting entity
                 startingEntities.add(entity);
@@ -56,7 +56,7 @@ public class Tools
         for (Entity entity : entities)
         {
             // If entity has no linked entity block at output
-            if (entity.getNumberOfOutput() == 0)
+            if (entity.getNumberOfOutputs() == 0)
             {
                 // This entity is a ending entity
                 endingEntities.add(entity);
