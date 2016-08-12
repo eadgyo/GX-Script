@@ -31,7 +31,7 @@ public class Tools
         for (Entity entity : entities)
         {
             // If entity has no linked entity block at input
-            if (entity.getNumberOfInputs() == 0)
+            if (!entity.hasUsedInputs())
             {
                 // This entity is a starting entity
                 startingEntities.add(entity);
@@ -107,8 +107,10 @@ public class Tools
         }
     }
 
-    public static void endImbrication(ImbricationNode root)
+    public static boolean endImbrication(ImbricationNode root)
     {
+        boolean hasEnded = false;
+
         // Get all imbrication leaves
         ArrayList<ImbricationNode> leaves = root.getLeaves();
 
@@ -118,6 +120,7 @@ public class Tools
             // If leaf have all entities processed at their level
             if (leave.hasFinishedProcess())
             {
+                hasEnded = true;
                 ImbricationNode parent = leave.getParent();
                 if (parent != null)
                 {
@@ -126,6 +129,7 @@ public class Tools
                 }
             }
         }
+        return hasEnded;
     }
 
     /**

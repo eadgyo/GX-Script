@@ -8,7 +8,6 @@ import java.util.*;
 
 /**
  * Created by eadgyo on 11/08/16.
- *
  */
 public abstract class DefaultStartImbricationEntity extends DefaultEntity implements StartImbricationEntity
 {
@@ -62,7 +61,7 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
         // Search for all imbricated outputs at this level
         for (int outputIndex = 0; outputIndex < imbricationOfOutputs.size(); outputIndex++)
         {
-            Integer imbricationOfOutput =  imbricationOfOutputs.get(outputIndex);
+            Integer imbricationOfOutput = imbricationOfOutputs.get(outputIndex);
 
             if (imbricationOfOutput == level)
             {
@@ -81,23 +80,25 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
 
     /**
      * Create an imbricated output entry at the given index
+     *
      * @param imbricatedIndex imbrication of the output, -1 for no imbrication
-     * @param outputName name of output entry
-     * @param cl class of output
+     * @param outputName      name of output entry
+     * @param cl              class of output
      */
-    protected void addImbricatedOutputEntry(int imbricatedIndex, String outputName, Class cl)
+    public void addOutputImbricatedEntry(int imbricatedIndex, String outputName, Class cl)
     {
-        addImbricatedOutputEntry(imbricatedIndex, getNumberOfOutputs(), outputName, cl);
+        addOutputImbricatedEntry(imbricatedIndex, getNumberOfOutputs(), outputName, cl);
     }
 
     /**
      * Create an imbricated output entry at the given index
+     *
      * @param imbricatedIndex imbrication of the output, -1 for no imbrication
-     * @param outputIndex output index
-     * @param outputName name of output entry
-     * @param cl class of output
+     * @param outputIndex     output index
+     * @param outputName      name of output entry
+     * @param cl              class of output
      */
-    protected void addImbricatedOutputEntry(int imbricatedIndex, int outputIndex, String outputName, Class cl)
+    protected void addOutputImbricatedEntry(int imbricatedIndex, int outputIndex, String outputName, Class cl)
     {
         super.addOutputEntry(outputIndex, outputName, cl);
 
@@ -105,13 +106,13 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
     }
 
     @Override
-    protected void addOutputEntry(int outputIndex, String outputName, Class cl)
+    public void addOutputEntry(int outputIndex, String outputName, Class cl)
     {
-        addImbricatedOutputEntry(-1, outputIndex, outputName, cl);
+        addOutputImbricatedEntry(-1, outputIndex, outputName, cl);
     }
 
     @Override
-    protected void removeOutputEntry(int outputIndex)
+    public void removeOutputEntry(int outputIndex)
     {
         super.removeOutputEntry(outputIndex);
 
@@ -120,14 +121,22 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
 
     /**
      * Create collection of addresses containing parameters addresses of function
+     * For n imbrication, they are n + 1 addresses, the first n addresses are for start of imbrication and the last
+     * address for the end of last imbrication
+     *
      * @param addressesMap map to get input memory stack
+     *
      * @return created parameters addresses of function
      */
-    protected FuncImbricationDataAddresses createFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap, FuncAddress[] imbricatedStartFuncAddresses)
+    protected FuncImbricationDataAddresses createFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap,
+                                                                   FuncAddress[] imbricatedStartFuncAddresses)
     {
-        FuncImbricationDataAddresses funcDataAddresses = new FuncImbricationDataAddresses(getNumberOfInputs(), getNumberOfParallelsImbrications());
+        FuncImbricationDataAddresses funcDataAddresses = new FuncImbricationDataAddresses(getNumberOfInputs(),
+                                                                                          getNumberOfParallelsImbrications());
+
         initFuncDataAddresses(addressesMap, funcDataAddresses);
         funcDataAddresses.setImbricationsAddresses(imbricatedStartFuncAddresses);
+
         return funcDataAddresses;
     }
 
@@ -167,7 +176,8 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
         calledFunctions.add(getFunc());
 
         // Create link parameters
-        FuncImbricationDataAddresses funcParameters = createFuncDataAddresses(addressesMap, imbricatedStartFuncAddresses);
+        FuncImbricationDataAddresses funcParameters = createFuncDataAddresses(addressesMap,
+                                                                              imbricatedStartFuncAddresses);
 
         // Add link parameters to calledFunctionParameters
         calledFunctionsParameters.add(funcParameters);

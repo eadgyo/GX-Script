@@ -114,6 +114,38 @@ public abstract class DefaultEntity implements Entity
     }
 
     @Override
+    public int getNumberOfUsedInputs()
+    {
+        int usedInput = 0;
+
+        for (int inputIndex = 0; inputIndex < getNumberOfOutputs(); inputIndex++)
+        {
+            // If the input is used
+            if (getInputEntity(inputIndex) != null)
+            {
+                usedInput++;
+            }
+        }
+
+        return usedInput;
+    }
+
+    @Override
+    public boolean hasUsedInputs()
+    {
+        for (int inputIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
+        {
+            // If the input is used
+            if (getInputEntity(inputIndex) != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public Entity getInputEntity(int index)
     {
         return inputEntities.get(index);
@@ -263,17 +295,17 @@ public abstract class DefaultEntity implements Entity
         return indicesVariableInputs.contains(inputIndex);
     }
 
-    protected void addInputEntry(String inputName, Class cl)
+    public void addInputEntry(String inputName, Class cl)
     {
         addInputEntry(getNumberOfInputs(), inputName, cl);
     }
 
-    protected void addInputEntryNotNeeded(String inputName, Class cl)
+    public void addInputEntryNotNeeded(String inputName, Class cl)
     {
         addInputEntryNotNeeded(getNumberOfInputs(), inputName, cl);
     }
 
-    protected void addInputEntry(int inputIndex, String inputName, Class cl)
+    public void addInputEntry(int inputIndex, String inputName, Class cl)
     {
         addInputEntryNotNeeded(inputIndex, inputName, cl);
         indicesNeededInputs.add(inputIndex);
@@ -297,7 +329,7 @@ public abstract class DefaultEntity implements Entity
      * @param inputName name of input entry
      * @param cl class of the input, void if it's just a link to another entity
      */
-    protected void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl)
+    public void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl)
     {
         // If add between two existing input entries
         if (inputIndex != getNumberOfInputs())
@@ -320,7 +352,7 @@ public abstract class DefaultEntity implements Entity
      * Remove one input entry
      * @param inputIndex input index
      */
-    protected void removeInputEntry(int inputIndex)
+    public void removeInputEntry(int inputIndex)
     {
         // Remove linked to entry entities
         unlinkAsInput(inputIndex);
@@ -400,7 +432,7 @@ public abstract class DefaultEntity implements Entity
         }
     }
 
-    protected void addOutputEntry(String outputName, Class cl)
+    public void addOutputEntry(String outputName, Class cl)
     {
         addOutputEntry(getNumberOfOutputs(), outputName, cl);
     }
@@ -411,7 +443,7 @@ public abstract class DefaultEntity implements Entity
      * @param outputName name of output entry
      * @param cl class of the output, void if it's just a link to another entity
      */
-    protected void addOutputEntry(int outputIndex, String outputName, Class cl)
+    public void addOutputEntry(int outputIndex, String outputName, Class cl)
     {
         // If add between two existing outputs entries
         if (outputIndex != getNumberOfOutputs())
@@ -434,7 +466,7 @@ public abstract class DefaultEntity implements Entity
      * Remove one output entry
      * @param outputIndex output index
      */
-    protected void removeOutputEntry(int outputIndex)
+    public void removeOutputEntry(int outputIndex)
     {
         // Remove linked to entry entities
         Collection<Entity> removedOutputEntities = getOutputEntities(outputIndex);

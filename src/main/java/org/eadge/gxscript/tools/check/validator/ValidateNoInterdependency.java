@@ -2,7 +2,6 @@ package org.eadge.gxscript.tools.check.validator;
 
 import org.eadge.gxscript.data.entity.Entity;
 import org.eadge.gxscript.data.script.RawGXScript;
-import org.eadge.gxscript.tools.Tools;
 
 import java.util.*;
 
@@ -65,11 +64,11 @@ public class ValidateNoInterdependency extends ValidatorModel
         }
     }
 
-    private boolean areAllTraitedEntities(Collection<Entity> entities, Set<Entity> treatedEntities)
+    private boolean areAllTreatedEntities(Collection<Entity> entities, Set<Entity> treatedEntities)
     {
         for (Entity inputEntity : entities)
         {
-            if (!treatedEntities.contains(inputEntity))
+            if (inputEntity != null && !treatedEntities.contains(inputEntity))
             {
                 return false;
             }
@@ -77,7 +76,7 @@ public class ValidateNoInterdependency extends ValidatorModel
         return true;
     }
 
-    private void addNextTraitedElements(Entity testedEntity,
+    private void addNextTreatedElements(Entity testedEntity,
                                         Set<Entity> onLaneEntities,
                                         Deque<EntityAndOnLane> stack,
                                         Set<Entity> treatedEntities)
@@ -85,7 +84,7 @@ public class ValidateNoInterdependency extends ValidatorModel
         Collection<Entity> inputEntities = testedEntity.getAllInputEntities();
 
         // If all of the blocks input are treated
-        if (areAllTraitedEntities(inputEntities, treatedEntities))
+        if (areAllTreatedEntities(inputEntities, treatedEntities))
         {
             // Add not treated entities to the stack of next treated entities and clone his on lane entities
             EntityAndOnLane insertedEntityAndLane = new EntityAndOnLane(testedEntity, new HashSet<>(onLaneEntities));
@@ -103,7 +102,7 @@ public class ValidateNoInterdependency extends ValidatorModel
         Set<Entity> treatedEntities = new HashSet<>();
 
         // Get all starting entities
-        Collection<Entity> startingEntities = Tools.getStartingEntities(entities);
+        Collection<Entity> startingEntities = rawGXScript.getStartingEntities();
 
         // Starting entities are added to stack of next treated entities
         // They are linked to a on lane set which contains all entities on lane
@@ -113,6 +112,9 @@ public class ValidateNoInterdependency extends ValidatorModel
         {
             // Create entity and his on lane entities
             EntityAndOnLane notTreatedElement = new EntityAndOnLane(startingEntity);
+
+            // Add it to stack
+            stack.add(notTreatedElement);
         }
 
         // While there are still not treated entities in stack
@@ -145,10 +147,10 @@ public class ValidateNoInterdependency extends ValidatorModel
 
             for (Entity outputEntity : outputEntities)
             {
-                addNextTraitedElements(outputEntity, firstElement.getOnLaneEntities(), stack, treatedEntities);
+                addNextTreatedElements(outputEntity, firstElement.getOnLaneEntities(), stack, treatedEntities);
             }
         }
 
-        return true;
+        return treatedEntities.size() == rawGXScript.numberOfEntities();
     }
 }

@@ -167,7 +167,7 @@ public class ImbricationNodeC extends ImbricationNode
      */
     private FuncAddress[] getFuncAddresses(ArrayList<ImbricationNodeC> imbricationNodeCs)
     {
-        FuncAddress funcsAddresses[] = new FuncAddress[imbricationNodeCs.size()];
+        FuncAddress funcsAddresses[] = new FuncAddress[imbricationNodeCs.size() + 1];
 
         for (int i = 0; i < imbricationNodeCs.size(); i++)
         {
@@ -179,6 +179,9 @@ public class ImbricationNodeC extends ImbricationNode
             // Alloc functions
             allocFuncs(imbricationNodeC.getCalledFunctions().size());
         }
+
+        // Save the last address end of imbrication
+        funcsAddresses[imbricationNodeCs.size()] = currentFuncAddress.clone();
 
         return funcsAddresses;
     }

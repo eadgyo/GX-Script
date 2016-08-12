@@ -26,6 +26,8 @@ public class PrintEntity extends DefaultEntity
 
     public PrintEntity()
     {
+        super("Print");
+
         // Add source input
         addInputEntryNotNeeded(SOURCE_INPUT_INDEX, "Source", Object.class);
 

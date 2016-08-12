@@ -9,6 +9,8 @@ import java.util.Set;
 
 /**
  * Created by eadgyo on 03/08/16.
+ *
+ * Holds all entities in a GXScript
  */
 public class RawGXScript
 {
@@ -20,6 +22,8 @@ public class RawGXScript
     }
 
     public void addEntity(Entity entity) { entities.add(entity); }
+
+    public void removeEntity(Entity entity) { entities.remove(entity); }
 
     public Collection<Entity> getEntities()
     {
@@ -34,6 +38,11 @@ public class RawGXScript
     public Collection<Entity> getStartingEntities()
     {
         return startingEntities;
+    }
+
+    public int numberOfEntities()
+    {
+        return entities.size();
     }
 
     public void updateStartingEntities()

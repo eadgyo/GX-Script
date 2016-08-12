@@ -334,4 +334,16 @@ public interface Entity
      * @return true if outputs are valid, false otherwise
      */
     public boolean hasValidOutput();
+
+    /**
+     * Get the number of used inputs
+     * @return number of used inputs
+     */
+    public int getNumberOfUsedInputs();
+
+    /**
+     * Check if one or more inputs are used
+     * @return true if one or more inputs are used, false otherwise
+     */
+    public boolean hasUsedInputs();
 }

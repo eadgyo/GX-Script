@@ -9,6 +9,8 @@ import java.util.Set;
 
 /**
  * Created by eadgyo on 03/08/16.
+ *
+ * Validator model
  */
 public abstract class ValidatorModel
 {

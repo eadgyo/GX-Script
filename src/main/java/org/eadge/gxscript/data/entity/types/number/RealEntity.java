@@ -16,6 +16,7 @@ public class RealEntity extends DefaultVariableEntity
     public final static int NEXT_INPUT_INDEX = 1;
 
     public final static int REAL_OUTPUT_INDEX = 0;
+    public final static int CONTINUE_OUTPUT_INDEX = 1;
 
     /**
      * Float holding default value
@@ -40,6 +41,8 @@ public class RealEntity extends DefaultVariableEntity
 
         // Output
         addOutputEntry(REAL_OUTPUT_INDEX, "Variable", Float.class);
+
+        addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
     }
 
     @Override

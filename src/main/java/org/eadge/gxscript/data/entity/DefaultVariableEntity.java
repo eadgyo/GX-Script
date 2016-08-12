@@ -65,7 +65,7 @@ public abstract class DefaultVariableEntity extends DefaultEntity implements Var
     }
 
     @Override
-    protected void addOutputEntry(int outputIndex, String outputName, Class cl)
+    public void addOutputEntry(int outputIndex, String outputName, Class cl)
     {
         super.addOutputEntry(outputIndex, outputName, cl);
 
@@ -90,7 +90,7 @@ public abstract class DefaultVariableEntity extends DefaultEntity implements Var
     }
 
     @Override
-    protected void removeOutputEntry(int outputIndex)
+    public void removeOutputEntry(int outputIndex)
     {
         indicesModifiableOutputs.remove(outputIndex);
         super.removeOutputEntry(outputIndex);

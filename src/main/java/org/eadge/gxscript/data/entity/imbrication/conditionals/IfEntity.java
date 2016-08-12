@@ -26,10 +26,10 @@ public class IfEntity extends DefaultStartImbricationEntity
         addInputEntry(TEST_INPUT_INDEX, "Test", Boolean.class);
 
         // Success
-        addImbricatedOutputEntry(SUCCESS_OUTPUT_INDEX, 0, "Success", Void.class);
+        addOutputImbricatedEntry(0, SUCCESS_OUTPUT_INDEX, "Success", Void.class);
 
         // Fail
-        addImbricatedOutputEntry(FAIL_OUTPUT_INDEX, 1, "Fail", Void.class);
+        addOutputImbricatedEntry(1, FAIL_OUTPUT_INDEX, "Fail", Void.class);
 
         // Continue
         addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
@@ -56,6 +56,9 @@ public class IfEntity extends DefaultStartImbricationEntity
                 FuncAddress failAddress = funcParameters.getImbricationAddress(FAIL_OUTPUT_INDEX);
                 FuncAddress continueAddress = funcParameters.getImbricationAddress(CONTINUE_OUTPUT_INDEX);
 
+                // Save current state of memory
+                program.pushMemoryLevel();
+
                 if (test)
                 {
                     // Success
@@ -66,6 +69,9 @@ public class IfEntity extends DefaultStartImbricationEntity
                     // Fail
                     program.runFromAndUntil(failAddress, continueAddress);
                 }
+
+                // Remove added memory
+                program.popMemoryLevel();
 
                 program.setCurrentFuncAddress(continueAddress);
             }

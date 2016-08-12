@@ -84,7 +84,7 @@ public class ImbricationNode
                                            Set<Entity> inImbricationEntities)
     {
         // Create imbrication
-        ImbricationNode child = new ImbricationNode(imbricationIndex, this.startImbricationEntity, inImbricationEntities);
+        ImbricationNode child = new ImbricationNode(imbricationIndex, startImbricationEntity, inImbricationEntities);
 
         // Push imbrication
         addChild(child);
@@ -146,7 +146,7 @@ public class ImbricationNode
         for (Entity outputEntity : outputEntities)
         {
             // If all inputs have been treated
-            if (hasAllInputsTreated(entity))
+            if (hasAllInputsTreated(outputEntity))
             {
                 addToBeTreated(outputEntity);
             }
@@ -195,7 +195,7 @@ public class ImbricationNode
         removeChild(child);
 
         // All elements are removed from the parents nodes, they doesn't exist after the end of imbrication
-        child.removeElementsRecursive(child.getAllElements());
+        removeElementsRecursive(child.getAllElements());
     }
 
     /**
@@ -386,10 +386,27 @@ public class ImbricationNode
      */
     public Entity popToBeTreated()
     {
-        Entity next = toBeTreatedEntities.iterator().next();
-        removeToBeTreated(next);
+        if (toBeTreatedEntities.size() != 0)
+        {
+            // Remove the first element
+            Entity next = toBeTreatedEntities.iterator().next();
+            removeToBeTreated(next);
 
-        return next;
+            return next;
+        }
+        else
+        {
+            // Search in children
+            for (ImbricationNode child : children)
+            {
+                Entity entity = child.popToBeTreated();
+
+                if (entity != null)
+                    return entity;
+            }
+        }
+
+        return null;
     }
 
     public void removeToBeTreated(Entity entity)
@@ -468,7 +485,21 @@ public class ImbricationNode
      */
     public boolean isToBeTreatedEmpty()
     {
-        return toBeTreatedEntities.size() == 0;
+        if (toBeTreatedEntities.size() == 0)
+        {
+            // Search in children
+            for (ImbricationNode child : children)
+            {
+                if (!child.isToBeTreatedEmpty())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public void addChild(ImbricationNode child)
@@ -502,7 +533,6 @@ public class ImbricationNode
         this.children.remove(child);
         child.setParent(null);
     }
-
 
     /**
      * Get the first entity not in lower or equal level of imbrication, or null if all of them are in lower or equal
@@ -628,5 +658,17 @@ public class ImbricationNode
         // Add all imbricated output entities which have all their input block treated in lower or equal
         // imbrication level.
         pushedImbrication.addImbricatedOutputsWithInputsTreated(index);
+    }
+
+    /**
+     * Get all not treated elements
+     * @return all not treated elements
+     */
+    public Collection<? extends Entity> getAllNotTreatedElements()
+    {
+        Set<Entity> allNotTreatedElements = new HashSet<>(this.allElements);
+        allNotTreatedElements.removeAll(this.alreadyTreatedEntities);
+
+        return allNotTreatedElements;
     }
 }
