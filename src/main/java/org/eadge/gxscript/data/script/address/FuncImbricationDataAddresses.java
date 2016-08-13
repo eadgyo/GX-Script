@@ -11,7 +11,7 @@ public class FuncImbricationDataAddresses extends FuncDataAddresses
     public FuncImbricationDataAddresses(int numberOfInputs, int numberOfParallelsImbrications)
     {
         super(numberOfInputs);
-        startImbricationsFuncAddresses = new FuncAddress[numberOfParallelsImbrications];
+        startImbricationsFuncAddresses = new FuncAddress[numberOfParallelsImbrications + 1];
     }
 
     public int numberOfImbrications()
@@ -30,6 +30,14 @@ public class FuncImbricationDataAddresses extends FuncDataAddresses
     }
 
     public void addOffsetFuncs(Address offset)
+    {
+        for (FuncAddress startImbricationsFuncAddress : startImbricationsFuncAddresses)
+        {
+            startImbricationsFuncAddress.addOffset(offset);
+        }
+    }
+
+    public void addOffsetFuncs(int offset)
     {
         for (FuncAddress startImbricationsFuncAddress : startImbricationsFuncAddresses)
         {

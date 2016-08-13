@@ -41,4 +41,13 @@ public class OutputAddresses
             address.addOffset(offset);
         }
     }
+
+    public void addOffset(int offset)
+    {
+        Collection<DataAddress> values = outputAddresses.values();
+        for (Address address : values)
+        {
+            address.addOffset(offset);
+        }
+    }
 }

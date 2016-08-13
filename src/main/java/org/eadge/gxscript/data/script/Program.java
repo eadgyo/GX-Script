@@ -4,7 +4,6 @@ import org.eadge.gxscript.data.script.address.DataAddress;
 import org.eadge.gxscript.data.script.address.FuncAddress;
 import org.eadge.gxscript.data.script.address.FuncDataAddresses;
 import org.eadge.gxscript.data.script.address.FuncImbricationDataAddresses;
-import org.eadge.gxscript.data.exception.HasPassedTargetAddressException;
 
 /**
  * Created by eadgyo on 11/08/16.
@@ -304,7 +303,7 @@ public class Program
 
         if (hasPassedAddress(targetAddress))
         {
-            throw new HasPassedTargetAddressException();
+            setCurrentFuncAddress(targetAddress);
         }
     }
 }

@@ -56,10 +56,10 @@ public class GXCompiler
         root.addAllToBeTreated(startingEntities);
 
         // While all entities have not been processed
-        while (root.hasFinishedProcess())
+        while (!root.hasFinishedProcess())
         {
             // While to be treated stack is not empty
-            while (root.isToBeTreatedEmpty())
+            while (!root.isToBeTreatedEmpty())
             {
                 // Get the first element
                 Entity beingTreated = root.popToBeTreated();

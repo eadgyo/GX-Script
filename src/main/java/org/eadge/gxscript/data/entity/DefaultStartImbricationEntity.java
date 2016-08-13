@@ -131,7 +131,7 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
     protected FuncImbricationDataAddresses createFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap,
                                                                    FuncAddress[] imbricatedStartFuncAddresses)
     {
-        FuncImbricationDataAddresses funcDataAddresses = new FuncImbricationDataAddresses(getNumberOfInputs(),
+        FuncImbricationDataAddresses funcDataAddresses = new FuncImbricationDataAddresses(getNumberOfUsedInputs(),
                                                                                           getNumberOfParallelsImbrications());
 
         initFuncDataAddresses(addressesMap, funcDataAddresses);
@@ -152,7 +152,7 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
             if (getOutputImbrication(outputIndex) == imbricationOutputIndex)
             {
                 // If the output is an output variable
-                if (isVariableInput(outputIndex))
+                if (isVariableOutput(outputIndex))
                 {
                     // Save address of output
                     outputAddresses.addOutputAddress(outputIndex, currentDataAddress.clone());
@@ -167,15 +167,15 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
     }
 
     @Override
-    public void addFuncsAndSaveOutputs(Map<Entity, OutputAddresses> addressesMap,
-                                       FuncAddress[] imbricatedStartFuncAddresses,
-                                       ArrayList<Func> calledFunctions,
-                                       ArrayList<FuncDataAddresses> calledFunctionsParameters)
+    public void pushStartImbricationCode(Map<Entity, OutputAddresses> addressesMap,
+                                         FuncAddress[] imbricatedStartFuncAddresses,
+                                         ArrayList<Func> calledFunctions,
+                                         ArrayList<FuncDataAddresses> calledFunctionsParameters)
     {
         // Add the func
         calledFunctions.add(getFunc());
 
-        // Create link parameters
+        // Create function parameters addresses
         FuncImbricationDataAddresses funcParameters = createFuncDataAddresses(addressesMap,
                                                                               imbricatedStartFuncAddresses);
 

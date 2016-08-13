@@ -168,8 +168,13 @@ public class ImbricationNode
 
         StartImbricationEntity startImbricationEntity = child.getStartImbricationEntity();
         
-        // If all parallels imbrications have been treated
-        if (child.getImbricationOutputIndex() == startImbricationEntity.getNumberOfParallelsImbrications() - 1)
+        // If all parallels imbrications have NOT been treated
+        if (child.getImbricationOutputIndex() != startImbricationEntity.getNumberOfParallelsImbrications() - 1)
+        {
+            // Start next parallel imbrication
+            startImbricationNode(startImbricationEntity, child.getImbricationOutputIndex() + 1);
+        }
+        else
         {
             // Add this start imbrication entity as treated
             addAlreadyTreated(startImbricationEntity);
@@ -177,11 +182,6 @@ public class ImbricationNode
             // Add all NOT imbricated output entities of starting imbrication entiy which have all their
             // input block treated in lower or equal imbrication level
             addNotImbricatedOutputsWithInputsTreated(startImbricationEntity);
-        }
-        else
-        {
-            // Start next parallel imbrication
-            startImbricationNode(startImbricationEntity, child.getImbricationOutputIndex() + 1);
         }
     }
 
@@ -228,7 +228,7 @@ public class ImbricationNode
         }
     }
 
-    public void treatStartImbricationEntity(StartImbricationEntity entity)
+    public void treatStartImbricationEntity(StartImbricationEntity startImbricationEntity)
     {
         // Add this start imbrication entity as treated
         addAlreadyTreated(startImbricationEntity);

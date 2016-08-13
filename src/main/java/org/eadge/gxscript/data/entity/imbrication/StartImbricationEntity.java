@@ -76,8 +76,8 @@ public interface StartImbricationEntity extends Entity
      * @param calledFunctions              list of called function
      * @param calledFunctionsParameters    list of used called function data
      */
-    void addFuncsAndSaveOutputs(Map<Entity, OutputAddresses> addressesMap,
-                                FuncAddress[] imbricatedStartFuncAddresses,
-                                ArrayList<Func> calledFunctions,
-                                ArrayList<FuncDataAddresses> calledFunctionsParameters);
+    void pushStartImbricationCode(Map<Entity, OutputAddresses> addressesMap,
+                                  FuncAddress[] imbricatedStartFuncAddresses,
+                                  ArrayList<Func> calledFunctions,
+                                  ArrayList<FuncDataAddresses> calledFunctionsParameters);
 }

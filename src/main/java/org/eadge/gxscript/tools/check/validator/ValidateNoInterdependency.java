@@ -78,7 +78,7 @@ public class ValidateNoInterdependency extends ValidatorModel
 
     private void addNextTreatedElements(Entity testedEntity,
                                         Set<Entity> onLaneEntities,
-                                        Deque<EntityAndOnLane> stack,
+                                        Stack<EntityAndOnLane> stack,
                                         Set<Entity> treatedEntities)
     {
         Collection<Entity> inputEntities = testedEntity.getAllInputEntities();
@@ -106,7 +106,7 @@ public class ValidateNoInterdependency extends ValidatorModel
 
         // Starting entities are added to stack of next treated entities
         // They are linked to a on lane set which contains all entities on lane
-        Deque<EntityAndOnLane> stack = new ArrayDeque<>();
+        Stack<EntityAndOnLane> stack = new Stack<>();
 
         for (Entity startingEntity : startingEntities)
         {

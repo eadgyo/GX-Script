@@ -118,7 +118,7 @@ public abstract class DefaultEntity implements Entity
     {
         int usedInput = 0;
 
-        for (int inputIndex = 0; inputIndex < getNumberOfOutputs(); inputIndex++)
+        for (int inputIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
             // If the input is used
             if (getInputEntity(inputIndex) != null)
@@ -571,23 +571,23 @@ public abstract class DefaultEntity implements Entity
      */
     protected FuncDataAddresses createFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap)
     {
-        FuncDataAddresses funcDataAddresses = new FuncDataAddresses(getNumberOfInputs());
+        FuncDataAddresses funcDataAddresses = new FuncDataAddresses(getNumberOfUsedInputs());
         initFuncDataAddresses(addressesMap, funcDataAddresses);
         return funcDataAddresses;
     }
 
     /**
-     * Fill parameters addresses of funcion
+     * Fill parameters Data addresses of function
      * @param addressesMap map to get input memory stack
-     * @param funcDataAddresses filled parameters addresses of function
+     * @param funcDataAddresses filled Data parameters addresses for function call
      */
     protected void initFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap, FuncDataAddresses funcDataAddresses)
     {
         // For each variable input
         for (int inputIndex = 0, variableIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
-            // If the input is taking variable
-            if (isVariableInput(inputIndex))
+            // If the input is taking variable and is used
+            if (isVariableInput(inputIndex) && isUsedInput(inputIndex))
             {
                 // Get variable address
                 Entity inputEntity = getInputEntity(inputIndex);
@@ -606,6 +606,10 @@ public abstract class DefaultEntity implements Entity
         }
     }
 
+    public boolean isUsedInput(int inputIndex)
+    {
+        return getInputEntity(inputIndex) != null;
+    }
 
     /**
      * Create a link between this entity considered as output and one other input entity
@@ -636,9 +640,9 @@ public abstract class DefaultEntity implements Entity
      * @param calledFunctionAddresses list of used called function data
      * @param addressesMap                      map to link entity to corresponding entity output addresses
      */
-    public void addFuncsAndSaveOutputs(ArrayList<Func> calledFunctions,
-                                       ArrayList<FuncDataAddresses> calledFunctionAddresses,
-                                       Map<Entity, OutputAddresses> addressesMap)
+    public void pushEntityCode(ArrayList<Func> calledFunctions,
+                               ArrayList<FuncDataAddresses> calledFunctionAddresses,
+                               Map<Entity, OutputAddresses> addressesMap)
     {
         // Get func and add it to called functions
         Func func = getFunc();
@@ -840,5 +844,13 @@ public abstract class DefaultEntity implements Entity
             }
         }
         return true;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Entity{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

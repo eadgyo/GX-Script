@@ -294,9 +294,9 @@ public interface Entity
      * @param calledFunctionAddresses list of used called function data
      * @param addressesMap                      map to link entity to corresponding entity output addresses
      */
-    void addFuncsAndSaveOutputs(ArrayList<Func> calledFunctions,
-                                       ArrayList<FuncDataAddresses> calledFunctionAddresses,
-                                       Map<Entity, OutputAddresses> addressesMap);
+    void pushEntityCode(ArrayList<Func> calledFunctions,
+                        ArrayList<FuncDataAddresses> calledFunctionAddresses,
+                        Map<Entity, OutputAddresses> addressesMap);
 
     /**
      * Create outputs and alloc outputs in stack
@@ -340,6 +340,13 @@ public interface Entity
      * @return number of used inputs
      */
     public int getNumberOfUsedInputs();
+
+    /**
+     * Check if an input entry is used
+     * @param inputIndex index input
+     * @return true if the input is used, fals otherwise
+     */
+    public boolean isUsedInput(int inputIndex);
 
     /**
      * Check if one or more inputs are used

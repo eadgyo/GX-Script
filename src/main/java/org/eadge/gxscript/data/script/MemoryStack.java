@@ -2,8 +2,8 @@ package org.eadge.gxscript.data.script;
 
 import org.eadge.gxscript.data.script.address.DataAddress;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by eadgyo on 11/08/16.
@@ -15,7 +15,7 @@ public class MemoryStack extends ArrayList<Object>
     /**
      * Stack of saved level of memory
      */
-    private ArrayDeque<Integer> memoryLevels = new ArrayDeque<>();
+    private Stack<Integer> memoryLevels = new Stack<>();
 
     /**
      * Get the object at the data address
@@ -73,7 +73,7 @@ public class MemoryStack extends ArrayList<Object>
         }
         else
         {
-            popTo(memoryLevels.getLast());
+            popTo(memoryLevels.pop());
         }
     }
 }

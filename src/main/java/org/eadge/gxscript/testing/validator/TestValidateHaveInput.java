@@ -39,6 +39,6 @@ public class TestValidateHaveInput
         scriptIf.addEntity(ifEntity);
 
         ValidatorModel validator = new ValidateEntityHaveInput();
-        return validator.validate(scriptIf);
+        return !validator.validate(scriptIf);
     }
 }

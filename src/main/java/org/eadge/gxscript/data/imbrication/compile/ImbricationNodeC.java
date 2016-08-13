@@ -37,11 +37,6 @@ public class ImbricationNodeC extends ImbricationNode
     private DataAddress currentDataAddress = new DataAddress(0);
 
     /**
-     * Current top stack funcs addresses
-     */
-    private FuncAddress currentFuncAddress = new FuncAddress(0);
-
-    /**
      * Save imbrication node to make imbrication code continuous (call and stack)
      */
     private Map<StartImbricationEntity, ArrayList<ImbricationNodeC>> savedParallelsImbricationsNodes = new HashMap<>();
@@ -74,7 +69,7 @@ public class ImbricationNodeC extends ImbricationNode
                                             Set<Entity> inImbricationEntities)
     {
         // Create imbrication
-        ImbricationNodeC child = new ImbricationNodeC(imbricationIndex, this.startImbricationEntity, inImbricationEntities);
+        ImbricationNodeC child = new ImbricationNodeC(imbricationIndex, startImbricationEntity, inImbricationEntities);
 
         // Push imbrication
         addChild(child);
@@ -90,6 +85,7 @@ public class ImbricationNodeC extends ImbricationNode
 
     /**
      * Save imbrication node to make parallels imbrication node continuous
+     *
      * @param child saved imbrication node
      */
     private void saveImbricationNode(ImbricationNodeC child)
@@ -126,15 +122,24 @@ public class ImbricationNodeC extends ImbricationNode
         ArrayList<ImbricationNodeC> imbricationNodeCs = savedParallelsImbricationsNodes.remove(startImbricationEntity);
         assert (imbricationNodeCs != null);
 
-        // Push all saved code
-        pushCode(imbricationNodeCs);
-
+        // --> Start Entity imbrication
         // Get imbricated start function
         FuncAddress[] funcAddresses = getFuncAddresses(imbricationNodeCs);
 
-        // Add funcs and funcsData of start imbrication entity
-        startImbricationEntity.addFuncsAndSaveOutputs(outputAddressesMap, funcAddresses, calledFunctions, calledFunctionsParameters);
+        // Add code (call functions and parameters) of start imbrication entity
+        startImbricationEntity.pushStartImbricationCode(outputAddressesMap,
+                                                        funcAddresses,
+                                                        calledFunctions,
+                                                        calledFunctionsParameters);
 
+        // Update the address taking into account added functions
+        updateFuncsAddresses(funcAddresses);
+
+        // --> Imbricated entities
+        // Push all saved code of all imbricated entities
+        pushCode(imbricationNodeCs);
+
+        // --> After imbrication entities
         // Create func imbricated entities
         treatNotImbricatedOutputs(startImbricationEntity);
     }
@@ -147,37 +152,42 @@ public class ImbricationNodeC extends ImbricationNode
 
         StartImbricationEntity startImbricationEntity = child.getStartImbricationEntity();
 
-        // If all parallels imbrications have been treated
-        if (child.getImbricationOutputIndex() == startImbricationEntity.getNumberOfParallelsImbrications() - 1)
-        {
-            // End start imbrication entity
-            treatStartImbricationEntity(startImbricationEntity);
-        }
-        else
+        // If all parallels imbrications have NOT been treated
+        if (child.getImbricationOutputIndex() != startImbricationEntity.getNumberOfParallelsImbrications() - 1)
         {
             // Start next parallel imbrication
             startImbricationNode(startImbricationEntity, child.getImbricationOutputIndex() + 1);
+        }
+        else
+        {
+            // End start imbrication entity
+            treatStartImbricationEntity(startImbricationEntity);
         }
     }
 
     /**
      * Get start imbrications nodes func addresses
+     *
      * @param imbricationNodeCs collection of imbrications nodes
+     *
      * @return address of imbrication
      */
     private FuncAddress[] getFuncAddresses(ArrayList<ImbricationNodeC> imbricationNodeCs)
     {
         FuncAddress funcsAddresses[] = new FuncAddress[imbricationNodeCs.size() + 1];
 
+        // Create func address to estimate imbrications start and end func addresses
+        FuncAddress currentFuncAddress = new FuncAddress(0);
+
         for (int i = 0; i < imbricationNodeCs.size(); i++)
         {
-            ImbricationNodeC imbricationNodeC =  imbricationNodeCs.get(i);
+            ImbricationNodeC imbricationNodeC = imbricationNodeCs.get(i);
 
             // Save the funcs address
             funcsAddresses[i] = currentFuncAddress.clone();
 
             // Alloc functions
-            allocFuncs(imbricationNodeC.getCalledFunctions().size());
+            currentFuncAddress.addOffset(imbricationNodeC.getCalledFunctions().size());
         }
 
         // Save the last address end of imbrication
@@ -187,17 +197,8 @@ public class ImbricationNodeC extends ImbricationNode
     }
 
     /**
-     * Alloc functions
-     * @param sizeOfAlloc number of allocated functions
-     */
-    private void allocFuncs(int sizeOfAlloc)
-    {
-        // Alloc a new func address
-        currentFuncAddress.addOffset(sizeOfAlloc);
-    }
-
-    /**
      * Remove parallels saved imbrications nodes, and merge code with this level of imbrication
+     *
      * @param imbricationNodeCs used collection of imbrication with code
      */
     private void pushCode(ArrayList<ImbricationNodeC> imbricationNodeCs)
@@ -212,25 +213,28 @@ public class ImbricationNodeC extends ImbricationNode
 
     /**
      * Push code of this imbrication node at this level
+     *
      * @param imbricationNodeC used imbrication node
      */
     private void pushCode(ImbricationNodeC imbricationNodeC)
     {
-        // Push called func
-        calledFunctions.addAll(imbricationNodeC.getCalledFunctions());
-
-        // Push corresponding func parameters
-        calledFunctionsParameters.addAll(imbricationNodeC.getCalledFunctionsParameters());
+        // Update before inserting in called functions
+        // Update functions addresses
+        updateFuncsAddresses(imbricationNodeC.getCalledFunctionsParameters());
 
         // Update memory addresses
         updateMemoryAddresses(imbricationNodeC.getAllOutputAddresses());
 
-        // Update functions addresses
-        updateFuncsAddresses(imbricationNodeC.getCalledFunctionsParameters());
+        // Push corresponding func parameters
+        calledFunctionsParameters.addAll(imbricationNodeC.getCalledFunctionsParameters());
+
+        // Push called func
+        calledFunctions.addAll(imbricationNodeC.getCalledFunctions());
     }
 
     /**
      * Update addresses location of data with this level of imbrication
+     *
      * @param allOutputAddresses updated data addresses
      */
     private void updateMemoryAddresses(Collection<OutputAddresses> allOutputAddresses)
@@ -241,14 +245,42 @@ public class ImbricationNodeC extends ImbricationNode
         }
     }
 
-    private void updateFuncsAddresses(Collection<FuncDataAddresses> allCalledFunctionsParameters)
+    /**
+     * Transform function addresses relative at an higher level of imbrication, to absolute addresses in this
+     * imbrication
+     * UPDATE BEFORE INSERTING CALLED FUNCTIONS PARAMETERS
+     *
+     * @param nextAddedCalledFunctionsParameters addresses of function that will be added in this level of imbrication
+     */
+    private void updateFuncsAddresses(Collection<FuncDataAddresses> nextAddedCalledFunctionsParameters)
     {
-        for (FuncDataAddresses calledFunctionsParameters : allCalledFunctionsParameters)
+        // Create current func address to update added funcs
+        FuncAddress currentFuncAddress = new FuncAddress(calledFunctions.size());
+
+        for (FuncDataAddresses calledFunctionsParameters : nextAddedCalledFunctionsParameters)
         {
             if (calledFunctionsParameters instanceof FuncImbricationDataAddresses)
             {
                 ((FuncImbricationDataAddresses) calledFunctionsParameters).addOffsetFuncs(currentFuncAddress);
             }
+        }
+    }
+
+    /**
+     * Transform function addresses relative at an higher level of imbrication, to absolute addresses in this
+     * imbrication
+     * UPDATE BEFORE INSERTING CALLED FUNCTIONS PARAMETERS
+     *
+     * @param nextAddedCalledFunctionsParameters addresses of function that will be added in this level of imbrication
+     */
+    private void updateFuncsAddresses(FuncAddress[] nextAddedCalledFunctionsParameters)
+    {
+        // Create current func address to update added funcs
+        FuncAddress currentFuncAddress = new FuncAddress(calledFunctions.size());
+
+        for (FuncAddress calledFuncAddress : nextAddedCalledFunctionsParameters)
+        {
+            calledFuncAddress.addOffset(currentFuncAddress);
         }
     }
 
@@ -260,13 +292,15 @@ public class ImbricationNodeC extends ImbricationNode
     public void treatImbricationOutputs()
     {
         // Treat imbricated index start imbrication
-        OutputAddresses outputAddresses = startImbricationEntity.createAndAllocImbricatedOutputs(imbricationOutputIndex, currentDataAddress);
+        OutputAddresses outputAddresses = startImbricationEntity.createAndAllocImbricatedOutputs(imbricationOutputIndex,
+                                                                                                 currentDataAddress);
         outputAddressesMap.put(startImbricationEntity, outputAddresses);
     }
 
     /**
      * MUST BE CALLED ON NOT IMBRICATED NODE
      * Treat NOT imbricated outputs and functions addresses of the start imbrication entity
+     *
      * @param startImbricationEntity used start imbrication entity
      */
     public void treatNotImbricatedOutputs(StartImbricationEntity startImbricationEntity)
@@ -276,7 +310,8 @@ public class ImbricationNodeC extends ImbricationNode
         outputAddressesMap.put(startImbricationEntity, outputAddresses);
 
         // Get all input necessary output entities addresses
-        Map<Entity, OutputAddresses> outputAddressesMap = getOutputAddresses(startImbricationEntity.getAllInputEntities());
+        Map<Entity, OutputAddresses> outputAddressesMap = getOutputAddresses(startImbricationEntity
+                                                                                     .getAllInputEntities());
     }
 
     public void treatEntity(Entity entity)
@@ -284,14 +319,14 @@ public class ImbricationNodeC extends ImbricationNode
         super.treatEntity(entity);
 
         // Get all input necessary output entities addresses
-        Map<Entity, OutputAddresses> outputAddressesMap = getOutputAddresses(startImbricationEntity.getAllInputEntities());
+        Map<Entity, OutputAddresses> outputAddressesMap = getOutputAddresses(entity.getAllInputEntities());
 
         // Add funcs and funcsData of entity
-        entity.addFuncsAndSaveOutputs(calledFunctions, calledFunctionsParameters, outputAddressesMap);
+        entity.pushEntityCode(calledFunctions, calledFunctionsParameters, outputAddressesMap);
 
         // Create outputs and register in  map addresses
         OutputAddresses outputAddresses = entity.createAndAllocOutputs(currentDataAddress);
-        outputAddressesMap.put(entity, outputAddresses);
+        this.outputAddressesMap.put(entity, outputAddresses);
     }
 
     public ArrayList<Func> getCalledFunctions()
@@ -315,12 +350,15 @@ public class ImbricationNodeC extends ImbricationNode
 
         for (Entity entity : entities)
         {
-            // Get the corresponding outputs
-            OutputAddresses outputAddresses = getOutputAddresses(entity);
+            if (entity != null)
+            {
+                // Get the corresponding outputs
+                OutputAddresses outputAddresses = getOutputAddresses(entity);
 
-            assert (outputAddresses != null);
+                assert (outputAddresses != null);
 
-            allOutputAddresses.put(entity, outputAddresses);
+                allOutputAddresses.put(entity, outputAddresses);
+            }
         }
 
         return allOutputAddresses;
@@ -332,12 +370,18 @@ public class ImbricationNodeC extends ImbricationNode
         OutputAddresses outputAddresses = outputAddressesMap.get(entity);
 
         // If entity not found at this level
-        if (outputAddresses == null && parent != null)
+        if (outputAddresses == null)
         {
-            // search in lower level
-            return ((ImbricationNodeC) parent).getOutputAddresses(entity);
+            if (parent != null)
+            {
+                // search in lower level
+                return ((ImbricationNodeC) parent).getOutputAddresses(entity);
+            }
+            return null;
         }
-
-        return null;
+        else
+        {
+            return outputAddresses;
+        }
     }
 }

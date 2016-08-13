@@ -84,14 +84,7 @@ public class ValidateImbrication extends ValidatorModel
                 for (ImbricationNode leaf : leaves)
                 {
                     ImbricationNode parent = leaf.getParent();
-                    if (parent != null)
-                    {
-                        // End this imbrication
-                        parent.endImbrication(leaf);
-
-                        Entity maybeInError = parent.popToBeTreated();
-                        entitiesWithError.add(maybeInError);
-                    }
+                    entitiesWithError.addAll(parent.getAllNotTreatedElements());
                 }
 
                 return false;
