@@ -1,4 +1,4 @@
-package org.eadge.gxscript.tools.check.validator;
+package org.eadge.gxscript.tools.check;
 
 import org.eadge.gxscript.data.entity.Entity;
 import org.eadge.gxscript.data.script.RawGXScript;

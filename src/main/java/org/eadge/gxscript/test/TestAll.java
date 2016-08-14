@@ -1,9 +1,8 @@
-package org.eadge.gxscript.testing.validator;
+package org.eadge.gxscript.test;
 
 import org.eadge.gxscript.data.script.CompiledGXScript;
 import org.eadge.gxscript.data.script.RawGXScript;
-import org.eadge.gxscript.testing.CreateGXScript;
-import org.eadge.gxscript.testing.PrintTest;
+import org.eadge.gxscript.tools.check.ValidatorModel;
 import org.eadge.gxscript.tools.check.validator.*;
 import org.eadge.gxscript.tools.compile.GXCompiler;
 import org.eadge.gxscript.tools.run.GXRunner;
@@ -38,7 +37,7 @@ public class TestAll
         if (!validatorInputs.validate(gxScript))
             return false;
 
-        ValidatorModel validatorLinks = new ValidatorLinks();
+        ValidatorModel validatorLinks = new ValidateLinks();
 
         if (!validatorLinks.validate(gxScript))
             return false;

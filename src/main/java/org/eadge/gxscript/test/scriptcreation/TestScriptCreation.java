@@ -1,6 +1,6 @@
-package org.eadge.gxscript.testing.scriptcreation;
+package org.eadge.gxscript.test.scriptcreation;
 
-import org.eadge.gxscript.testing.CreateGXScript;
+import org.eadge.gxscript.test.CreateGXScript;
 
 import java.io.IOException;
 

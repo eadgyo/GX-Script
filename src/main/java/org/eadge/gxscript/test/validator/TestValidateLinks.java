@@ -1,14 +1,14 @@
-package org.eadge.gxscript.testing.validator;
+package org.eadge.gxscript.test.validator;
 
 import org.eadge.gxscript.data.entity.DefaultEntity;
 import org.eadge.gxscript.data.entity.imbrication.conditionals.IfEntity;
 import org.eadge.gxscript.data.entity.types.number.RealEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.RawGXScript;
-import org.eadge.gxscript.testing.CreateGXScript;
-import org.eadge.gxscript.testing.PrintTest;
-import org.eadge.gxscript.tools.check.validator.ValidatorLinks;
-import org.eadge.gxscript.tools.check.validator.ValidatorModel;
+import org.eadge.gxscript.test.CreateGXScript;
+import org.eadge.gxscript.test.PrintTest;
+import org.eadge.gxscript.tools.check.validator.ValidateLinks;
+import org.eadge.gxscript.tools.check.ValidatorModel;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ public class TestValidateLinks
     {
         RawGXScript scriptIf = CreateGXScript.createScriptIf();
 
-        ValidatorModel validator = new ValidatorLinks();
+        ValidatorModel validator = new ValidateLinks();
         return validator.validate(scriptIf);
     }
 
@@ -50,7 +50,7 @@ public class TestValidateLinks
         // Not valid link real to boolean
         linkAsInput(IfEntity.TEST_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, ifEntity, realEntity);
 
-        ValidatorModel validator = new ValidatorLinks();
+        ValidatorModel validator = new ValidateLinks();
         return !validator.validate(script);
     }
 
@@ -68,7 +68,7 @@ public class TestValidateLinks
         // Not valid link void to real
         linkAsInput(RealEntity.REAL_OUTPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, realEntity, ifEntity);
 
-        ValidatorModel validator = new ValidatorLinks();
+        ValidatorModel validator = new ValidateLinks();
         return !validator.validate(script);
     }
 
@@ -101,7 +101,7 @@ public class TestValidateLinks
         // Not valid link void to real
         linkAsInput(IfEntity.TEST_INPUT_INDEX, 0, ifEntity, objectEntity);
 
-        ValidatorModel validator = new ValidatorLinks();
+        ValidatorModel validator = new ValidateLinks();
         return !validator.validate(script);
     }
 

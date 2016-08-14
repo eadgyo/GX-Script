@@ -1,4 +1,4 @@
-package org.eadge.gxscript.testing;
+package org.eadge.gxscript.test;
 
 import org.eadge.gxscript.data.entity.DefaultEntity;
 import org.eadge.gxscript.data.entity.ModifyingEntity;

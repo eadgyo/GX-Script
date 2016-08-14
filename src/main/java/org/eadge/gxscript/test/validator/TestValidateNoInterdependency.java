@@ -1,14 +1,14 @@
-package org.eadge.gxscript.testing.validator;
+package org.eadge.gxscript.test.validator;
 
 import org.eadge.gxscript.data.entity.displayer.PrintEntity;
 import org.eadge.gxscript.data.entity.imbrication.conditionals.IfEntity;
 import org.eadge.gxscript.data.entity.types.number.RealEntity;
 import org.eadge.gxscript.data.entity.types.number.comparison.EqualToNumberEntity;
 import org.eadge.gxscript.data.script.RawGXScript;
-import org.eadge.gxscript.testing.CreateGXScript;
-import org.eadge.gxscript.testing.PrintTest;
+import org.eadge.gxscript.test.CreateGXScript;
+import org.eadge.gxscript.test.PrintTest;
 import org.eadge.gxscript.tools.check.validator.ValidateNoInterdependency;
-import org.eadge.gxscript.tools.check.validator.ValidatorModel;
+import org.eadge.gxscript.tools.check.ValidatorModel;
 
 import java.io.IOException;
 

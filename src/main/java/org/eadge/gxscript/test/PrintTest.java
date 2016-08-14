@@ -1,4 +1,4 @@
-package org.eadge.gxscript.testing;
+package org.eadge.gxscript.test;
 
 /**
  * Created by eadgyo on 11/08/16.

@@ -1,4 +1,4 @@
-package org.eadge.gxscript.testing.validator;
+package org.eadge.gxscript.test.validator;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import java.io.IOException;
  *
  * Run all tests
  */
-public class RunAll
+public class RunAllValidators
 {
     public static void main(String[] args) throws IOException
     {
