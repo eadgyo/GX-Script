@@ -10,17 +10,21 @@ import org.eadge.gxscript.data.exception.NumberOverflowException;
 /**
  * Created by eadgyo on 11/08/16.
  *
- * Modifying real entity
+ * Modifying number entities (real and integer)
  */
-public class ModifyRealEntity extends ModifyingEntity
+public class ModifyNumberEntity extends ModifyingEntity
 {
     public final static int MODIFIED_INPUT_INDEX = 0;
     public final static int SOURCE_INPUT_INDEX = 1;
 
-    public ModifyRealEntity()
+    public final static int CONTINUE_OUTPUT_INDEX = 0;
+
+    public ModifyNumberEntity()
     {
         addInputEntry(MODIFIED_INPUT_INDEX, "Modified", Number.class);
         addInputEntry(SOURCE_INPUT_INDEX, "Set", Number.class);
+
+        addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
     }
 
     @Override
@@ -48,7 +52,7 @@ public class ModifyRealEntity extends ModifyingEntity
 
             public Number convert(Number source, Class targetClass)
             {
-                if (targetClass.isInstance(Integer.class))
+                if (targetClass.equals(Integer.class))
                 {
                     long value = source.longValue();
                     if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE)

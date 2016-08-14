@@ -1,13 +1,17 @@
 package org.eadge.gxscript.testing;
 
 import org.eadge.gxscript.data.entity.DefaultEntity;
+import org.eadge.gxscript.data.entity.ModifyingEntity;
 import org.eadge.gxscript.data.entity.displayer.PrintEntity;
 import org.eadge.gxscript.data.entity.imbrication.conditionals.IfEntity;
 import org.eadge.gxscript.data.entity.imbrication.loops.ForEntity;
+import org.eadge.gxscript.data.entity.types.number.IntEntity;
+import org.eadge.gxscript.data.entity.types.number.ModifyNumberEntity;
 import org.eadge.gxscript.data.entity.types.number.RealEntity;
 import org.eadge.gxscript.data.entity.types.number.comparison.EqualToNumberEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
+import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.data.script.RawGXScriptDebug;
 
 /**
@@ -107,8 +111,89 @@ public class CreateGXScript
     {
         RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
 
+        IntEntity intEntity = new IntEntity(1);
         ForEntity forEntity = new ForEntity();
-        DefaultEntity isEven = new DefaultEntity()
+
+        forEntity.linkAsInput(ForEntity.ADD_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
+
+        DefaultEntity isEven = createIsEven();
+
+        isEven.linkAsInput(0, ForEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
+        isEven.linkAsInput(1, ForEntity.DO_INPUT_INDEX, forEntity);
+
+        IfEntity ifEntity = new IfEntity();
+        ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, 0, isEven);
+
+        PrintEntity printEntityEven = new PrintEntity("Even");
+        PrintEntity printEntityOdd = new PrintEntity("Odd");
+
+        printEntityEven.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        printEntityOdd.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.FAIL_OUTPUT_INDEX, ifEntity);
+
+        rawGXScript.addEntity("int", intEntity);
+        rawGXScript.addEntity("for", forEntity);
+        rawGXScript.addEntity("isEven", isEven);
+        rawGXScript.addEntity("if", ifEntity);
+        rawGXScript.addEntity("printEven", printEntityEven);
+        rawGXScript.addEntity("printOdd", printEntityOdd);
+
+        rawGXScript.updateStartingEntities();
+
+        return rawGXScript;
+    }
+
+    public static RawGXScript createComplexScript2()
+    {
+        RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
+
+        IntEntity intEntity = new IntEntity(1);
+        ForEntity forEntity = new ForEntity();
+
+        forEntity.linkAsInput(ForEntity.ADD_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
+
+        DefaultEntity isEven = createIsEven();
+
+        isEven.linkAsInput(0, ForEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
+        isEven.linkAsInput(1, ForEntity.DO_INPUT_INDEX, forEntity);
+
+        IfEntity ifEntity = new IfEntity();
+        ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, 0, isEven);
+
+        PrintEntity printEntityEven = new PrintEntity("Even");
+        PrintEntity printEntityOdd = new PrintEntity("Odd");
+
+        printEntityEven.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        printEntityOdd.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.FAIL_OUTPUT_INDEX, ifEntity);
+
+        IntEntity intSetter = new IntEntity(10);
+        intSetter.linkAsInput(IntEntity.NEXT_INPUT_INDEX, PrintEntity.CONTINUE_OUTPUT_INDEX, printEntityOdd);
+
+        ModifyingEntity modificationInt = intEntity.createModificationEntity(IntEntity.INT_OUTPUT_INDEX);
+        modificationInt.linkAsInput(ModifyNumberEntity.MODIFIED_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
+        modificationInt.linkAsInput(ModifyNumberEntity.SOURCE_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intSetter);
+
+        PrintEntity printChange = new PrintEntity();
+        printChange.linkAsInput(PrintEntity.SOURCE_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
+        printChange.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, ModifyNumberEntity.CONTINUE_OUTPUT_INDEX, modificationInt);
+
+        rawGXScript.addEntity("int", intEntity);
+        rawGXScript.addEntity("for", forEntity);
+        rawGXScript.addEntity("isEven", isEven);
+        rawGXScript.addEntity("if", ifEntity);
+        rawGXScript.addEntity("printEven", printEntityEven);
+        rawGXScript.addEntity("printOdd", printEntityOdd);
+        rawGXScript.addEntity("intSetter", intSetter);
+        rawGXScript.addEntity("printChange", printChange);
+        rawGXScript.addEntity("modifying", modificationInt);
+
+        rawGXScript.updateStartingEntities();
+
+        return rawGXScript;
+    }
+
+    private static DefaultEntity createIsEven()
+    {
+        return new DefaultEntity()
         {
             public final int SOURCE_INPUT_INDEX = 0;
             public final int NEXT_INPUT_INDEX = 1;
@@ -145,28 +230,5 @@ public class CreateGXScript
                 };
             }
         }.init();
-
-        isEven.linkAsInput(0, ForEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
-        isEven.linkAsInput(1, ForEntity.DO_INPUT_INDEX, forEntity);
-
-        IfEntity ifEntity = new IfEntity();
-        ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, 0, isEven);
-
-        PrintEntity printEntityEven = new PrintEntity("Even");
-        PrintEntity printEntityOdd = new PrintEntity("Odd");
-
-        printEntityEven.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
-        printEntityOdd.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.FAIL_OUTPUT_INDEX, ifEntity);
-
-
-        rawGXScript.addEntity("for", forEntity);
-        rawGXScript.addEntity("isEven", isEven);
-        rawGXScript.addEntity("if", ifEntity);
-        rawGXScript.addEntity("printEven", printEntityEven);
-        rawGXScript.addEntity("printOdd", printEntityOdd);
-
-        rawGXScript.updateStartingEntities();
-
-        return rawGXScript;
     }
 }

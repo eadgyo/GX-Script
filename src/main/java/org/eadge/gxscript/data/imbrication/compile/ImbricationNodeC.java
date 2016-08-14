@@ -27,9 +27,15 @@ public class ImbricationNodeC extends ImbricationNode
     private ArrayList<FuncDataAddresses> calledFunctionsParameters = new ArrayList<>();
 
     /**
-     * Saved Outputs
+     * Saved Outputs addresses at this exact level of imbrication
      */
     private Map<Entity, OutputAddresses> outputAddressesMap = new HashMap<>();
+
+    /**
+     * All Saved Outputs addresses at HIGHER level of imbrication
+     * Used to update their memory addresses
+     */
+    private ArrayList<OutputAddresses> savedOutputAddresses = new ArrayList<>();
 
     /**
      * Current top stack data addresses
@@ -136,6 +142,10 @@ public class ImbricationNodeC extends ImbricationNode
         updateFuncsAddresses(funcAddresses);
 
         // --> Imbricated entities
+        // Update relative memory addresses and funcs addresses
+        updateMemoryAddressesNodes(imbricationNodeCs);
+        updateFuncsAddressesNodes(imbricationNodeCs);
+
         // Push all saved code of all imbricated entities
         pushCode(imbricationNodeCs);
 
@@ -201,7 +211,7 @@ public class ImbricationNodeC extends ImbricationNode
      *
      * @param imbricationNodeCs used collection of imbrication with code
      */
-    private void pushCode(ArrayList<ImbricationNodeC> imbricationNodeCs)
+    private void pushCode(Collection<ImbricationNodeC> imbricationNodeCs)
     {
         // Push code in the right order
         for (ImbricationNodeC imbricationNodeC : imbricationNodeCs)
@@ -218,18 +228,46 @@ public class ImbricationNodeC extends ImbricationNode
      */
     private void pushCode(ImbricationNodeC imbricationNodeC)
     {
-        // Update before inserting in called functions
-        // Update functions addresses
-        updateFuncsAddresses(imbricationNodeC.getCalledFunctionsParameters());
-
-        // Update memory addresses
-        updateMemoryAddresses(imbricationNodeC.getAllOutputAddresses());
-
         // Push corresponding func parameters
         calledFunctionsParameters.addAll(imbricationNodeC.getCalledFunctionsParameters());
 
         // Push called func
         calledFunctions.addAll(imbricationNodeC.getCalledFunctions());
+
+        // Save output addresses
+        savedOutputAddresses.addAll(imbricationNodeC.getAllOutputAddresses());
+        savedOutputAddresses.addAll(imbricationNodeC.getAllSavedOutputAddresses());
+    }
+
+    /**
+     * Update addresses location of data with this level of imbrication
+     *
+     * @param imbricationNodeCs updated imbricated data addresses
+     */
+    private void updateMemoryAddressesNodes(Collection<ImbricationNodeC> imbricationNodeCs)
+    {
+        // Push code in the right order
+        for (ImbricationNodeC imbricationNodeC : imbricationNodeCs)
+        {
+            // Update memory addresses of this imbrication node
+            updateMemoryAddresses(imbricationNodeC.getAllOutputAddresses());
+            updateMemoryAddresses(imbricationNodeC.getAllSavedOutputAddresses());
+        }
+    }
+
+    /**
+     * Update addresses loaction of function with this level of imbrication
+     *
+     * @param imbricationNodeCs updated imbricated functions addresses
+     */
+    private void updateFuncsAddressesNodes(Collection<ImbricationNodeC> imbricationNodeCs)
+    {
+        // Push code in the right order
+        for (ImbricationNodeC imbricationNodeC : imbricationNodeCs)
+        {
+            // Update functions addresses of this imbrication node
+            updateFuncsAddresses(imbricationNodeC.getCalledFunctionsParameters());
+        }
     }
 
     /**
@@ -342,6 +380,11 @@ public class ImbricationNodeC extends ImbricationNode
     public Collection<OutputAddresses> getAllOutputAddresses()
     {
         return outputAddressesMap.values();
+    }
+
+    public Collection<OutputAddresses> getAllSavedOutputAddresses()
+    {
+        return savedOutputAddresses;
     }
 
     public Map<Entity, OutputAddresses> getOutputAddresses(Collection<Entity> entities)

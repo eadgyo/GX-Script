@@ -103,6 +103,6 @@ public class RealEntity extends DefaultVariableEntity
     @Override
     public ModifyingEntity createModificationEntity(int outputIndex)
     {
-        return new ModifyRealEntity();
+        return new ModifyNumberEntity();
     }
 }
