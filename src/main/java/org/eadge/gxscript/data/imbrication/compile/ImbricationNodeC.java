@@ -142,12 +142,8 @@ public class ImbricationNodeC extends ImbricationNode
         updateFuncsAddresses(funcAddresses);
 
         // --> Imbricated entities
-        // Update relative memory addresses and funcs addresses
-        updateMemoryAddressesNodes(imbricationNodeCs);
-        updateFuncsAddressesNodes(imbricationNodeCs);
-
         // Push all saved code of all imbricated entities
-        pushCode(imbricationNodeCs);
+        updateAndPushCode(imbricationNodeCs);
 
         // --> After imbrication entities
         // Create func imbricated entities
@@ -206,18 +202,23 @@ public class ImbricationNodeC extends ImbricationNode
         return funcsAddresses;
     }
 
+    private void saveOutputAddresses(Collection<ImbricationNodeC> imbricationNodeCs)
+    {
+
+    }
+
     /**
      * Remove parallels saved imbrications nodes, and merge code with this level of imbrication
      *
      * @param imbricationNodeCs used collection of imbrication with code
      */
-    private void pushCode(Collection<ImbricationNodeC> imbricationNodeCs)
+    private void updateAndPushCode(Collection<ImbricationNodeC> imbricationNodeCs)
     {
         // Push code in the right order
         for (ImbricationNodeC imbricationNodeC : imbricationNodeCs)
         {
             // Push code
-            pushCode(imbricationNodeC);
+            updateAndPushCode(imbricationNodeC);
         }
     }
 
@@ -226,8 +227,15 @@ public class ImbricationNodeC extends ImbricationNode
      *
      * @param imbricationNodeC used imbrication node
      */
-    private void pushCode(ImbricationNodeC imbricationNodeC)
+    private void updateAndPushCode(ImbricationNodeC imbricationNodeC)
     {
+        // Update functions addresses of this imbrication node
+        updateFuncsAddresses(imbricationNodeC.getCalledFunctionsParameters());
+
+        // Update memory addresses of this imbrication node
+        updateMemoryAddresses(imbricationNodeC.getAllOutputAddresses());
+        updateMemoryAddresses(imbricationNodeC.getAllSavedOutputAddresses());
+
         // Push corresponding func parameters
         calledFunctionsParameters.addAll(imbricationNodeC.getCalledFunctionsParameters());
 
@@ -237,37 +245,6 @@ public class ImbricationNodeC extends ImbricationNode
         // Save output addresses
         savedOutputAddresses.addAll(imbricationNodeC.getAllOutputAddresses());
         savedOutputAddresses.addAll(imbricationNodeC.getAllSavedOutputAddresses());
-    }
-
-    /**
-     * Update addresses location of data with this level of imbrication
-     *
-     * @param imbricationNodeCs updated imbricated data addresses
-     */
-    private void updateMemoryAddressesNodes(Collection<ImbricationNodeC> imbricationNodeCs)
-    {
-        // Push code in the right order
-        for (ImbricationNodeC imbricationNodeC : imbricationNodeCs)
-        {
-            // Update memory addresses of this imbrication node
-            updateMemoryAddresses(imbricationNodeC.getAllOutputAddresses());
-            updateMemoryAddresses(imbricationNodeC.getAllSavedOutputAddresses());
-        }
-    }
-
-    /**
-     * Update addresses loaction of function with this level of imbrication
-     *
-     * @param imbricationNodeCs updated imbricated functions addresses
-     */
-    private void updateFuncsAddressesNodes(Collection<ImbricationNodeC> imbricationNodeCs)
-    {
-        // Push code in the right order
-        for (ImbricationNodeC imbricationNodeC : imbricationNodeCs)
-        {
-            // Update functions addresses of this imbrication node
-            updateFuncsAddresses(imbricationNodeC.getCalledFunctionsParameters());
-        }
     }
 
     /**
