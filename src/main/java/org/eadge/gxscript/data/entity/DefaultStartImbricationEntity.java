@@ -1,6 +1,5 @@
 package org.eadge.gxscript.data.entity;
 
-import org.eadge.gxscript.data.entity.imbrication.StartImbricationEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.address.*;
 
@@ -8,13 +7,15 @@ import java.util.*;
 
 /**
  * Created by eadgyo on 11/08/16.
+ *
+ * Default entity to create imbricated outputs
  */
 public abstract class DefaultStartImbricationEntity extends DefaultEntity implements StartImbricationEntity
 {
     /**
      * Holds imbrication of outputs, -1 for not imbricated outputs
      */
-    private ArrayList<Integer> imbricationOfOutputs = new ArrayList<>();
+    protected ArrayList<Integer> imbricationOfOutputs = new ArrayList<>();
 
     public DefaultStartImbricationEntity(String name)
     {
@@ -87,28 +88,39 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
      */
     public void addOutputImbricatedEntry(int imbricatedIndex, String outputName, Class cl)
     {
-        addOutputImbricatedEntry(imbricatedIndex, getNumberOfOutputs(), outputName, cl);
+        addOutputImbricatedEntry(getNumberOfParallelsImbrications(), imbricatedIndex, outputName, cl);
     }
 
     /**
      * Create an imbricated output entry at the given index
      *
-     * @param imbricatedIndex imbrication of the output, -1 for no imbrication
      * @param outputIndex     output index
+     * @param imbricatedIndex imbrication of the output, -1 for no imbrication
      * @param outputName      name of output entry
      * @param cl              class of output
      */
-    protected void addOutputImbricatedEntry(int imbricatedIndex, int outputIndex, String outputName, Class cl)
+    protected void addOutputImbricatedEntry(int outputIndex, int imbricatedIndex, String outputName, Class cl)
     {
         super.addOutputEntry(outputIndex, outputName, cl);
 
         imbricationOfOutputs.add(outputIndex, imbricatedIndex);
     }
 
+    /**
+     * Change output imbricated index
+     *
+     * @param outputIndex output index
+     * @param imbricatedIndex new imbricated index
+     */
+    public void setOutputImbricatedIndex(int outputIndex, int imbricatedIndex)
+    {
+        imbricationOfOutputs.set(outputIndex, imbricatedIndex);
+    }
+
     @Override
     public void addOutputEntry(int outputIndex, String outputName, Class cl)
     {
-        addOutputImbricatedEntry(-1, outputIndex, outputName, cl);
+        addOutputImbricatedEntry(outputIndex, -1, outputName, cl);
     }
 
     @Override

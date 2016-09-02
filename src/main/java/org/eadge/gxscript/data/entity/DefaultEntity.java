@@ -337,15 +337,41 @@ public abstract class DefaultEntity implements Entity
             addOffsetInput(inputIndex, 1);
         }
 
+        // If the input entry is not a function linker
         if (cl != Void.class)
         {
+            // Input entry is a variable entry
             indicesVariableInputs.add(inputIndex);
         }
 
+        // Add data associated with input entry
         inputEntities.add(inputIndex, null);
         outputFromInputEntitiesIndices.add(inputIndex, -1);
         inputClasses.add(inputIndex, cl);
         inputsNames.add(inputIndex, inputName);
+    }
+
+
+    /**
+     * Change input entry name
+     *
+     * @param inputIndex input index
+     * @param inputName new input name
+     */
+    public void setInputName(int inputIndex, String inputName)
+    {
+        inputsNames.set(inputIndex, inputName);
+    }
+
+    /**
+     * Remove linked input entity
+     *
+     * @param inputIndex input index
+     */
+    public void clearLinkedInput(int inputIndex)
+    {
+        // Remove linked to input entry entities
+        unlinkAsInput(inputIndex);
     }
 
     /**
@@ -355,16 +381,19 @@ public abstract class DefaultEntity implements Entity
     public void removeInputEntry(int inputIndex)
     {
         // Remove linked to entry entities
-        unlinkAsInput(inputIndex);
+        clearLinkedInput(inputIndex);
 
+        // Remove associated data with input entry
         indicesVariableOutputs.remove(inputIndex);
         inputEntities.remove(inputIndex);
         outputFromInputEntitiesIndices.remove(inputIndex);
         inputClasses.remove(inputIndex);
         inputsNames.remove(inputIndex);
 
+        // If the input is not the last
         if (inputIndex != getNumberOfInputs())
         {
+            // Update inputs indices of upper inputs
             addOffsetInput(inputIndex, -1);
         }
     }
@@ -451,8 +480,10 @@ public abstract class DefaultEntity implements Entity
             addOffsetOutput(outputIndex, 1);
         }
 
+        // If the output entry is not a function linker
         if (cl != Void.class)
         {
+            // Output entry is a variable entry
             indicesVariableOutputs.add(outputIndex);
         }
 
@@ -463,10 +494,22 @@ public abstract class DefaultEntity implements Entity
     }
 
     /**
-     * Remove one output entry
+     * Change output entry name
+     *
+     * @param outputIndex output index
+     * @param outputName new output name
+     */
+    public void setOutputName(int outputIndex, String outputName)
+    {
+        outputsNames.set(outputIndex, outputName);
+    }
+
+    /**
+     * Remove all linked output entities
+     *
      * @param outputIndex output index
      */
-    public void removeOutputEntry(int outputIndex)
+    public void clearLinkedOutputs(int outputIndex)
     {
         // Remove linked to entry entities
         Collection<Entity> removedOutputEntities = getOutputEntities(outputIndex);
@@ -474,14 +517,27 @@ public abstract class DefaultEntity implements Entity
         {
             unlinkAsOutput(outputIndex, outputEntity);
         }
+    }
 
+    /**
+     * Remove one output entry
+     * @param outputIndex output index
+     */
+    public void removeOutputEntry(int outputIndex)
+    {
+        // Remove all linked entities
+        clearLinkedOutputs(outputIndex);
+
+        // Remove all output data
         indicesVariableOutputs.remove(outputIndex);
         outputEntities.remove(outputIndex);
         outputClasses.remove(outputIndex);
         outputsNames.remove(outputIndex);
 
+        // If the output is the not the last
         if (outputIndex != getNumberOfOutputs())
         {
+            // Update all other upper output entries indices
             addOffsetOutput(outputIndex, -1);
         }
     }

@@ -1,8 +1,8 @@
 package org.eadge.gxscript.test.validator;
 
 import org.eadge.gxscript.data.entity.DefaultEntity;
-import org.eadge.gxscript.data.entity.imbrication.conditionals.IfEntity;
-import org.eadge.gxscript.data.entity.types.number.RealEntity;
+import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfEntity;
+import org.eadge.gxscript.classic.entity.types.number.RealEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.test.CreateGXScript;

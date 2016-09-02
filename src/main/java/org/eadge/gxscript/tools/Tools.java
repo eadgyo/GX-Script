@@ -1,7 +1,7 @@
 package org.eadge.gxscript.tools;
 
 import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.imbrication.StartImbricationEntity;
+import org.eadge.gxscript.data.entity.StartImbricationEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 
 import java.util.ArrayList;
@@ -141,6 +141,6 @@ public class Tools
     public static boolean isEqualOrDerivedFrom(Class outputClass, Class inputClass)
     {
         //noinspection unchecked
-        return inputClass.isAssignableFrom(outputClass);
+        return inputClass.isAssignableFrom(outputClass) && (outputClass != Void.class || inputClass == Void.class);
     }
 }

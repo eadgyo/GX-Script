@@ -1,9 +1,9 @@
 package org.eadge.gxscript.test.validator;
 
-import org.eadge.gxscript.data.entity.displayer.PrintEntity;
-import org.eadge.gxscript.data.entity.imbrication.conditionals.IfEntity;
-import org.eadge.gxscript.data.entity.types.number.RealEntity;
-import org.eadge.gxscript.data.entity.types.number.comparison.EqualToNumberEntity;
+import org.eadge.gxscript.classic.entity.displayer.PrintEntity;
+import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfEntity;
+import org.eadge.gxscript.classic.entity.types.number.RealEntity;
+import org.eadge.gxscript.classic.entity.types.number.comparison.EqualToNumberEntity;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.test.CreateGXScript;
 import org.eadge.gxscript.test.PrintTest;

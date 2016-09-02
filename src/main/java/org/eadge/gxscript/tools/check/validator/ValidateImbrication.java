@@ -1,7 +1,7 @@
 package org.eadge.gxscript.tools.check.validator;
 
 import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.imbrication.StartImbricationEntity;
+import org.eadge.gxscript.data.entity.StartImbricationEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.tools.Tools;
@@ -201,9 +201,12 @@ public class ValidateImbrication extends ValidatorModel
             Collection<Entity> allInputEntities = poppedEntity.getAllInputEntities();
             for (Entity inputEntity : allInputEntities)
             {
-                // If input entity is not safe and it is not already treated
-                if (!safeEntities.contains(inputEntity) && !alreadyTreated.contains(inputEntity))
-                    toBeTreatedEntities.add(inputEntity);
+                if (inputEntity != null)
+                {
+                    // If input entity is not safe and it is not already treated
+                    if (!safeEntities.contains(inputEntity) && !alreadyTreated.contains(inputEntity))
+                        toBeTreatedEntities.add(inputEntity);
+                }
             }
         }
 

@@ -1,6 +1,6 @@
 package org.eadge.gxscript.test.validator;
 
-import org.eadge.gxscript.data.entity.imbrication.conditionals.IfEntity;
+import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfEntity;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.test.CreateGXScript;
 import org.eadge.gxscript.test.PrintTest;

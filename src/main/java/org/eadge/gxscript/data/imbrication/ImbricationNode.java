@@ -1,7 +1,7 @@
 package org.eadge.gxscript.data.imbrication;
 
 import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.imbrication.StartImbricationEntity;
+import org.eadge.gxscript.data.entity.StartImbricationEntity;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.ArrayList;

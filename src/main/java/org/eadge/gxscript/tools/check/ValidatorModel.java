@@ -27,4 +27,15 @@ public abstract class ValidatorModel
 
         return true;
     }
+
+    public boolean validate(ValidatorModel validatorModel, RawGXScript rawGXScript)
+    {
+        if (!validatorModel.validate(rawGXScript))
+        {
+            entitiesWithError.addAll(validatorModel.getEntitiesWithError());
+            return false;
+        }
+
+        return true;
+    }
 }

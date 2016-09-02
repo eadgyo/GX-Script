@@ -1,7 +1,7 @@
 package org.eadge.gxscript.data.imbrication.compile;
 
 import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.imbrication.StartImbricationEntity;
+import org.eadge.gxscript.data.entity.StartImbricationEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 import org.eadge.gxscript.data.script.CompiledGXScript;
 import org.eadge.gxscript.data.script.Func;
