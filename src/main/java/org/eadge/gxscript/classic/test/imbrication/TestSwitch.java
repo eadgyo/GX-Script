@@ -38,6 +38,9 @@ public class TestSwitch
         // Link source to switch
         switchEntity.linkAsInput(SwitchEntity.SOURCE_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
 
+        PrintEntity printEntityCont = new PrintEntity("Continue");
+        printEntityCont.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, switchEntity.getContinueOutputIndex(), switchEntity);
+
         // Link 0 to printEntity0
         PrintEntity printEntity0 = new PrintEntity("0");
         printEntity0.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex() + 1, switchEntity);
@@ -61,6 +64,7 @@ public class TestSwitch
         PrintEntity printEntityDef = new PrintEntity("Def");
         printEntityDef.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex(), switchEntity);
 
+        rawGXScript.addEntity("Cont", printEntityCont);
         rawGXScript.addEntity("p0", printEntity0);
         rawGXScript.addEntity("p1", printEntity1);
         rawGXScript.addEntity("p5", printEntity5);

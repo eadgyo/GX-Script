@@ -76,4 +76,14 @@ public class Address implements Cloneable
     {
         return address == testedFuncAddress.getAddress();
     }
+
+    public Address previous()
+    {
+        return new Address(address - 1);
+    }
+
+    public Address next()
+    {
+        return new Address(address + 1);
+    }
 }

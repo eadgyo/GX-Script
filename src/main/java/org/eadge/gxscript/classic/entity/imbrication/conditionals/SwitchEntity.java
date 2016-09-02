@@ -193,10 +193,13 @@ public class SwitchEntity extends DefaultStartImbricationEntity
             private Map<Integer, Integer> casesMap = new HashMap<>();
 
             private int defaultOutputIndex;
+            private int continueOutputIndex;
 
-            public Func init(ArrayList<Integer> casesValue, int defaultOutputIndex)
+            public Func init(ArrayList<Integer> casesValue, int defaultOutputIndex, int continueOutputIndex)
             {
                 this.defaultOutputIndex = defaultOutputIndex;
+                this.continueOutputIndex = continueOutputIndex;
+
                 for (int outputIndex = 0; outputIndex < casesValue.size(); outputIndex++)
                 {
                     // If it's an imbricated output
@@ -251,8 +254,9 @@ public class SwitchEntity extends DefaultStartImbricationEntity
 
                 // Exit the switch case
                 FuncAddress continueAddress = funcParameters.getImbricationAddress(continueOutputIndex);
-                program.setCurrentFuncAddress(continueAddress);
+
+                program.setCurrentFuncAddress(continueAddress.previous());
             }
-        }.init(casesValue, defaultOutputIndex);
+        }.init(casesValue, defaultOutputIndex, continueOutputIndex);
     }
 }
