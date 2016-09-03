@@ -18,9 +18,9 @@ public class ForEntity extends DefaultStartImbricationEntity
     public static final int MAX_INPUT_INDEX = 2;
     public static final int NEXT_INPUT_INDEX = 3;
 
-    public static final int DO_INPUT_INDEX = 0;
+    public static final int DO_OUTPUT_INDEX        = 0;
     public static final int INDEX_FOR_OUTPUT_INDEX = 1;
-    public static final int CONTINUE_OUTPUT_INDEX = 2;
+    public static final int CONTINUE_OUTPUT_INDEX  = 2;
 
     private int start = 0;
     private int add   = 1;
@@ -35,7 +35,7 @@ public class ForEntity extends DefaultStartImbricationEntity
         addInputEntryNotNeeded(MAX_INPUT_INDEX, "Max", Integer.class);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
-        addOutputImbricatedEntry(DO_INPUT_INDEX, 0, "Do", Void.class);
+        addOutputImbricatedEntry(DO_OUTPUT_INDEX, 0, "Do", Void.class);
         addOutputImbricatedEntry(INDEX_FOR_OUTPUT_INDEX, 0, "Index", Integer.class);
         addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
     }

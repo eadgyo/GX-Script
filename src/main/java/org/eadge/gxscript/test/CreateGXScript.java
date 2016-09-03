@@ -119,7 +119,7 @@ public class CreateGXScript
         DefaultEntity isEven = createIsEven();
 
         isEven.linkAsInput(0, ForEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
-        isEven.linkAsInput(1, ForEntity.DO_INPUT_INDEX, forEntity);
+        isEven.linkAsInput(1, ForEntity.DO_OUTPUT_INDEX, forEntity);
 
         IfEntity ifEntity = new IfEntity();
         ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, 0, isEven);
@@ -154,7 +154,7 @@ public class CreateGXScript
         DefaultEntity isEven = createIsEven();
 
         isEven.linkAsInput(0, ForEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
-        isEven.linkAsInput(1, ForEntity.DO_INPUT_INDEX, forEntity);
+        isEven.linkAsInput(1, ForEntity.DO_OUTPUT_INDEX, forEntity);
 
         IfEntity ifEntity = new IfEntity();
         ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, 0, isEven);

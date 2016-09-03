@@ -364,6 +364,24 @@ public abstract class DefaultEntity implements Entity
     }
 
     /**
+     * Change set input class and remove input if the new class is not compatible with the old one
+     * @param inputIndex input entry index
+     * @param cl new class
+     */
+    public void setInputClass(int inputIndex, Class cl)
+    {
+        // If new link class is not compatible with the last one
+        if (!Tools.isEqualOrDerivedFrom(cl, getInputClass(inputIndex)))
+        {
+            // Remove input linked entities
+            unlinkAsInput(inputIndex);
+        }
+
+        // Change input class
+        inputClasses.set(inputIndex, cl);
+    }
+
+    /**
      * Remove linked input entity
      *
      * @param inputIndex input index
@@ -502,6 +520,24 @@ public abstract class DefaultEntity implements Entity
     public void setOutputName(int outputIndex, String outputName)
     {
         outputsNames.set(outputIndex, outputName);
+    }
+
+    /**
+     * Change set output class and remove outputs if the new class is not compatible with the old one
+     * @param outputIndex output entry index
+     * @param cl new class
+     */
+    public void setOutputClass(int outputIndex, Class cl)
+    {
+        // If new link class is not compatible with the last one
+        if (!Tools.isEqualOrDerivedFrom(cl, getOutputClass(outputIndex)))
+        {
+            // Remove output linked entities
+            unlinkAsOutput(outputIndex);
+        }
+
+        // Change input class
+        inputClasses.set(outputIndex, cl);
     }
 
     /**
@@ -687,6 +723,19 @@ public abstract class DefaultEntity implements Entity
     {
         int inputIndex = getIndexOfInputFromEntityOnOutput(outputIndex, entity);
         entity.unlinkAsInput(inputIndex);
+    }
+
+    /**
+     * Remove all linked entities on output at the given output index
+     *
+     * @param outputIndex output index
+     */
+    public void unlinkAsOutput(int outputIndex)
+    {
+        for (Entity outputEntity : getOutputEntities(outputIndex))
+        {
+            unlinkAsOutput(outputIndex, outputEntity);
+        }
     }
 
     /**

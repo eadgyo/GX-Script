@@ -73,7 +73,7 @@ public class TestValidateImbrication
 
         // Create print in imbrication
         PrintEntity printEntity = new PrintEntity();
-        printEntity.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, ForEntity.DO_INPUT_INDEX, forEntity);
+        printEntity.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, ForEntity.DO_OUTPUT_INDEX, forEntity);
 
         // Link index of in imbrication with print entity after imbrication
         printEntity.linkAsInput(PrintEntity.SOURCE_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity);

@@ -76,4 +76,15 @@ public class MemoryStack extends ArrayList<Object>
             popTo(memoryLevels.pop());
         }
     }
+
+    /**
+     * Get the top memory stack address
+     * I's the address of the next added object.
+     *
+     * @return current memory address
+     */
+    public DataAddress getCurrentDataAddress()
+    {
+        return new DataAddress(size());
+    }
 }

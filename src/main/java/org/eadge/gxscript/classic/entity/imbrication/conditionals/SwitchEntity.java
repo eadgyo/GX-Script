@@ -255,7 +255,7 @@ public class SwitchEntity extends DefaultStartImbricationEntity
                 // Exit the switch case
                 FuncAddress continueAddress = funcParameters.getImbricationAddress(continueOutputIndex);
 
-                program.setCurrentFuncAddress(continueAddress.previous());
+                program.setNextFuncAddress(continueAddress);
             }
         }.init(casesValue, defaultOutputIndex, continueOutputIndex);
     }

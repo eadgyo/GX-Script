@@ -80,7 +80,7 @@ public class IfEntity extends DefaultStartImbricationEntity
                 // Remove added memory
                 program.popMemoryLevel();
 
-                program.setCurrentFuncAddress(continueAddress);
+                program.setNextFuncAddress(continueAddress);
             }
         };
     }

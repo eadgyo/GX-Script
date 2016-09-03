@@ -109,6 +109,17 @@ public class Program
     }
 
     /**
+     * Get current data address at the top of memory stack.
+     * It's the address of the next added object.
+     *
+     * @return current data address
+     */
+    public DataAddress getCurrentDataAddress()
+    {
+        return memoryStack.getCurrentDataAddress();
+    }
+
+    /**
      * Replace the object at the specified address by another object
      *
      * @param dataAddress address of the replaced object
@@ -146,6 +157,17 @@ public class Program
     public void setCurrentFuncAddress(FuncAddress currentFuncAddress)
     {
         this.currentFuncAddress.setAddress(currentFuncAddress);
+    }
+
+
+    /**
+     * Set the address of the next read function
+     *
+     * @param nextReadAddress address of read function
+     */
+    public void setNextFuncAddress(FuncAddress nextReadAddress)
+    {
+        this.currentFuncAddress.setAddress(nextReadAddress.previous());
     }
 
     /**
