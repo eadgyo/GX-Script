@@ -29,7 +29,7 @@ public class ExceptionEntity extends DefaultStartImbricationEntity
         super("Exception");
 
         // Add next index
-        addInputEntry(NEXT_INPUT_INDEX, "Next", Void.class);
+        addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Try output index
         addOutputImbricatedEntry(TRY_OUTPUT_INDEX, 0, "Try", Void.class);

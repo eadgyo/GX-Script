@@ -9,6 +9,11 @@ package org.eadge.gxscript.data.entity;
  */
 public abstract class ModifyingEntity extends DefaultEntity
 {
+    public ModifyingEntity(String name)
+    {
+        super(name);
+    }
+
     @Override
     public void unlinkAsInput(int inputIndex)
     {

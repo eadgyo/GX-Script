@@ -72,6 +72,15 @@ public interface Entity
     public abstract int getIndexOfOutputFromEntityOnInput(int inputIndex);
 
     /**
+     * Get output class from the entity on input
+     *
+     * @param inputIndex input index
+     *
+     * @return class linked on from input entity
+     */
+    public abstract Class getOutputClassFromInputEntity(int inputIndex);
+
+    /**
      * Get all the input entities
      *
      * @return all input entities

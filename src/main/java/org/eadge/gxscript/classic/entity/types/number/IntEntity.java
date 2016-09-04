@@ -60,10 +60,10 @@ public class IntEntity extends DefaultVariableEntity
                     Object[] objects = program.loadCurrentParametersObjects();
 
                     // Get value
-                    Integer inputValue = (Integer) (objects[SET_INPUT_INDEX]);
+                    Number inputValue = (Number) (objects[SET_INPUT_INDEX]);
 
                     // Push in memory this value. Don't need to clone float.
-                    program.pushInMemory(inputValue);
+                    program.pushInMemory(inputValue.intValue());
                 }
             };
         }

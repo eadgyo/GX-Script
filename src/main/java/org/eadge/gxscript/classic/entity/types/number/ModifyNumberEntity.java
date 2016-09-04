@@ -21,6 +21,8 @@ public class ModifyNumberEntity extends ModifyingEntity
 
     public ModifyNumberEntity()
     {
+        super("Modify entity");
+
         addInputEntry(MODIFIED_INPUT_INDEX, "Modified", Number.class);
         addInputEntry(SOURCE_INPUT_INDEX, "Set", Number.class);
 

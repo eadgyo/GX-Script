@@ -60,10 +60,10 @@ public class RealEntity extends DefaultVariableEntity
                     Object[] objects = program.loadCurrentParametersObjects();
 
                     // Get value
-                    float inputValue = (float) (objects[SET_INPUT_INDEX]);
+                    Number inputValue = (Number) (objects[SET_INPUT_INDEX]);
 
                     // Push in memory this value. Don't need to clone float.
-                    program.pushInMemory(inputValue);
+                    program.pushInMemory(inputValue.floatValue());
                 }
             };
         }
@@ -86,7 +86,6 @@ public class RealEntity extends DefaultVariableEntity
                     program.pushInMemory(real);
                 }
             }.init(defaultFloat);
-
         }
     }
 

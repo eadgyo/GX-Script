@@ -28,7 +28,7 @@ public class WhileEntity extends DefaultStartImbricationEntity
         addInputEntry(TEST_INPUT_INDEX, "Test", Boolean.class);
 
         // Add next input
-        addInputEntry(NEXT_INPUT_INDEX, "Next", Void.class);
+        addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Output
         // Do

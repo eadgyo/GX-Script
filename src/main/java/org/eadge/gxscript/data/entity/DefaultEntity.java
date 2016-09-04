@@ -78,10 +78,10 @@ public abstract class DefaultEntity implements Entity
         this.name = name;
     }
 
-    public DefaultEntity()
+    /*public DefaultEntity()
     {
         this.name = "";
-    }
+    }*/
 
     public String getName()
     {
@@ -188,6 +188,18 @@ public abstract class DefaultEntity implements Entity
     public int getIndexOfOutputFromEntityOnInput(int inputIndex)
     {
         return outputFromInputEntitiesIndices.get(inputIndex);
+    }
+
+    @Override
+    public Class getOutputClassFromInputEntity(int inputIndex)
+    {
+        int outputIndexFromInputEntity = getIndexOfOutputFromEntityOnInput(inputIndex);
+
+        if (outputIndexFromInputEntity != -1)
+        {
+            return getInputEntity(inputIndex).getOutputClass(outputIndexFromInputEntity);
+        }
+        return null;
     }
 
     @Override

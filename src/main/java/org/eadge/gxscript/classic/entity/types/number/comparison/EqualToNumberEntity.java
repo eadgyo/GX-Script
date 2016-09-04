@@ -51,6 +51,6 @@ public class EqualToNumberEntity extends DefaultEntity
 
                 program.pushInMemory(areEquals);
             }
-        };
+        }; 
     }
 }

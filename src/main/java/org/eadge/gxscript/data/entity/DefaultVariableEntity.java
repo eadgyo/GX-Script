@@ -21,10 +21,6 @@ public abstract class DefaultVariableEntity extends DefaultEntity implements Var
         super(name);
     }
 
-    public DefaultVariableEntity()
-    {
-    }
-
     //----------------------------
     //-------- Modified ----------
     //----------------------------
