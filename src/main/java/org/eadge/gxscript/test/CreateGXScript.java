@@ -26,7 +26,7 @@ public class CreateGXScript
 
         // Create 3 real variables
         RealEntity realEntity1 = new RealEntity(20f);
-        RealEntity realEntity2 = new RealEntity(10f);
+        RealEntity realEntity2 = new RealEntity(20f);
 
         // Create real comparison
         EqualToNumberEntity equalToNumberEntity = new EqualToNumberEntity();
@@ -38,10 +38,10 @@ public class CreateGXScript
         ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, EqualToNumberEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity);
 
         // Create 3 prints for each path
-        PrintEntity success = new PrintEntity("Success");
+        PrintEntity success = new PrintEntity("EQUAL");
         success.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
 
-        PrintEntity fail = new PrintEntity("Fail");
+        PrintEntity fail = new PrintEntity("DIFF");
         fail.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.FAIL_OUTPUT_INDEX, ifEntity);
 
         PrintEntity continueP = new PrintEntity("Continue");

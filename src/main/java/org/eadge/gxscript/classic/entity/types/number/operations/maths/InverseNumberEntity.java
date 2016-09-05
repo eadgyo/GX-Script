@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.number.operations.maths;
 
-import org.eadge.gxscript.classic.entity.types.number.operations.maths.models.MathOneInputModel;
+import org.eadge.gxscript.data.entity.special.OneInputDefinesOneOutput;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 
@@ -9,11 +9,11 @@ import org.eadge.gxscript.data.script.Program;
  *
  * Inverse number
  */
-public class InverseNumberEntity extends MathOneInputModel
+public class InverseNumberEntity extends OneInputDefinesOneOutput
 {
     public InverseNumberEntity()
     {
-        super("Inverse");
+        super("Inverse", Number.class);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class InverseNumberEntity extends MathOneInputModel
                 Object objects[] = program.loadCurrentParametersObjects();
 
                 // Get source
-                Number source = (Number) objects[SOURCE_INPUT_ENTITY];
+                Number source = (Number) objects[SOURCE_INPUT_INDEX];
 
                 // Create number and push it
                 Number result = inverseNumber(source);
@@ -36,7 +36,7 @@ public class InverseNumberEntity extends MathOneInputModel
                 program.pushInMemory(result);
             }
 
-            public Number inverseNumber(Number a)
+            private Number inverseNumber(Number a)
             {
                 if (a instanceof Double)
                 {

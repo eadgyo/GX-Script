@@ -27,8 +27,8 @@ public class AddNumbersEntity extends MathTwoInputsModel
                 Object objects[] = program.loadCurrentParametersObjects();
 
                 // Get source and add
-                Number source = (Number) objects[SOURCE_INPUT_ENTITY];
-                Number add = (Number) objects[ADD_INPUT_ENTITY];
+                Number source = (Number) objects[S0_INPUT_INDEX];
+                Number add = (Number) objects[S1_INPUT_INDEX];
 
                 // Create number and push it
                 Number result = addNumbers(source, add);

@@ -27,8 +27,8 @@ public class MultiplyNumbersEntity extends MathTwoInputsModel
                 Object objects[] = program.loadCurrentParametersObjects();
 
                 // Get source and mulitplied
-                Number source = (Number) objects[SOURCE_INPUT_ENTITY];
-                Number mulitplied = (Number) objects[ADD_INPUT_ENTITY];
+                Number source = (Number) objects[S0_INPUT_INDEX];
+                Number mulitplied = (Number) objects[S1_INPUT_INDEX];
 
                 // Create number and push it
                 Number result = multiplyNumbers(source, mulitplied);

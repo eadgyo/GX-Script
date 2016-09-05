@@ -27,8 +27,8 @@ public class SubNumbersEntity extends MathTwoInputsModel
                 Object objects[] = program.loadCurrentParametersObjects();
 
                 // Get source and sub
-                Number source = (Number) objects[SOURCE_INPUT_ENTITY];
-                Number sub = (Number) objects[ADD_INPUT_ENTITY];
+                Number source = (Number) objects[S0_INPUT_INDEX];
+                Number sub = (Number) objects[S1_INPUT_INDEX];
 
                 // Create number and push it
                 Number result = substractNumbers(source, sub);

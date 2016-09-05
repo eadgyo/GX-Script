@@ -9,5 +9,10 @@ import org.eadge.gxscript.data.entity.DefaultVariableEntity;
  */
 public abstract class CollectionEntity extends DefaultVariableEntity
 {
+    public CollectionEntity(String name)
+    {
+        super(name);
+    }
+
     public abstract Class getItemClass();
 }

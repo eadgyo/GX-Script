@@ -73,6 +73,11 @@ public abstract class DefaultEntity implements Entity
      */
     protected ArrayList<Map<Entity, Integer>> inputFromOutputEntitiesIndices = new ArrayList<>();
 
+    public DefaultEntity()
+    {
+        this("");
+    }
+
     public DefaultEntity(String name)
     {
         this.name = name;

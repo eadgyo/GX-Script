@@ -27,8 +27,8 @@ public class DivideNumbersEntity extends MathTwoInputsModel
                 Object objects[] = program.loadCurrentParametersObjects();
 
                 // Get source and divided
-                Number source = (Number) objects[SOURCE_INPUT_ENTITY];
-                Number divide = (Number) objects[ADD_INPUT_ENTITY];
+                Number source = (Number) objects[S0_INPUT_INDEX];
+                Number divide = (Number) objects[S1_INPUT_INDEX];
 
                 // Create number and push it
                 Number result = divideNumbers(source, divide);

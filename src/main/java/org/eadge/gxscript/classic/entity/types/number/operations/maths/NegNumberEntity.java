@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.number.operations.maths;
 
-import org.eadge.gxscript.classic.entity.types.number.operations.maths.models.MathOneInputModel;
+import org.eadge.gxscript.data.entity.special.OneInputDefinesOneOutput;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 
@@ -9,11 +9,11 @@ import org.eadge.gxscript.data.script.Program;
  *
  * Negate number entity
  */
-public class NegNumberEntity extends MathOneInputModel
+public class NegNumberEntity extends OneInputDefinesOneOutput
 {
     public NegNumberEntity()
     {
-        super("Negate");
+        super("Negate", Number.class);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class NegNumberEntity extends MathOneInputModel
                 Object objects[] = program.loadCurrentParametersObjects();
 
                 // Get source
-                Number source = (Number) objects[SOURCE_INPUT_ENTITY];
+                Number source = (Number) objects[SOURCE_INPUT_INDEX];
 
                 // Create number and push it
                 Number result = negateNumber(source);
