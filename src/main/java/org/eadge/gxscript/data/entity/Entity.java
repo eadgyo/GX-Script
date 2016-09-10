@@ -18,6 +18,11 @@ import java.util.Map;
  */
 public interface Entity
 {
+    /**
+     * Used to reset class
+     */
+    public static final Class DEFAULT_CLASS = Object.class;
+
     //----------------------------
     //---------- Input -----------
     //----------------------------
@@ -61,6 +66,15 @@ public interface Entity
      * @return input entity at the index or null if there are no entities
      */
     public abstract Entity getInputEntity(int index);
+
+    /**
+     * Check if input entry at index is used
+     *
+     * @param index input index
+     *
+     * @return true if the input entry is used, false otherwise
+     */
+    public abstract boolean isInputUsed(int index);
 
     /**
      * Get the index of the output linked to one entity or -1 if it's not a output entity
@@ -212,6 +226,15 @@ public interface Entity
     public abstract Collection<Entity> getOutputEntities(int index);
 
     /**
+     * Check if output entry at index is used
+     *
+     * @param index output index
+     *
+     * @return true if the output entry is used, false otherwise
+     */
+    public abstract boolean isOutputUsed(int index);
+
+    /**
      * Check if one entity is contained at the output
      * @param outputIndex output index
      * @param entity tested entity
@@ -351,15 +374,8 @@ public interface Entity
     public int getNumberOfUsedInputs();
 
     /**
-     * Check if an input entry is used
-     * @param inputIndex index input
-     * @return true if the input is used, fals otherwise
-     */
-    public boolean isUsedInput(int inputIndex);
-
-    /**
      * Check if one or more inputs are used
      * @return true if one or more inputs are used, false otherwise
      */
-    public boolean hasUsedInputs();
+    public boolean hasInputsUsed();
 }

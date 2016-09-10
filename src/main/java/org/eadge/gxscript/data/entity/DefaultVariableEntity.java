@@ -111,4 +111,10 @@ public abstract class DefaultVariableEntity extends DefaultEntity implements Var
         // Link as output modifying entity
         modificationEntity.linkAsInput(1, entityOutputIndex, entity);
     }
+
+    @Override
+    public Class getVariableClass()
+    {
+        return getOutputClass(0);
+    }
 }

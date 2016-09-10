@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by eadgyo on 03/08/16.
  *
- * Model for imbrication blocks.
+ * model for imbrication blocks.
  */
 public interface StartImbricationEntity extends Entity
 {

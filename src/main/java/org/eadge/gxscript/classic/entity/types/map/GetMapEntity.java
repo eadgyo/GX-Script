@@ -1,4 +1,4 @@
-package org.eadge.gxscript.classic.entity.types.collection.map;
+package org.eadge.gxscript.classic.entity.types.map;
 
 /**
  * Created by eadgyo on 03/08/16.

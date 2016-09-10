@@ -41,4 +41,11 @@ public interface VariableEntity extends Entity
      * @param entity            linked entity
      */
     void linkAsModifiedOutput(int outputIndex, int entityOutputIndex, Entity entity);
+
+    /**
+     * Get class of variable
+     *
+     * @return class
+     */
+    Class getVariableClass();
 }

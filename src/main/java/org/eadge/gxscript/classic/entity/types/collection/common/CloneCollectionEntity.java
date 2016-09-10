@@ -49,11 +49,6 @@ public class CloneCollectionEntity extends OneInputDefinesOneOutput
                     //noinspection unchecked
                     added = new ArrayList(collection);
                 }
-                else if (this.defaultClass == HashMap.class)
-                {
-                    //noinspection unchecked
-                    added = new HashMap((Map) collection);
-                }
                 else if (this.defaultClass == HashSet.class)
                 {
                     //noinspection unchecked

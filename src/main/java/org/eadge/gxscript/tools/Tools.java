@@ -31,7 +31,7 @@ public class Tools
         for (Entity entity : entities)
         {
             // If entity has no linked entity block at input
-            if (!entity.hasUsedInputs())
+            if (!entity.hasInputsUsed())
             {
                 // This entity is a starting entity
                 startingEntities.add(entity);

@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.collection.common;
 
-import org.eadge.gxscript.data.entity.DefaultEntity;
+import org.eadge.gxscript.classic.entity.types.collection.model.CollectionDefineInput;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 
@@ -9,26 +9,24 @@ import java.util.Collection;
 /**
  * Created by eadgyo on 03/08/16.
  *
- * Size collection entity
+ * Check if one item is contained in collection
  */
-public class SizeCollectionEntity extends DefaultEntity
+public class ContainsSetEntity extends CollectionDefineInput
 {
-    public final static int COLLECTION_INPUT_INDEX = 0;
-    public final static int NEXT_INPUT_INDEX = 1;
+    public static final int NEXT_INPUT_INDEX = 2;
 
-    public static final int SIZE_OUTPUT_INDEX = 0;
+    public static final int RESULT_OUTPUT_INDEX = 0;
     public static final int CONTINUE_OUTPUT_INDEX = 1;
 
-    public SizeCollectionEntity()
+    public ContainsSetEntity()
     {
-        super("Size collection");
+        super("Item contained in collection", "Collection", Collection.class);
 
-        // Add input
-        addInputEntry(COLLECTION_INPUT_INDEX, "Collection", Collection.class);
+        // Inputs
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
-        // Add outputs
-        addOutputEntry(SIZE_OUTPUT_INDEX, "Size", Integer.class);
+        // Outputs
+        addOutputEntry(RESULT_OUTPUT_INDEX, "Result", Boolean.class);
         addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
     }
 
@@ -45,8 +43,14 @@ public class SizeCollectionEntity extends DefaultEntity
                 // Get collection
                 Collection collection = (Collection) objects[COLLECTION_INPUT_INDEX];
 
-                // Push size of collection in memory
-                program.pushInMemory(collection.size());
+                // Get item
+                Object item = objects[ITEM_INPUT_INDEX];
+
+                // Check if the item is in the collection
+                Boolean result = collection.contains(item);
+
+                // Push result in memory
+                program.pushInMemory(result);
             }
         };
     }

@@ -104,4 +104,10 @@ public class RealEntity extends DefaultVariableEntity
     {
         return new ModifyNumberEntity();
     }
+
+    @Override
+    public Class getVariableClass()
+    {
+        return Float.class;
+    }
 }

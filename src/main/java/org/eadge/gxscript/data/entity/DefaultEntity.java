@@ -136,7 +136,7 @@ public abstract class DefaultEntity implements Entity
     }
 
     @Override
-    public boolean hasUsedInputs()
+    public boolean hasInputsUsed()
     {
         for (int inputIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
@@ -154,6 +154,12 @@ public abstract class DefaultEntity implements Entity
     public Entity getInputEntity(int index)
     {
         return inputEntities.get(index);
+    }
+
+    @Override
+    public boolean isInputUsed(int index)
+    {
+        return getInputEntity(index) != null;
     }
 
     public int getInputIndex(String name)
@@ -246,6 +252,7 @@ public abstract class DefaultEntity implements Entity
             }
         }
         return -1;
+
     }
 
     public Collection<Entity> getOutputEntities(String name)
@@ -255,6 +262,13 @@ public abstract class DefaultEntity implements Entity
             return getOutputEntities(outputIndex);
         else
             return null;
+    }
+
+
+    @Override
+    public boolean isOutputUsed(int index)
+    {
+        return getOutputEntities(index).size() != 0;
     }
 
     @Override
@@ -696,7 +710,7 @@ public abstract class DefaultEntity implements Entity
         for (int inputIndex = 0, variableIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
             // If the input is taking variable and is used
-            if (isVariableInput(inputIndex) && isUsedInput(inputIndex))
+            if (isVariableInput(inputIndex) && isInputUsed(inputIndex))
             {
                 // Get variable address
                 Entity inputEntity = getInputEntity(inputIndex);
@@ -713,11 +727,6 @@ public abstract class DefaultEntity implements Entity
                 variableIndex++;
             }
         }
-    }
-
-    public boolean isUsedInput(int inputIndex)
-    {
-        return getInputEntity(inputIndex) != null;
     }
 
     /**
