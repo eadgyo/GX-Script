@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.imbrication.loops;
 
-import org.eadge.gxscript.classic.entity.types.collection.CollectionEntity;
+import org.eadge.gxscript.classic.entity.types.collection.ClassItem;
 import org.eadge.gxscript.data.entity.DefaultStartImbricationEntity;
 import org.eadge.gxscript.data.entity.Entity;
 import org.eadge.gxscript.data.script.Func;
@@ -55,7 +55,7 @@ public class ForEachEntity extends DefaultStartImbricationEntity
 
         if (inputIndex == COLLECTION_INPUT_INDEX)
         {
-            CollectionEntity collectionEntity = (CollectionEntity) entity;
+            ClassItem collectionEntity = (ClassItem) entity;
             setOutputClass(ITEM_OUTPUT_INDEX, collectionEntity.getItemClass());
         }
     }

@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class ArrayListEntity extends ListEntity
 {
-    public ArrayListEntity(Class defaultClass)
+    public ArrayListEntity()
     {
-        super(defaultClass);
+        super();
     }
 
     @Override

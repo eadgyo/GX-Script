@@ -4,14 +4,13 @@ import org.eadge.gxscript.data.entity.DefaultVariableEntity;
 import org.eadge.gxscript.data.entity.Entity;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by eadgyo on 03/08/16.
  *
  * Collection entity
  */
-public abstract class CollectionEntity extends DefaultVariableEntity
+public abstract class CollectionEntity extends DefaultVariableEntity implements ClassItem
 {
     public static final int SOURCE_INPUT_INDEX = 0;
     public static final int CLASS_INPUT_INDEX = 1;
@@ -21,20 +20,22 @@ public abstract class CollectionEntity extends DefaultVariableEntity
     public static final int CONTINUE_OUTPUT_INDEX   = 1;
 
     protected Class itemClass;
+    private Class defaultClass;
 
-    public CollectionEntity(String name, Class defaultClass)
+    public CollectionEntity(String name, Class collectionClass, Class defaultClass)
     {
         super(name);
 
+        this.defaultClass = defaultClass;
         itemClass = defaultClass;
 
-        // Add input
+        // Add inputs
         addInputEntryNotNeeded(SOURCE_INPUT_INDEX, "Source", Collection.class);
         addInputEntryNotNeeded(CLASS_INPUT_INDEX, "Class", Object.class);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
-        // Add output
-        addOutputEntry(COLLECTION_OUTPUT_INDEX, "List", List.class);
+        // Add outputs
+        addOutputEntry(COLLECTION_OUTPUT_INDEX, "Collection", collectionClass);
         addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
 
     }
@@ -52,7 +53,7 @@ public abstract class CollectionEntity extends DefaultVariableEntity
             }
 
             // Get output class
-            itemClass = ((CollectionEntity) getInputEntity(SOURCE_INPUT_INDEX)).getItemClass();
+            itemClass = ((ClassItem) getInputEntity(SOURCE_INPUT_INDEX)).getItemClass();
         }
         else if (inputIndex == CLASS_INPUT_INDEX)
         {
@@ -74,9 +75,17 @@ public abstract class CollectionEntity extends DefaultVariableEntity
         if (inputIndex == SOURCE_INPUT_INDEX || inputIndex == CLASS_INPUT_INDEX)
         {
             // Change output class
-            itemClass = null;
+            itemClass = defaultClass;
         }
     }
 
-    public abstract Class getItemClass();
+    public Class getItemClass()
+    {
+        return itemClass;
+    }
+
+    public void setItemClass(Class itemClass)
+    {
+        this.itemClass = itemClass;
+    }
 }

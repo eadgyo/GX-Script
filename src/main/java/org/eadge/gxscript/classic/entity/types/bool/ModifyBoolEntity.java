@@ -25,7 +25,7 @@ public class ModifyBoolEntity extends ModifyingEntity
         super("Modify bool");
 
         addInputEntry(MODIFIED_INPUT_INDEX, "Modified", Boolean.class);
-        addInputEntryNotNeeded(SOURCE_INPUT_INDEX, "Set", Number.class);
+        addInputEntryNotNeeded(SOURCE_INPUT_INDEX, "Set", Boolean.class);
         addInputEntryNotNeeded(NUMBER_INPUT_INDEX, "Number", Number.class);
 
         addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);

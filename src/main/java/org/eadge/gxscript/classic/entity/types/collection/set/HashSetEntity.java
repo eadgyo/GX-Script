@@ -11,9 +11,9 @@ import java.util.Set;
  */
 public class HashSetEntity extends SetEntity
 {
-    public HashSetEntity(Class defaultClass)
+    public HashSetEntity()
     {
-        super("HashSet", defaultClass);
+        super("HashSet");
     }
 
 

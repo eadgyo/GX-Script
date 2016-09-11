@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.collection.model;
 
-import org.eadge.gxscript.classic.entity.types.collection.CollectionEntity;
+import org.eadge.gxscript.classic.entity.types.collection.ClassItem;
 import org.eadge.gxscript.data.entity.DefaultEntity;
 import org.eadge.gxscript.data.entity.Entity;
 
@@ -31,7 +31,7 @@ public abstract class CollectionDefineOutput extends DefaultEntity
         if (inputIndex == COLLECTION_INPUT_INDEX)
         {
             // Get output class
-            Class itemClass = ((CollectionEntity) getInputEntity(COLLECTION_INPUT_INDEX)).getItemClass();
+            Class itemClass = ((ClassItem) getInputEntity(COLLECTION_INPUT_INDEX)).getItemClass();
 
             // Change input item class
             setOutputClass(ITEM_OUTPUT_INDEX, itemClass);

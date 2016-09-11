@@ -30,7 +30,14 @@ public abstract class DefaultVariableEntity extends DefaultEntity implements Var
      * @param outputIndex output modifiable index
      * @return Entity modifying variable at outputIndex
      */
-    public abstract ModifyingEntity createModificationEntity(int outputIndex);
+    public ModifyingEntity createModificationEntity(int outputIndex)
+    {
+        // Get output class
+        Class outputClass = getOutputClass(outputIndex);
+
+        // Create a default outputClass en return a default modifying entity
+        return new DefaultModifyingEntity("Modify " + outputClass.toString(), outputClass);
+    }
 
     /**
      * Check if an output is modifiable

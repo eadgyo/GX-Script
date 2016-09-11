@@ -1,7 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.text;
 
 import org.eadge.gxscript.data.entity.DefaultVariableEntity;
-import org.eadge.gxscript.data.entity.ModifyingEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 
@@ -39,12 +38,6 @@ public class TextEntity extends DefaultVariableEntity
         this();
 
         this.defaultString = defaultString;
-    }
-
-    @Override
-    public ModifyingEntity createModificationEntity(int outputIndex)
-    {
-        return null;
     }
 
     @Override

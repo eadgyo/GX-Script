@@ -1,7 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.collection.set;
 
 import org.eadge.gxscript.classic.entity.types.collection.CollectionEntity;
-import org.eadge.gxscript.data.entity.ModifyingEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 
@@ -15,15 +14,9 @@ import java.util.Set;
  */
 public abstract class SetEntity extends CollectionEntity
 {
-    public SetEntity(String name, Class defaultClass)
+    public SetEntity(String name)
     {
-        super(name, defaultClass);
-    }
-
-    @Override
-    public ModifyingEntity createModificationEntity(int outputIndex)
-    {
-        return null;
+        super(name, Set.class, DEFAULT_CLASS);
     }
 
     @Override
@@ -67,18 +60,6 @@ public abstract class SetEntity extends CollectionEntity
                 }
             };
         }
-    }
-
-
-
-    public Class getItemClass()
-    {
-        return itemClass;
-    }
-
-    public void setItemClass(Class itemClass)
-    {
-        this.itemClass = itemClass;
     }
 
     public abstract Set createSet();

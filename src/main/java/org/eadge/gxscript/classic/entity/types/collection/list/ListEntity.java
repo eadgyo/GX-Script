@@ -1,7 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.collection.list;
 
 import org.eadge.gxscript.classic.entity.types.collection.CollectionEntity;
-import org.eadge.gxscript.data.entity.ModifyingEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 
@@ -15,15 +14,9 @@ import java.util.List;
  */
 public abstract class ListEntity extends CollectionEntity
 {
-    public ListEntity(Class defaultClass)
+    public ListEntity()
     {
-        super("List", defaultClass);
-    }
-
-    @Override
-    public ModifyingEntity createModificationEntity(int outputIndex)
-    {
-        return null;
+        super("List", List.class, DEFAULT_CLASS);
     }
 
     @Override
@@ -67,16 +60,6 @@ public abstract class ListEntity extends CollectionEntity
                 }
             };
         }
-    }
-
-    public Class getItemClass()
-    {
-        return itemClass;
-    }
-
-    public void setItemClass(Class itemClass)
-    {
-        this.itemClass = itemClass;
     }
 
     public abstract List createList();
