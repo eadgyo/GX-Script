@@ -79,4 +79,5 @@ public interface StartImbricationEntity extends Entity
                                   FuncAddress[] imbricatedStartFuncAddresses,
                                   ArrayList<Func> calledFunctions,
                                   ArrayList<FuncDataAddresses> calledFunctionsParameters);
+
 }

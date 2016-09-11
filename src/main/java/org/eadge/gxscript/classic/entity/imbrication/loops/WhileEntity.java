@@ -32,7 +32,7 @@ public class WhileEntity extends DefaultStartImbricationEntity
 
         // Output
         // Do
-        addOutputImbricatedEntry(DO_OUTPUT_INDEX, 0, "Do", void.class);
+        addOutputImbricatedEntry(DO_OUTPUT_INDEX, 0, "Do", Void.class);
 
         // Continue
         addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);

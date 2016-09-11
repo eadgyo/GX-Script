@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.collection.common;
 
-import org.eadge.gxscript.data.entity.special.OneInputDefinesOneOutput;
+import org.eadge.gxscript.data.entity.model.OneInputDefinesOneOutput;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 

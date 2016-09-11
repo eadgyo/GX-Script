@@ -6,6 +6,8 @@ import java.util.Collection;
 
 /**
  * Created by eadgyo on 03/08/16.
+ *
+ * Debug compiled GXScript
  */
 public class CompiledGXScript
 {

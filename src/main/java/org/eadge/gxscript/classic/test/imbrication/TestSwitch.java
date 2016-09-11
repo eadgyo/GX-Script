@@ -3,11 +3,8 @@ package org.eadge.gxscript.classic.test.imbrication;
 import org.eadge.gxscript.classic.entity.displayer.PrintEntity;
 import org.eadge.gxscript.classic.entity.imbrication.conditionals.SwitchEntity;
 import org.eadge.gxscript.classic.entity.types.number.IntEntity;
-import org.eadge.gxscript.data.script.CompiledGXScript;
 import org.eadge.gxscript.data.script.RawGXScriptDebug;
-import org.eadge.gxscript.tools.check.GXValidator;
-import org.eadge.gxscript.tools.compile.GXCompiler;
-import org.eadge.gxscript.tools.run.GXRunner;
+import org.eadge.gxscript.test.PrintTest;
 
 import java.io.IOException;
 
@@ -22,10 +19,10 @@ public class TestSwitch
     {
         System.out.println("Test switch");
 
-        testSwitch();
+        PrintTest.printResult(test(), "Check switch script");;
     }
 
-    public static void testSwitch()
+    public static boolean test()
     {
         RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
 
@@ -72,18 +69,6 @@ public class TestSwitch
         rawGXScript.addEntity("switch", switchEntity);
         rawGXScript.addEntity("int0", intEntity);
 
-        GXValidator validator = new GXValidator();
-        if (validator.validate(rawGXScript))
-        {
-            GXCompiler compiler = new GXCompiler();
-            CompiledGXScript compiledGXScript = compiler.compile(rawGXScript);
-
-            GXRunner runner = new GXRunner();
-            runner.run(compiledGXScript);
-        }
-        else
-        {
-            System.out.println("Problem");
-        }
+        return RunTest.run(rawGXScript);
     }
 }

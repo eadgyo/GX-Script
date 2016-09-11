@@ -39,15 +39,14 @@ public class GXCompiler
     {
         public Map<Entity, EntityOutputIndices> entityToOutputIndices;
     }
-
-
+    
     public CompiledGXScript compile(RawGXScript rawGXScript)
     {
         Collection<Entity> entities = rawGXScript.getEntities();
 
         // Create level 0 of imbrication, it's the root of the tree
         // All entities are in this level
-        ImbricationNodeC root = new ImbricationNodeC(entities);
+        ImbricationNodeC root = createImbricationNode(entities);
 
         // Get starting entities
         Collection<Entity> startingEntities = rawGXScript.getStartingEntities();
@@ -83,5 +82,10 @@ public class GXCompiler
             Tools.endImbrication(root);
         }
         return root.compile();
+    }
+
+    protected ImbricationNodeC createImbricationNode(Collection<Entity> entities)
+    {
+        return new ImbricationNodeC(entities);
     }
 }

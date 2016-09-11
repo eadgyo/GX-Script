@@ -1,4 +1,4 @@
-package org.eadge.gxscript.data.entity.special;
+package org.eadge.gxscript.data.entity.model;
 
 import org.eadge.gxscript.data.entity.DefaultEntity;
 import org.eadge.gxscript.data.entity.Entity;

@@ -1,6 +1,6 @@
-package org.eadge.gxscript.classic.entity.types.number.operations.maths.models;
+package org.eadge.gxscript.classic.entity.types.number.operations.maths.model;
 
-import org.eadge.gxscript.data.entity.special.TwoInputsDefineOneOutput;
+import org.eadge.gxscript.data.entity.model.TwoInputsDefineOneOutput;
 
 /**
  * Created by eadgyo on 04/09/16.

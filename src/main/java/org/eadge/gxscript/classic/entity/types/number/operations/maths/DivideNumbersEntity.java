@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.number.operations.maths;
 
-import org.eadge.gxscript.classic.entity.types.number.operations.maths.models.MathTwoInputsModel;
+import org.eadge.gxscript.classic.entity.types.number.operations.maths.model.MathTwoInputsModel;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 
@@ -11,7 +11,7 @@ import org.eadge.gxscript.data.script.Program;
  */
 public class DivideNumbersEntity extends MathTwoInputsModel
 {
-    public DivideNumbersEntity(String operation)
+    public DivideNumbersEntity()
     {
         super("Divide");
     }

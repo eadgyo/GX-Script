@@ -2,6 +2,8 @@ package org.eadge.gxscript.data.script.address;
 
 /**
  * Created by eadgyo on 10/08/16.
+ *
+ * Data address
  */
 public class DataAddress extends Address
 {
@@ -12,6 +14,11 @@ public class DataAddress extends Address
     public DataAddress(int address)
     {
         super(address);
+    }
+
+    public DataAddress(DataAddress dataAddress)
+    {
+        this(dataAddress.getAddress());
     }
 
     public DataAddress clone()

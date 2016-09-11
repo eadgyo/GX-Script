@@ -84,12 +84,19 @@ public class ImbricationNode
                                            Set<Entity> inImbricationEntities)
     {
         // Create imbrication
-        ImbricationNode child = new ImbricationNode(imbricationIndex, startImbricationEntity, inImbricationEntities);
+        ImbricationNode child = createImbrication(imbricationIndex, startImbricationEntity, inImbricationEntities);
 
         // Push imbrication
         addChild(child);
 
         return child;
+    }
+
+    protected ImbricationNode createImbrication(int imbricationIndex,
+                                                 StartImbricationEntity startImbricationEntity,
+                                                 Set<Entity> inImbricationEntities)
+    {
+        return new ImbricationNode(imbricationIndex, startImbricationEntity, inImbricationEntities);
     }
 
     /**

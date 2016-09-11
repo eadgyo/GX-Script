@@ -14,6 +14,7 @@ public class EqualToNumberEntity extends DefaultEntity
 {
     public static final int V0_INPUT_INDEX = 0;
     public static final int V1_INPUT_INDEX = 1;
+    public static final int NEXT_INPUT_INDEX = 2;
 
     public final static int RESULT_OUTPUT_INDEX = 0;
     public final static int CONTINUE_OUTPUT_INDEX = 1;
@@ -23,11 +24,10 @@ public class EqualToNumberEntity extends DefaultEntity
         super("Equal");
 
         addInputEntry(V0_INPUT_INDEX, "v0", Number.class);
-
         addInputEntry(V1_INPUT_INDEX, "v1", Number.class);
+        addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         addOutputEntry(RESULT_OUTPUT_INDEX, "Result", Boolean.class);
-
         addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
     }
 

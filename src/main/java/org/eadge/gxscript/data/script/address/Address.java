@@ -86,4 +86,12 @@ public class Address implements Cloneable
     {
         return new Address(address + 1);
     }
+
+    @Override
+    public String toString()
+    {
+        return "Address{" +
+                "address=" + address +
+                '}';
+    }
 }

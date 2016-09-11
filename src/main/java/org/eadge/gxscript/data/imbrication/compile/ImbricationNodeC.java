@@ -19,17 +19,17 @@ public class ImbricationNodeC extends ImbricationNode
     /**
      * Called func
      */
-    private ArrayList<Func> calledFunctions = new ArrayList<>();
+    protected ArrayList<Func> calledFunctions = new ArrayList<>();
 
     /**
      * Indices of parameters of called function
      */
-    private ArrayList<FuncDataAddresses> calledFunctionsParameters = new ArrayList<>();
+    protected ArrayList<FuncDataAddresses> calledFunctionsParameters = new ArrayList<>();
 
     /**
      * Saved Outputs addresses at this exact level of imbrication
      */
-    private Map<Entity, OutputAddresses> outputAddressesMap = new HashMap<>();
+    protected Map<Entity, OutputAddresses> outputAddressesMap = new HashMap<>();
 
     /**
      * All Saved Outputs addresses at HIGHER level of imbrication
@@ -40,12 +40,12 @@ public class ImbricationNodeC extends ImbricationNode
     /**
      * Current top stack data addresses
      */
-    private DataAddress currentDataAddress = new DataAddress(0);
+    protected DataAddress currentDataAddress = new DataAddress(0);
 
     /**
      * Save imbrication node to make imbrication code continuous (call and stack)
      */
-    private Map<StartImbricationEntity, ArrayList<ImbricationNodeC>> savedParallelsImbricationsNodes = new HashMap<>();
+    protected Map<StartImbricationEntity, ArrayList<ImbricationNodeC>> savedParallelsImbricationsNodes = new HashMap<>();
 
     public ImbricationNodeC(int imbricationNode,
                             StartImbricationEntity startImbricationEntity,
@@ -75,7 +75,7 @@ public class ImbricationNodeC extends ImbricationNode
                                             Set<Entity> inImbricationEntities)
     {
         // Create imbrication
-        ImbricationNodeC child = new ImbricationNodeC(imbricationIndex, startImbricationEntity, inImbricationEntities);
+        ImbricationNodeC child = createImbrication(imbricationIndex, startImbricationEntity, inImbricationEntities);
 
         // Push imbrication
         addChild(child);
@@ -89,12 +89,20 @@ public class ImbricationNodeC extends ImbricationNode
         return child;
     }
 
+    @Override
+    protected ImbricationNodeC createImbrication(int imbricationIndex,
+                                                 StartImbricationEntity startImbricationEntity,
+                                                 Set<Entity> inImbricationEntities)
+    {
+        return new ImbricationNodeC(imbricationIndex, startImbricationEntity, inImbricationEntities);
+    }
+
     /**
      * Save imbrication node to make parallels imbrication node continuous
      *
      * @param child saved imbrication node
      */
-    private void saveImbricationNode(ImbricationNodeC child)
+    protected void saveImbricationNode(ImbricationNodeC child)
     {
         StartImbricationEntity startImbricationEntity = child.getStartImbricationEntity();
 
@@ -125,12 +133,12 @@ public class ImbricationNodeC extends ImbricationNode
         super.treatStartImbricationEntity(startImbricationEntity);
 
         // Get saved imbrication nodes
-        ArrayList<ImbricationNodeC> imbricationNodeCs = savedParallelsImbricationsNodes.remove(startImbricationEntity);
-        assert (imbricationNodeCs != null);
+        ArrayList<ImbricationNodeC> imbricationNodes = savedParallelsImbricationsNodes.remove(startImbricationEntity);
+        assert (imbricationNodes != null);
 
         // --> Start Entity imbrication
         // Get imbricated start function
-        FuncAddress[] funcAddresses = getFuncAddresses(imbricationNodeCs);
+        FuncAddress[] funcAddresses = getFuncAddresses(imbricationNodes);
 
         // Add code (call functions and parameters) of start imbrication entity
         startImbricationEntity.pushStartImbricationCode(outputAddressesMap,
@@ -143,7 +151,7 @@ public class ImbricationNodeC extends ImbricationNode
 
         // --> Imbricated entities
         // Push all saved code of all imbricated entities
-        updateAndPushCode(imbricationNodeCs);
+        updateAndPushCode(imbricationNodes);
 
         // --> After imbrication entities
         // Create func imbricated entities
@@ -178,7 +186,7 @@ public class ImbricationNodeC extends ImbricationNode
      *
      * @return address of imbrication
      */
-    private FuncAddress[] getFuncAddresses(ArrayList<ImbricationNodeC> imbricationNodeCs)
+    protected FuncAddress[] getFuncAddresses(ArrayList<ImbricationNodeC> imbricationNodeCs)
     {
         FuncAddress funcsAddresses[] = new FuncAddress[imbricationNodeCs.size() + 1];
 
@@ -202,17 +210,12 @@ public class ImbricationNodeC extends ImbricationNode
         return funcsAddresses;
     }
 
-    private void saveOutputAddresses(Collection<ImbricationNodeC> imbricationNodeCs)
-    {
-
-    }
-
     /**
      * Remove parallels saved imbrications nodes, and merge code with this level of imbrication
      *
      * @param imbricationNodeCs used collection of imbrication with code
      */
-    private void updateAndPushCode(Collection<ImbricationNodeC> imbricationNodeCs)
+    protected void updateAndPushCode(Collection<ImbricationNodeC> imbricationNodeCs)
     {
         // Push code in the right order
         for (ImbricationNodeC imbricationNodeC : imbricationNodeCs)
@@ -227,7 +230,7 @@ public class ImbricationNodeC extends ImbricationNode
      *
      * @param imbricationNodeC used imbrication node
      */
-    private void updateAndPushCode(ImbricationNodeC imbricationNodeC)
+    protected void updateAndPushCode(ImbricationNodeC imbricationNodeC)
     {
         // Update functions addresses of this imbrication node
         updateFuncsAddresses(imbricationNodeC.getCalledFunctionsParameters());
@@ -304,7 +307,7 @@ public class ImbricationNodeC extends ImbricationNode
      * Treat internal imbricated outputs on this imbricated level
      * For example, int used for FOR Loops
      */
-    public void treatImbricationOutputs()
+    private void treatImbricationOutputs()
     {
         // Treat imbricated index start imbrication
         OutputAddresses outputAddresses = startImbricationEntity.createAndAllocImbricatedOutputs(imbricationOutputIndex,
@@ -318,7 +321,7 @@ public class ImbricationNodeC extends ImbricationNode
      *
      * @param startImbricationEntity used start imbrication entity
      */
-    public void treatNotImbricatedOutputs(StartImbricationEntity startImbricationEntity)
+    private void treatNotImbricatedOutputs(StartImbricationEntity startImbricationEntity)
     {
         // Create NOT imbricated outputs and register addresses in map addresses
         OutputAddresses outputAddresses = startImbricationEntity.createAndAllocOutputs(currentDataAddress);
