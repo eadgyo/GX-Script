@@ -165,7 +165,7 @@ public interface Entity
     /**
      * Get number of output returning variables
      *
-     * @return number of output returning variables
+     * @return number of outputs returning variables
      */
     public abstract int getNumberOfVariableOutput();
 
@@ -265,6 +265,13 @@ public interface Entity
      * @return number of input taking variables
      */
     public abstract int getNumberOfVariableInput();
+
+    /**
+     * Get number of used input taking variables
+     *
+     * @return number of inputs taking variables
+     */
+    public abstract int getNumberOfUsedVariableInput();
 
     /**
      * Check if an output gives variable

@@ -46,7 +46,10 @@ public class DoWhileEntity extends DefaultStartImbricationEntity
             @Override
             public void run(Program program)
             {
-                Object[] objects = program.loadCurrentParametersObjects();
+                Object[] objects;
+
+                // Save start func address of do while
+                FuncAddress savedDoWhileFunc = program.getCurrentFuncAddress();
 
                 // Get addresses of imbracted functions
                 FuncImbricationDataAddresses funcParameters = program.getCurrentFuncImbricationParameters();
@@ -56,14 +59,7 @@ public class DoWhileEntity extends DefaultStartImbricationEntity
 
                 do
                 {
-                    // Save the current state of memory
-                    program.pushMemoryLevel();
-
-                    // Call functions
-                    program.runFromAndUntil(doAddress, continueAddress);
-
-                    // Remove added memory
-                    program.popMemoryLevel();
+                    program.runImbrication(doAddress, continueAddress, savedDoWhileFunc);
 
                     // Update in memory objects
                     objects = program.loadCurrentParametersObjects();

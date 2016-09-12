@@ -321,6 +321,22 @@ public abstract class DefaultEntity implements Entity
     }
 
     @Override
+    public int getNumberOfUsedVariableInput()
+    {
+        int numberOfUsedVariableInput = 0;
+
+        for (Integer indexVariableInput : indicesVariableInputs)
+        {
+            if (isInputUsed(indexVariableInput))
+            {
+                numberOfUsedVariableInput++;
+            }
+        }
+
+        return numberOfUsedVariableInput;
+    }
+
+    @Override
     public boolean isVariableInput(int inputIndex)
     {
         return indicesVariableInputs.contains(inputIndex);
@@ -816,12 +832,12 @@ public abstract class DefaultEntity implements Entity
     public FuncDataAddresses createAndLinkFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap)
     {
         // Create function data addresses (inputs of the entity)
-        FuncDataAddresses funcDataAddresses = new FuncDataAddresses(getNumberOfVariableInput());
+        FuncDataAddresses funcDataAddresses = new FuncDataAddresses(getNumberOfUsedVariableInput());
 
         // Link data addresses
         for (int inputIndex = 0, variableIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
-            if (isVariableInput(inputIndex))
+            if (isVariableInput(inputIndex) && isInputUsed(inputIndex))
             {
                 Entity inputEntity = getInputEntity(inputIndex);
 

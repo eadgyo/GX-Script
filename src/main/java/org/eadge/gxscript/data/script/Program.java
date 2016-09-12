@@ -159,7 +159,6 @@ public class Program
         this.currentFuncAddress.setAddress(currentFuncAddress);
     }
 
-
     /**
      * Set the address of the next read function
      *
@@ -327,5 +326,28 @@ public class Program
         {
             setCurrentFuncAddress(targetAddress);
         }
+    }
+
+    /**
+     * Run the program in a imbrication level, from the sourcea address, and stopping at the target address. At the end,
+     * restore the savedBockAddress
+     *
+     * @param sourceAddress    source address
+     * @param targetAddress    target address, not read
+     * @param savedBlockAddress restored address at the end
+     */
+    public void runImbrication(FuncAddress sourceAddress, FuncAddress targetAddress, FuncAddress savedBlockAddress)
+    {
+        // Save the current state of memory
+        pushMemoryLevel();
+
+        // Call functions
+        runFromAndUntil(sourceAddress, targetAddress);
+
+        // Remove added memory
+        popMemoryLevel();
+
+        // Reset to
+        setCurrentFuncAddress(savedBlockAddress);
     }
 }

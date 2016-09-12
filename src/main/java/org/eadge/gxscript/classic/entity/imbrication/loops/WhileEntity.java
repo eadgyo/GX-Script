@@ -48,6 +48,9 @@ public class WhileEntity extends DefaultStartImbricationEntity
             {
                 Object[] objects = program.loadCurrentParametersObjects();
 
+                // Save current address
+                FuncAddress savedWhileAdress = program.getCurrentFuncAddress().clone();
+
                 // Get addresses of imbracted functions
                 FuncImbricationDataAddresses funcParameters = program.getCurrentFuncImbricationParameters();
 
@@ -56,14 +59,7 @@ public class WhileEntity extends DefaultStartImbricationEntity
 
                 while ((Boolean) objects[TEST_INPUT_INDEX])
                 {
-                    // Save the current state of memory
-                    program.pushMemoryLevel();
-
-                    // Call functions
-                    program.runFromAndUntil(doAddress, continueAddress);
-
-                    // Remove added memory
-                    program.popMemoryLevel();
+                    program.runImbrication(doAddress, continueAddress, savedWhileAdress);
 
                     // Update in memory objects
                     objects = program.loadCurrentParametersObjects();

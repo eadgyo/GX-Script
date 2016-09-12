@@ -94,5 +94,4 @@ public class TestWhile
         rawGXScript.addEntityRecursiveSearch(intEntity);
         return RunTest.run(rawGXScript);
     }
-
 }
