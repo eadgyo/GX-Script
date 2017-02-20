@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * Entity can have one entity per input and multiples entities per output
  */
-public interface Entity
+public interface Entity extends Cloneable
 {
     /**
      * Used to reset class
