@@ -23,6 +23,8 @@ public interface Entity extends Cloneable
      */
     public static final Class DEFAULT_CLASS = Object.class;
 
+    public abstract Object clone();
+
     //----------------------------
     //---------- Input -----------
     //----------------------------

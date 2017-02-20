@@ -88,6 +88,20 @@ public abstract class DefaultEntity implements Entity
         this.name = "";
     }*/
 
+    @Override
+    public Object clone()
+    {
+        try
+        {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public String getName()
     {
         return name;
