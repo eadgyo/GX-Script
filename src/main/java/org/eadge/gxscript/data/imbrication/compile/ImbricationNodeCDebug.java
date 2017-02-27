@@ -3,8 +3,10 @@ package org.eadge.gxscript.data.imbrication.compile;
 import org.eadge.gxscript.data.entity.Entity;
 import org.eadge.gxscript.data.entity.StartImbricationEntity;
 import org.eadge.gxscript.data.script.DebugCompiledGXScript;
+import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.address.DataAddress;
 import org.eadge.gxscript.data.script.address.DebugMemory;
+import org.eadge.gxscript.data.script.address.FuncDataAddresses;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,9 +37,14 @@ public class ImbricationNodeCDebug extends ImbricationNodeC
         super(allElements);
     }
 
-    public ImbricationNodeCDebug(DataAddress dataAddress, Collection<Entity> allElements)
+    public ImbricationNodeCDebug(DataAddress dataAddress,
+                                 Collection<Func> GXScriptFuncParameters,
+                                 Collection<FuncDataAddresses> GXScriptFuncParametersAddresses,
+                                 Collection<Entity> allElements,
+                                 ArrayList<DebugMemory> debugMemoriesAddresses)
     {
-        super(dataAddress, allElements);
+        super(dataAddress, GXScriptFuncParameters, GXScriptFuncParametersAddresses, allElements);
+        this.debugMemoriesAddresses = debugMemoriesAddresses;
     }
 
     public ImbricationNodeCDebug(Set<Entity> allElements)
