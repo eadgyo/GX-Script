@@ -23,7 +23,7 @@ public class SizeCollectionEntity extends DefaultEntity
     {
         super("Size collection");
 
-        // Add input
+        // Add function
         addInputEntry(COLLECTION_INPUT_INDEX, "Collection", Collection.class);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 

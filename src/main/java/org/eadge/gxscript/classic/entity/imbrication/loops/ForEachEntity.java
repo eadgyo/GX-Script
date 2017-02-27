@@ -34,7 +34,7 @@ public class ForEachEntity extends DefaultStartImbricationEntity
         // Add collection source
         addInputEntry(COLLECTION_INPUT_INDEX, "Collection", Collection.class);
 
-        // Add next input
+        // Add next function
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Output

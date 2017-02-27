@@ -100,7 +100,7 @@ public class BoolEntity extends DefaultVariableEntity
                     Object[] objects = program.loadCurrentParametersObjects();
 
                     // Get value
-                    Number inputValue = (Number) (objects[SET_INPUT_INDEX]); // Set input and not NUMBER (there is only one input)
+                    Number inputValue = (Number) (objects[SET_INPUT_INDEX]); // Set function and not NUMBER (there is only one function)
 
                     // Push in memory this value transformed in boolean.
                     program.pushInMemory(inputValue.doubleValue() != 0);

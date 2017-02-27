@@ -21,7 +21,7 @@ public class AddSetEntity extends CollectionDefineInput
     {
         super("Add item in set", "Set", Set.class);
 
-        // Add input
+        // Add function
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add output

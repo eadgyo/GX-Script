@@ -39,7 +39,7 @@ public abstract class DefaultEntity implements Entity
     protected ArrayList<Class> inputClasses = new ArrayList<>();
 
     /**
-     * Linked on input entities
+     * Linked on function entities
      */
     protected ArrayList<Entity> inputEntities = new ArrayList<>();
 
@@ -139,7 +139,7 @@ public abstract class DefaultEntity implements Entity
 
         for (int inputIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
-            // If the input is used
+            // If the function is used
             if (getInputEntity(inputIndex) != null)
             {
                 usedInput++;
@@ -154,7 +154,7 @@ public abstract class DefaultEntity implements Entity
     {
         for (int inputIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
-            // If the input is used
+            // If the function is used
             if (getInputEntity(inputIndex) != null)
             {
                 return true;
@@ -306,13 +306,13 @@ public abstract class DefaultEntity implements Entity
     @Override
     public boolean hasAllNeededInput()
     {
-        // Check if all needed input are linked
+        // Check if all needed function are linked
         for (Integer indexNeededInput : indicesNeededInputs)
         {
-            // If there is one input entity
+            // If there is one function entity
             if (getInputEntity(indexNeededInput) == null)
             {
-                // It miss needed input
+                // It miss needed function
                 return false;
             }
         }
@@ -385,27 +385,27 @@ public abstract class DefaultEntity implements Entity
     }
 
     /**
-     * Add not needed input entry at the given index
-     * @param inputIndex input index
-     * @param inputName name of input entry
-     * @param cl class of the input, void if it's just a link to another entity
+     * Add not needed function entry at the given index
+     * @param inputIndex function index
+     * @param inputName name of function entry
+     * @param cl class of the function, void if it's just a link to another entity
      */
     public void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl)
     {
-        // If add between two existing input entries
+        // If add between two existing function entries
         if (inputIndex != getNumberOfInputs())
         {
             addOffsetInput(inputIndex, 1);
         }
 
-        // If the input entry is not a function linker
+        // If the function entry is not a function linker
         if (cl != Void.class)
         {
             // Input entry is a variable entry
             indicesVariableInputs.add(inputIndex);
         }
 
-        // Add data associated with input entry
+        // Add data associated with function entry
         inputEntities.add(inputIndex, null);
         outputFromInputEntitiesIndices.add(inputIndex, -1);
         inputClasses.add(inputIndex, cl);
@@ -414,10 +414,10 @@ public abstract class DefaultEntity implements Entity
 
 
     /**
-     * Change input entry name
+     * Change function entry name
      *
-     * @param inputIndex input index
-     * @param inputName new input name
+     * @param inputIndex function index
+     * @param inputName new function name
      */
     public void setInputName(int inputIndex, String inputName)
     {
@@ -425,8 +425,8 @@ public abstract class DefaultEntity implements Entity
     }
 
     /**
-     * Change set input class and remove input if the new class is not compatible with the old one
-     * @param inputIndex input entry index
+     * Change set function class and remove function if the new class is not compatible with the old one
+     * @param inputIndex function entry index
      * @param cl new class
      */
     public void setInputClass(int inputIndex, Class cl)
@@ -434,42 +434,42 @@ public abstract class DefaultEntity implements Entity
         // If new link class is not compatible with the last one
         if (!Tools.isEqualOrDerivedFrom(cl, getInputClass(inputIndex)))
         {
-            // Remove input linked entities
+            // Remove function linked entities
             unlinkAsInput(inputIndex);
         }
 
-        // Change input class
+        // Change function class
         inputClasses.set(inputIndex, cl);
     }
 
     /**
-     * Remove linked input entity
+     * Remove linked function entity
      *
-     * @param inputIndex input index
+     * @param inputIndex function index
      */
     public void clearLinkedInput(int inputIndex)
     {
-        // Remove linked to input entry entities
+        // Remove linked to function entry entities
         unlinkAsInput(inputIndex);
     }
 
     /**
-     * Remove one input entry
-     * @param inputIndex input index
+     * Remove one function entry
+     * @param inputIndex function index
      */
     public void removeInputEntry(int inputIndex)
     {
         // Remove linked to entry entities
         clearLinkedInput(inputIndex);
 
-        // Remove associated data with input entry
+        // Remove associated data with function entry
         indicesVariableOutputs.remove(inputIndex);
         inputEntities.remove(inputIndex);
         outputFromInputEntitiesIndices.remove(inputIndex);
         inputClasses.remove(inputIndex);
         inputsNames.remove(inputIndex);
 
-        // If the input is not the last
+        // If the function is not the last
         if (inputIndex != getNumberOfInputs())
         {
             // Update inputs indices of upper inputs
@@ -478,8 +478,8 @@ public abstract class DefaultEntity implements Entity
     }
 
     /**
-     * Add offset on input indices
-     * @param startInputIndex inclusive start input index
+     * Add offset on function indices
+     * @param startInputIndex inclusive start function index
      * @param offset offset to add to index
      */
     protected void addOffsetInput(int startInputIndex, int offset)
@@ -488,14 +488,14 @@ public abstract class DefaultEntity implements Entity
         {
             int updatedIndex = inputIndex + offset;
 
-            // If the input is needed
+            // If the function is needed
             if (isInputNeeded(inputIndex))
             {
                 indicesNeededInputs.remove(inputIndex);
                 indicesNeededInputs.add(updatedIndex);
             }
 
-            // If the input is already linked
+            // If the function is already linked
             Entity inputEntity = getInputEntity(inputIndex);
             if (inputEntity != null)
             {
@@ -503,7 +503,7 @@ public abstract class DefaultEntity implements Entity
                 inputEntity.changeIndexOfInputFromEntityOnOutput(outputIndex, this, updatedIndex);
             }
 
-            // If the input is a variable entry
+            // If the function is a variable entry
             if (isVariableInput(inputIndex))
             {
                 indicesVariableInputs.remove(inputIndex);
@@ -597,7 +597,7 @@ public abstract class DefaultEntity implements Entity
             unlinkAsOutput(outputIndex);
         }
 
-        // Change input class
+        // Change function class
         inputClasses.set(outputIndex, cl);
     }
 
@@ -719,7 +719,7 @@ public abstract class DefaultEntity implements Entity
 
     /**
      * Create collection of addresses containing parameters addresses of function
-     * @param addressesMap map to get input memory stack
+     * @param addressesMap map to get function memory stack
      * @return created parameters addresses of function
      */
     protected FuncDataAddresses createFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap)
@@ -731,15 +731,15 @@ public abstract class DefaultEntity implements Entity
 
     /**
      * Fill parameters Data addresses of function
-     * @param addressesMap map to get input memory stack
+     * @param addressesMap map to get function memory stack
      * @param funcDataAddresses filled Data parameters addresses for function call
      */
     protected void initFuncDataAddresses(Map<Entity, OutputAddresses> addressesMap, FuncDataAddresses funcDataAddresses)
     {
-        // For each variable input
+        // For each variable function
         for (int inputIndex = 0, variableIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
-            // If the input is taking variable and is used
+            // If the function is taking variable and is used
             if (isVariableInput(inputIndex) && isInputUsed(inputIndex))
             {
                 // Get variable address
@@ -760,10 +760,10 @@ public abstract class DefaultEntity implements Entity
     }
 
     /**
-     * Create a link between this entity considered as output and one other input entity
+     * Create a link between this entity considered as output and one other function entity
      * @param outputIndex output index
-     * @param entityInput other entity input index
-     * @param entity input entity
+     * @param entityInput other entity function index
+     * @param entity function entity
      */
     public void linkAsOutput(int outputIndex, int entityInput, Entity entity)
     {
@@ -809,7 +809,7 @@ public abstract class DefaultEntity implements Entity
         Func func = getFunc();
         calledFunctions.add(func);
 
-        // Link input to corresponding outputs addresses and add it to called function addresses
+        // Link function to corresponding outputs addresses and add it to called function addresses
         FuncDataAddresses funcDataAddresses = createAndLinkFuncDataAddresses(addressesMap);
         calledFunctionAddresses.add(funcDataAddresses);
     }
@@ -855,7 +855,7 @@ public abstract class DefaultEntity implements Entity
             {
                 Entity inputEntity = getInputEntity(inputIndex);
 
-                // If the entity is linked at this input
+                // If the entity is linked at this function
                 if (inputEntity != null)
                 {
                     // Get the corresponding outputs addresses
@@ -865,15 +865,15 @@ public abstract class DefaultEntity implements Entity
 
                     int outputIndex = getIndexOfOutputFromEntityOnInput(inputIndex);
 
-                    // Get the address of the corresponding output/input link
+                    // Get the address of the corresponding output/function link
                     DataAddress outputAddress = outputAddresses.getOutputAddress(outputIndex);
 
-                    // Store the output address, use variable index instead of input index
+                    // Store the output address, use variable index instead of function index
                     funcDataAddresses.setInputAddress(variableIndex, outputAddress);
                 }
                 else
                 {
-                    // Use variable index instead of input index, funcDataAddresses doesn't contain non
+                    // Use variable index instead of function index, funcDataAddresses doesn't contain non
                     // variables inputs
                     funcDataAddresses.setInputAddress(variableIndex, null);
                 }
@@ -944,7 +944,7 @@ public abstract class DefaultEntity implements Entity
         // Check for all inputs
         for (int index = 0; index < getNumberOfInputs(); index++)
         {
-            // If the input is not valid
+            // If the function is not valid
             if (!isValidInput(index))
             {
                 return false;
@@ -954,17 +954,17 @@ public abstract class DefaultEntity implements Entity
     }
 
     /**
-     * Check if the input at the index is valid
+     * Check if the function at the index is valid
      *
-     * @param inputIndex input index
+     * @param inputIndex function index
      *
-     * @return true if the input is valid, false otherwise
+     * @return true if the function is valid, false otherwise
      */
     public boolean isValidInput(int inputIndex)
     {
         Entity inputEntity = getInputEntity(inputIndex);
 
-        // If input is not linked
+        // If function is not linked
         if (inputEntity == null)
             return true;
 
@@ -1000,7 +1000,7 @@ public abstract class DefaultEntity implements Entity
         // Check for all outputs
         for (int index = 0; index < getNumberOfOutputs(); index++)
         {
-            // If the input is not valid
+            // If the function is not valid
             if (!isValidOutput(index))
             {
                 return false;

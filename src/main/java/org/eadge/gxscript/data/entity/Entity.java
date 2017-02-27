@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * Parent Entity model
  *
- * Entity can have one entity per input and multiples entities per output
+ * Entity can have one entity per function and multiples entities per output
  */
 public interface Entity extends Cloneable
 {
@@ -30,97 +30,97 @@ public interface Entity extends Cloneable
     //----------------------------
 
     /**
-     * Get the class of the input object at the index
+     * Get the class of the function object at the index
      *
-     * @param index input index
+     * @param index function index
      *
-     * @return class of the input object at the index
+     * @return class of the function object at the index
      */
     public abstract Class getInputClass(int index);
 
     /**
-     * Get all the classes of the input objects
+     * Get all the classes of the function objects
      *
-     * @return classes of the input objects
+     * @return classes of the function objects
      */
     public abstract Collection<Class> getAllInputClasses();
 
     /**
-     * Get the number of input objects
+     * Get the number of function objects
      *
-     * @return number of input objects
+     * @return number of function objects
      */
     public abstract int getNumberOfInputs();
 
     /**
-     * Check if one entity is contained at the input
-     * @param inputIndex input index
+     * Check if one entity is contained at the function
+     * @param inputIndex function index
      * @param entity tested entity
-     * @return true if entity is contained at input index, false otherwise
+     * @return true if entity is contained at function index, false otherwise
      */
     public abstract boolean inputContains(int inputIndex, Entity entity);
 
     /**
-     * Get the input entity at the index or null if there are no entities
+     * Get the function entity at the index or null if there are no entities
      *
-     * @param index input index
+     * @param index function index
      *
-     * @return input entity at the index or null if there are no entities
+     * @return function entity at the index or null if there are no entities
      */
     public abstract Entity getInputEntity(int index);
 
     /**
-     * Check if input entry at index is used
+     * Check if function entry at index is used
      *
-     * @param index input index
+     * @param index function index
      *
-     * @return true if the input entry is used, false otherwise
+     * @return true if the function entry is used, false otherwise
      */
     public abstract boolean isInputUsed(int index);
 
     /**
      * Get the index of the output linked to one entity or -1 if it's not a output entity
      *
-     * @param inputIndex used input index
+     * @param inputIndex used function index
      *
      * @return index of the linked to output entity, or -1 if entity is not link on output
      */
     public abstract int getIndexOfOutputFromEntityOnInput(int inputIndex);
 
     /**
-     * Get output class from the entity on input
+     * Get output class from the entity on function
      *
-     * @param inputIndex input index
+     * @param inputIndex function index
      *
-     * @return class linked on from input entity
+     * @return class linked on from function entity
      */
     public abstract Class getOutputClassFromInputEntity(int inputIndex);
 
     /**
-     * Get all the input entities
+     * Get all the function entities
      *
-     * @return all input entities
+     * @return all function entities
      */
     public abstract Collection<Entity> getAllInputEntities();
 
     /**
-     * Check if entity have necessary input
+     * Check if entity have necessary function
      *
-     * @return true if entity have enough input, false otherwise
+     * @return true if entity have enough function, false otherwise
      */
     public abstract boolean hasAllNeededInput();
 
     /**
-     * Check if the input at the index is valid
+     * Check if the function at the index is valid
      *
-     * @param inputIndex input index
+     * @param inputIndex function index
      *
-     * @return true if the input is valid, false otherwise
+     * @return true if the function is valid, false otherwise
      */
     public boolean isValidInput(int inputIndex);
 
     /**
-     * Add link on input
+     * Add link on function
      * DO NOT USE THIS ALONE
      * @param inputIndex output index
      * @param entity added entity
@@ -129,22 +129,22 @@ public interface Entity extends Cloneable
     public abstract void addLinkInput(int inputIndex, int entityOutputIndex, Entity entity);
 
     /**
-     * Remove one entity link on input at the given index
+     * Remove one entity link on function at the given index
      * DO NOT USE THIS ALONE
-     * @param inputIndex input entry to remove entity
+     * @param inputIndex function entry to remove entity
      */
     public abstract void removeLinkInput(int inputIndex);
 
     /**
      * Modify the information on the linked index of one inputEntity
-     * @param inputIndex input index
+     * @param inputIndex function index
      * @param newOutputIndex updated output index
      */
     public abstract void changeIndexOfOutputFromEntityOnInput(int inputIndex, int newOutputIndex);
 
     /**
-     * Create a link between this entity considered as input and one other output entity
-     * @param inputIndex input index
+     * Create a link between this entity considered as function and one other output entity
+     * @param inputIndex function index
      * @param entityOutput other entity output index
      * @param entity output entity
      */
@@ -152,8 +152,8 @@ public interface Entity extends Cloneable
 
 
     /**
-     * Remove link on input at the given input index
-     * @param inputIndex input index
+     * Remove link on function at the given function index
+     * @param inputIndex function index
      */
     public abstract void unlinkAsInput(int inputIndex);
 
@@ -172,16 +172,16 @@ public interface Entity extends Cloneable
     public abstract int getNumberOfVariableOutput();
 
     /**
-     * Check if an input takes variable
-     * @param inputIndex input index
-     * @return true if input takes variable, false otherwise
+     * Check if an function takes variable
+     * @param inputIndex function index
+     * @return true if function takes variable, false otherwise
      */
     public abstract boolean isVariableInput(int inputIndex);
 
     /**
-     * Check if an input at the given index is necessary
-     * @param inputIndex input index
-     * @return true if the input at index is needed, false otherwise
+     * Check if an function at the given index is necessary
+     * @param inputIndex function index
+     * @return true if the function at index is needed, false otherwise
      */
     public abstract boolean isInputNeeded(int inputIndex);
 
@@ -245,12 +245,12 @@ public interface Entity extends Cloneable
     public abstract boolean outputContains(int outputIndex, Entity entity);
 
     /**
-     * Get the index of the input linked to one entity or -1 if it's not a input entity
+     * Get the index of the function linked to one entity or -1 if it's not a function entity
      *
      * @param index  entity output index
-     * @param outputEntity linked to input entity
+     * @param outputEntity linked to function entity
      *
-     * @return index of the linked to input entity, or -1 if entity is not link on input
+     * @return index of the linked to function entity, or -1 if entity is not link on function
      */
     public abstract int getIndexOfInputFromEntityOnOutput(int index, Entity outputEntity);
 
@@ -262,14 +262,14 @@ public interface Entity extends Cloneable
     public abstract Collection<? extends Collection<Entity>> getAllOutputEntities();
 
     /**
-     * Get number of input taking variables
+     * Get number of function taking variables
      *
-     * @return number of input taking variables
+     * @return number of function taking variables
      */
     public abstract int getNumberOfVariableInput();
 
     /**
-     * Get number of used input taking variables
+     * Get number of used function taking variables
      *
      * @return number of inputs taking variables
      */
@@ -294,7 +294,7 @@ public interface Entity extends Cloneable
      * Modify the information on the linked index of one outputEntity
      * @param outputIndex output index
      * @param outputEntity output entity
-     * @param newInputIndex updated input index
+     * @param newInputIndex updated function index
      */
     public abstract void changeIndexOfInputFromEntityOnOutput(int outputIndex, Entity outputEntity, int newInputIndex);
 
@@ -302,7 +302,7 @@ public interface Entity extends Cloneable
      * Add link on output
      * DO NOT USE THIS ALONE
      * @param outputIndex output index
-     * @param inputEntityIndex corresponding input index
+     * @param inputEntityIndex corresponding function index
      * @param entity added entity
      */
     public abstract void addLinkOutput(int outputIndex, int inputEntityIndex, Entity entity);
@@ -315,10 +315,10 @@ public interface Entity extends Cloneable
     public abstract Func getFunc();
 
     /**
-     * Create a link between this entity considered as output and one other input entity
+     * Create a link between this entity considered as output and one other function entity
      * @param outputIndex output index
-     * @param entityInput other entity input index
-     * @param entity input entity
+     * @param entityInput other entity function index
+     * @param entity function entity
      */
     void linkAsOutput(int outputIndex, int entityInput, Entity entity);
     /**

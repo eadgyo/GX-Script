@@ -136,7 +136,7 @@ public abstract class DefaultStartImbricationEntity extends DefaultEntity implem
      * For n imbrication, they are n + 1 addresses, the first n addresses are for start of imbrication and the last
      * address for the end of last imbrication
      *
-     * @param addressesMap map to get input memory stack
+     * @param addressesMap map to get function memory stack
      *
      * @return created parameters addresses of function
      */

@@ -22,7 +22,7 @@ public class AddListEntity extends CollectionDefineInput
     {
         super("Add item in list", "List", List.class);
 
-        // Add input
+        // Add function
         addInputEntryNotNeeded(INDEX_INPUT_INDEX, "Index", Integer.class);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 

@@ -23,13 +23,13 @@ public class EqualEntity extends DefaultEntity
     {
         super("Equal");
 
-        // Add object 0 input
+        // Add object 0 function
         addInputEntry(V0_INPUT_INDEX, "V0", Boolean.class);
 
-        // Add object 1 input
+        // Add object 1 function
         addInputEntry(V1_INPUT_INDEX, "V1", Boolean.class);
 
-        // Add next input
+        // Add next function
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add output entry

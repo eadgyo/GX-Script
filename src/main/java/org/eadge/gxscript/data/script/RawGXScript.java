@@ -15,7 +15,14 @@ import java.util.Set;
  */
 public class RawGXScript
 {
+    /**
+     * Keeps all entities
+     */
     private Set<Entity> entities         = new HashSet<>();
+
+    /**
+     * Keeps all entities with no inputs used
+     */
     private Set<Entity> startingEntities = new HashSet<>();
 
     public RawGXScript()
@@ -102,7 +109,7 @@ public class RawGXScript
         // Get output entities
         Collection<Entity> inputsEntities = entity.getAllInputEntities();
 
-        // Add not treated elements on input
+        // Add not treated elements on function
         addNotTreatedEntities(inputsEntities, alreadyTreated, toBeTreated);
     }
 

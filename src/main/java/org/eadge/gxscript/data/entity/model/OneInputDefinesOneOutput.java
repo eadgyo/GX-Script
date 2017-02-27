@@ -6,7 +6,7 @@ import org.eadge.gxscript.data.entity.Entity;
 /**
  * Created by eadgyo on 05/09/16.
  *
- * One input object define the output class object
+ * One function object define the output class object
  */
 public abstract class OneInputDefinesOneOutput extends DefaultEntity
 {
@@ -49,7 +49,7 @@ public abstract class OneInputDefinesOneOutput extends DefaultEntity
             // Get output class
             Class sourceOutputClass = getOutputClassFromInputEntity(SOURCE_INPUT_INDEX);
 
-            // If there is a linked input entity
+            // If there is a linked function entity
             if (sourceOutputClass != null)
             {
                 setOutputClass(RESULT_INPUT_INDEX, sourceOutputClass);

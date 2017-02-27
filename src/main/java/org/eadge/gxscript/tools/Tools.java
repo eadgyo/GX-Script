@@ -18,7 +18,7 @@ public class Tools
 {
     /**
      * Get all starting entities from collection of entities. Start entities are those who have no entities linked in
-     * input.
+     * function.
      *
      * @param entities collection of entities to be treated
      *
@@ -30,7 +30,7 @@ public class Tools
 
         for (Entity entity : entities)
         {
-            // If entity has no linked entity block at input
+            // If entity has no linked entity block at function
             if (!entity.hasInputsUsed())
             {
                 // This entity is a starting entity
@@ -133,10 +133,10 @@ public class Tools
     }
 
     /**
-     * Check if classes are equals or input class derived from output class
+     * Check if classes are equals or function class derived from output class
      * @param outputClass output class
-     * @param inputClass input class
-     * @return true if classes are equals or input class derived from output class
+     * @param inputClass function class
+     * @return true if classes are equals or function class derived from output class
      */
     public static boolean isEqualOrDerivedFrom(Class outputClass, Class inputClass)
     {

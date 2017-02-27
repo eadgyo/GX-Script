@@ -28,10 +28,10 @@ public class PrintEntity extends DefaultEntity
     {
         super("Print");
 
-        // Add source input
+        // Add source function
         addInputEntryNotNeeded(SOURCE_INPUT_INDEX, "Source", Object.class);
 
-        // Add next input
+        // Add next function
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add continue output
@@ -58,7 +58,7 @@ public class PrintEntity extends DefaultEntity
                 }
             };
         }
-        else // No input setting printed text
+        else // No function setting printed text
         {
             // Use default string
             return new Func()

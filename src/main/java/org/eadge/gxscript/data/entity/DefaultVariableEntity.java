@@ -7,7 +7,7 @@ import java.util.Set;
  * Created by eadgyo on 03/08/16.
  *
  * Variable entity model
- * Variable have input and output as entity, but also have modified lane
+ * Variable have function and output as entity, but also have modified lane
  */
 public abstract class DefaultVariableEntity extends DefaultEntity implements VariableEntity
 {

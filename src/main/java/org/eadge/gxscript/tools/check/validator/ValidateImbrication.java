@@ -46,7 +46,7 @@ public class ValidateImbrication extends ValidatorModel
                 // Get his level of imbrication
                 ImbricationNode highestImbricationNode = root.getHighestImbricationNode(beingTreated);
 
-                // If entity have in input, entities not in lower or equal imbrication level
+                // If entity have in function, entities not in lower or equal imbrication level
                 Entity inputNotInLowerOrEqualLevel = highestImbricationNode.getInputNotInLowerOrEqualLevel
                         (beingTreated);
                 if (inputNotInLowerOrEqualLevel != null)
@@ -105,7 +105,7 @@ public class ValidateImbrication extends ValidatorModel
             // Get not treated entities
             Collection<? extends Entity> allNotTreatedElements = leaf.getAllNotTreatedElements();
 
-            // Check if entities have input in different level of imbrication
+            // Check if entities have function in different level of imbrication
             for (Entity notTreatedElement : allNotTreatedElements)
             {
                 if (hasInputsInParallelsImbrications(notTreatedElement, leaf, alreadyTreated))
@@ -115,12 +115,12 @@ public class ValidateImbrication extends ValidatorModel
     }
 
     /**
-     * Check if entity have in input different output level of imbrication from one start entity imbrication
+     * Check if entity have in function different output level of imbrication from one start entity imbrication
      *
      * @param entity                 checked entity inputs
      * @param highestImbricationNode his highest imbrication node
      *
-     * @return true if entity has in input different output level of imbrication
+     * @return true if entity has in function different output level of imbrication
      */
     private static boolean isInParallelsImbrications(Entity entity,
                                                      ImbricationNode highestImbricationNode)
@@ -131,14 +131,14 @@ public class ValidateImbrication extends ValidatorModel
         if (startImbricationEntity == null)
             return false;
 
-        // Get the imbrication id to be compared with input imbrication id with same start imbrication entity
+        // Get the imbrication id to be compared with function imbrication id with same start imbrication entity
         int currentImbrication = highestImbricationNode.getImbricationOutputIndex();
 
         for (int inputIndex = 0; inputIndex < entity.getNumberOfInputs(); inputIndex++)
         {
             Entity inputEntity = entity.getInputEntity(inputIndex);
 
-            // If input is start imbrication entity
+            // If function is start imbrication entity
             if (inputEntity == startImbricationEntity)
             {
                 // Get the index
@@ -169,7 +169,7 @@ public class ValidateImbrication extends ValidatorModel
     /**
      * Check if entity has inputs recursively in parallels level of imbrication.
      *
-     * @param entity                 checked entity input
+     * @param entity                 checked entity function
      * @param highestImbricationNode entity's highest imbrication node
      * @param safeEntities           entities safe, that doesn't need to be treated
      *
@@ -197,13 +197,13 @@ public class ValidateImbrication extends ValidatorModel
             if (isInParallelsImbrications(poppedEntity, highestImbricationNode))
                 return true;
 
-            // Add input entities not treated
+            // Add function entities not treated
             Collection<Entity> allInputEntities = poppedEntity.getAllInputEntities();
             for (Entity inputEntity : allInputEntities)
             {
                 if (inputEntity != null)
                 {
-                    // If input entity is not safe and it is not already treated
+                    // If function entity is not safe and it is not already treated
                     if (!safeEntities.contains(inputEntity) && !alreadyTreated.contains(inputEntity))
                         toBeTreatedEntities.add(inputEntity);
                 }

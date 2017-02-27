@@ -28,7 +28,7 @@ public class IfEntity extends DefaultStartImbricationEntity
         // Add source index
         addInputEntry(TEST_INPUT_INDEX, "Test", Boolean.class);
 
-        // Add next input
+        // Add next function
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Output

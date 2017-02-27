@@ -7,7 +7,7 @@ import org.eadge.gxscript.data.entity.Entity;
 /**
  * Created by eadgyo on 10/09/16.
  *
- * Collection in input define one input class
+ * Collection in function define one function class
  */
 public abstract class CollectionDefineInput extends DefaultEntity
 {
@@ -32,7 +32,7 @@ public abstract class CollectionDefineInput extends DefaultEntity
             // Get output class
             Class itemClass = ((ClassItem) getInputEntity(COLLECTION_INPUT_INDEX)).getItemClass();
 
-            // Change input item class
+            // Change function item class
             setInputClass(ITEM_INPUT_INDEX, itemClass);
         }
     }

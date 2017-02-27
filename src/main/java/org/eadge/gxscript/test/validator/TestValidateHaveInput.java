@@ -17,7 +17,7 @@ public class TestValidateHaveInput
 {
     public static void main(String[] args) throws IOException
     {
-        System.out.println("Test validate entity have input");
+        System.out.println("Test validate entity have function");
         PrintTest.printResult(testCorrect(), "Check valid script");
         PrintTest.printResult(testNotCorrect(), "Check not valid script");
     }
@@ -34,7 +34,7 @@ public class TestValidateHaveInput
     {
         RawGXScript scriptIf = CreateGXScript.createScriptIf();
 
-        // Create not correct entity with no input
+        // Create not correct entity with no function
         IfEntity ifEntity = new IfEntity();
         scriptIf.addEntity(ifEntity);
 

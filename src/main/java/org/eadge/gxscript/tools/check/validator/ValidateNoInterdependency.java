@@ -9,8 +9,8 @@ import java.util.*;
 /**
  * Created by eadgyo on 03/08/16.
  *
- * Check if there are entities with interdependency. It's game be circle of interdependency or self-input-output.
- * For example, one entity which have his input linked to his output is one case of interdependency.
+ * Check if there are entities with interdependency. It's game be circle of interdependency or self-function-output.
+ * For example, one entity which have his function linked to his output is one case of interdependency.
  *
  */
 public class ValidateNoInterdependency extends ValidatorModel
@@ -84,7 +84,7 @@ public class ValidateNoInterdependency extends ValidatorModel
     {
         Collection<Entity> inputEntities = testedEntity.getAllInputEntities();
 
-        // If all of the blocks input are treated
+        // If all of the blocks function are treated
         if (areAllTreatedEntities(inputEntities, treatedEntities))
         {
             // Add not treated entities to the stack of next treated entities and clone his on lane entities
@@ -143,7 +143,7 @@ public class ValidateNoInterdependency extends ValidatorModel
             // Add this first entity to set of treated elements
             treatedEntities.add(firstElement.entity);
 
-            // Add all linked output entities which have all input in treated set, and link to them the set
+            // Add all linked output entities which have all function in treated set, and link to them the set
             Collection<Entity> outputEntities = firstElement.entity.getAllOutputEntitiesCollection();
 
             for (Entity outputEntity : outputEntities)

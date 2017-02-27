@@ -59,6 +59,17 @@ public class ImbricationNodeC extends ImbricationNode
         super(allElements);
     }
 
+    public ImbricationNodeC(DataAddress dataAddress,
+                            Collection<Func> GXScriptFuncParameters,
+                            Collection<FuncDataAddresses> GXScriptFuncParametersAddresses,
+                            Collection<Entity> allElements)
+    {
+        super(allElements);
+        this.currentDataAddress.setAddress(dataAddress);
+        this.calledFunctions.addAll(GXScriptFuncParameters);
+        this.calledFunctionsParameters.addAll(GXScriptFuncParametersAddresses);
+    }
+
     public ImbricationNodeC(Set<Entity> allElements)
     {
         super(allElements);
@@ -327,7 +338,7 @@ public class ImbricationNodeC extends ImbricationNode
         OutputAddresses outputAddresses = startImbricationEntity.createAndAllocOutputs(currentDataAddress);
         outputAddressesMap.put(startImbricationEntity, outputAddresses);
 
-        // Get all input necessary output entities addresses
+        // Get all function necessary output entities addresses
         Map<Entity, OutputAddresses> outputAddressesMap = getOutputAddresses(startImbricationEntity
                                                                                      .getAllInputEntities());
     }
@@ -336,7 +347,7 @@ public class ImbricationNodeC extends ImbricationNode
     {
         super.treatEntity(entity);
 
-        // Get all input necessary output entities addresses
+        // Get all function necessary output entities addresses
         Map<Entity, OutputAddresses> outputAddressesMap = getOutputAddresses(entity.getAllInputEntities());
 
         // Add funcs and funcsData of entity

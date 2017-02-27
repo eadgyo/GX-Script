@@ -20,7 +20,7 @@ public class ValidateLinks extends ValidatorModel
 
         Collection<Entity> entities = rawGXScript.getEntities();
 
-        // For each entities check if their input are good
+        // For each entities check if their function are good
         for (Entity entity : entities)
         {
             // If output is not valid

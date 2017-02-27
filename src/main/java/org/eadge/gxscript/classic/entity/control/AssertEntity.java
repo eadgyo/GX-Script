@@ -23,7 +23,7 @@ public class AssertEntity extends DefaultEntity
         // Add source checking value
         addInputEntry(SOURCE_INPUT_INDEX, "Checked", Boolean.class);
 
-        // Add next input
+        // Add next function
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add continue output

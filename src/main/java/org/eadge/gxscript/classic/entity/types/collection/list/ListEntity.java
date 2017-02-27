@@ -22,7 +22,7 @@ public abstract class ListEntity extends CollectionEntity
     @Override
     public Func getFunc()
     {
-        // If the source input entry is used
+        // If the source function entry is used
         if (isInputUsed(SOURCE_INPUT_INDEX) )
         {
             // Create list from the collection

@@ -21,7 +21,7 @@ public class RemoveSetEntity extends CollectionDefineInput
     {
         super("Remove item from set", "Set", Set.class);
 
-        // Add input
+        // Add function
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add output

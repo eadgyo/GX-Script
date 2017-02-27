@@ -19,7 +19,7 @@ public class ValidateEntityHaveInput extends ValidatorModel
 
         Collection<Entity> entities = rawGXScript.getEntities();
 
-        // Check if all entities have necessary input
+        // Check if all entities have necessary function
         for (Entity entity : entities)
         {
             if (!entity.hasAllNeededInput())

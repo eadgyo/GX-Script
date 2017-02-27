@@ -69,7 +69,7 @@ public class TestValidateNoInterdependency
         RealEntity realEntity2 = new RealEntity(10f);
         RealEntity realEntity3 = new RealEntity();
 
-        // Link realEntity2 on realEntity3 input
+        // Link realEntity2 on realEntity3 function
         realEntity3.linkAsInput(RealEntity.SET_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity2);
 
         // Create real comparison

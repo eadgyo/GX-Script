@@ -24,10 +24,10 @@ public class DoWhileEntity extends DefaultStartImbricationEntity
         super("DoWhile");
 
         // Input
-        // Add source input
+        // Add source function
         addInputEntry(TEST_INPUT_INDEX, "Test", Boolean.class);
 
-        // Add next input
+        // Add next function
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Output
