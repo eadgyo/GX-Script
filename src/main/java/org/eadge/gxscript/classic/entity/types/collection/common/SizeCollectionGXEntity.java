@@ -23,7 +23,7 @@ public class SizeCollectionGXEntity extends DefaultGXEntity
     {
         super("Size collection");
 
-        // Add function
+        // Add script
         addInputEntry(COLLECTION_INPUT_INDEX, "Collection", Collection.class);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 

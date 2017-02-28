@@ -21,7 +21,7 @@ public class AddSetGXEntity extends CollectionDefineInput
     {
         super("Add item in set", "Set", Set.class);
 
-        // Add function
+        // Add script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add output

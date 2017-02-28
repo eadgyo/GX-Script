@@ -22,26 +22,46 @@ public class CompiledGXScript
     private FuncDataAddresses calledFunctionsParameters[];
 
     /**
-     * Number of parameters used for script
+     * Keeps classes for script's inputs
      */
-    private int           numberOfScriptParameters;
+    private Class inputsScriptClasses[];
 
-    public CompiledGXScript(int numberOfScriptParameters, Collection<Func> calledFunctions, Collection<FuncDataAddresses> calledFunctionsParameters)
+    /**
+     * Keeps classes for script's outputs
+     */
+    private Class outputsScriptClasses[];
+
+    public CompiledGXScript(Collection<Class> inputsScriptClasses,
+                            Collection<Class> outputsScriptClasses,
+                            Collection<Func> calledFunctions,
+                            Collection<FuncDataAddresses> calledFunctionsParameters)
     {
         assert (calledFunctions.size() == calledFunctionsParameters.size());
 
-        this.numberOfScriptParameters = numberOfScriptParameters;
-
+        this.inputsScriptClasses = new Class[inputsScriptClasses.size()];
+        this.outputsScriptClasses = new Class[outputsScriptClasses.size()];
         this.calledFunctions = new Func[calledFunctions.size()];
         this.calledFunctionsParameters = new FuncDataAddresses[calledFunctions.size()];
 
+        inputsScriptClasses.toArray(this.inputsScriptClasses);
+        outputsScriptClasses.toArray(this.outputsScriptClasses);
         calledFunctions.toArray(this.calledFunctions);
         calledFunctionsParameters.toArray(this.calledFunctionsParameters);
     }
 
+    public Class[] getInputsScriptClasses()
+    {
+        return inputsScriptClasses;
+    }
+
+    public Class[] getOutputsScriptClasses()
+    {
+        return outputsScriptClasses;
+    }
+
     public int getNumberOfScriptParameters()
     {
-        return numberOfScriptParameters;
+        return inputsScriptClasses.length;
     }
 
     public Func[] getCalledFunctions()

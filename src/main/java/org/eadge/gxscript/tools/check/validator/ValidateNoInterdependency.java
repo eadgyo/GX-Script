@@ -9,8 +9,8 @@ import java.util.*;
 /**
  * Created by eadgyo on 03/08/16.
  *
- * Check if there are entities with interdependency. It's game be circle of interdependency or self-function-output.
- * For example, one GXEntity which have his function linked to his output is one case of interdependency.
+ * Check if there are entities with interdependency. It's game be circle of interdependency or self-script-output.
+ * For example, one GXEntity which have his script linked to his output is one case of interdependency.
  *
  */
 public class ValidateNoInterdependency extends ValidatorModel
@@ -84,7 +84,7 @@ public class ValidateNoInterdependency extends ValidatorModel
     {
         Collection<GXEntity> inputEntities = testedGXEntity.getAllInputEntities();
 
-        // If all of the blocks function are treated
+        // If all of the blocks script are treated
         if (areAllTreatedEntities(inputEntities, treatedEntities))
         {
             // Add not treated entities to the stack of next treated entities and clone his on lane entities
@@ -143,7 +143,7 @@ public class ValidateNoInterdependency extends ValidatorModel
             // Add this first GXEntity to set of treated elements
             treatedEntities.add(firstElement.GXEntity);
 
-            // Add all linked output entities which have all function in treated set, and link to them the set
+            // Add all linked output entities which have all script in treated set, and link to them the set
             Collection<GXEntity> outputEntities = firstElement.GXEntity.getAllOutputEntitiesCollection();
 
             for (GXEntity outputGXEntity : outputEntities)

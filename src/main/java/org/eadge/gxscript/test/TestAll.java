@@ -32,6 +32,11 @@ public class TestAll
         if (!validatorAllEntitiesPresent.validate(gxScript))
             return false;
 
+        ValidateValidParameters validateValidParameters = new ValidateValidParameters();
+
+        if (!validateValidParameters.validate(gxScript))
+            return false;
+
         ValidatorModel validatorInputs = new ValidateEntityHaveInput();
 
         if (!validatorInputs.validate(gxScript))

@@ -3,7 +3,7 @@ package org.eadge.gxscript.data.script.address;
 /**
  * Created by eadgyo on 03/08/16.
  *
- * Holds data inputs addresses on memory stack, used to call function
+ * Holds data inputs addresses on memory stack, used to call script
  */
 public class FuncDataAddresses
 {

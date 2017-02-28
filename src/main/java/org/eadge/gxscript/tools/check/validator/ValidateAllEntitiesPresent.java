@@ -19,7 +19,7 @@ public class ValidateAllEntitiesPresent extends ValidatorModel
 
         Collection<GXEntity> entities = rawGXScript.getEntities();
 
-        // Check if all entities have necessary function
+        // Check if all entities have necessary script
         loop: for (GXEntity GXEntity : entities)
         {
             Collection<GXEntity> allInputEntities = GXEntity.getAllInputEntities();

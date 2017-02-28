@@ -21,7 +21,7 @@ public class RemoveSetGXEntity extends CollectionDefineInput
     {
         super("Remove item from set", "Set", Set.class);
 
-        // Add function
+        // Add script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add output

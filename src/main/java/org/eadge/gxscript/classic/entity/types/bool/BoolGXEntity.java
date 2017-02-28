@@ -100,7 +100,7 @@ public class BoolGXEntity extends DefaultVariableGXEntity
                     Object[] objects = program.loadCurrentParametersObjects();
 
                     // Get value
-                    Number inputValue = (Number) (objects[SET_INPUT_INDEX]); // Set function and not NUMBER (there is only one function)
+                    Number inputValue = (Number) (objects[SET_INPUT_INDEX]); // Set script and not NUMBER (there is only one script)
 
                     // Push in memory this value transformed in boolean.
                     program.pushInMemory(inputValue.doubleValue() != 0);

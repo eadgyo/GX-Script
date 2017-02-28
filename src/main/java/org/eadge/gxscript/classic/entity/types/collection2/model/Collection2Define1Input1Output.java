@@ -7,7 +7,7 @@ import org.eadge.gxscript.data.entity.GXEntity;
 /**
  * Created by eadgyo on 11/09/16.
  *
- * Collection2 define one function and one output
+ * Collection2 define one script and one output
  */
 public abstract class Collection2Define1Input1Output extends DefaultGXEntity
 {
@@ -41,7 +41,7 @@ public abstract class Collection2Define1Input1Output extends DefaultGXEntity
             Class itemClass0 = ((Class2Items) getInputEntity(COLLECTION2_INPUT_INDEX)).getItem0Class();
             Class itemClass1 = ((Class2Items) getInputEntity(COLLECTION2_INPUT_INDEX)).getItem1Class();
 
-            // Change function and output class
+            // Change script and output class
             setInputClass(E_INPUT_INDEX, itemClass0);
             setOutputClass(E_OUTPUT_INDEX, itemClass1);
         }
@@ -54,7 +54,7 @@ public abstract class Collection2Define1Input1Output extends DefaultGXEntity
 
         if (inputIndex == COLLECTION2_INPUT_INDEX)
         {
-            // Change function and output class
+            // Change script and output class
             setInputClass(E_INPUT_INDEX, DEFAULT_CLASS);
             setOutputClass(E_OUTPUT_INDEX, DEFAULT_CLASS);
         }

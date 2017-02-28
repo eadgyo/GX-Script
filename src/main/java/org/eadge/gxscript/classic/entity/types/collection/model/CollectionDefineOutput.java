@@ -7,7 +7,7 @@ import org.eadge.gxscript.data.entity.GXEntity;
 /**
  * Created by eadgyo on 10/09/16.
  *
- * Collection in function define output
+ * Collection in script define output
  */
 public abstract class CollectionDefineOutput extends DefaultGXEntity
 {
@@ -33,7 +33,7 @@ public abstract class CollectionDefineOutput extends DefaultGXEntity
             // Get output class
             Class itemClass = ((ClassItem) getInputEntity(COLLECTION_INPUT_INDEX)).getItemClass();
 
-            // Change function item class
+            // Change script item class
             setOutputClass(ITEM_OUTPUT_INDEX, itemClass);
         }
     }

@@ -12,16 +12,16 @@ public class GXRunner
 {
     public void run(CompiledGXScript compiledGXScript)
     {
-        // Create program memory and add pointer reading first function
+        // Create program memory and add pointer reading first script
         Program program = new Program(compiledGXScript.getCalledFunctions(), compiledGXScript.getCalledFunctionsParameters());
 
         // While there are functions left
         while (!program.hasFinished())
         {
-            // Call the current pointed function
+            // Call the current pointed script
             program.callCurrentFunc();
 
-            // Go to next function
+            // Go to next script
             program.nextFuncAddress();
         }
     }

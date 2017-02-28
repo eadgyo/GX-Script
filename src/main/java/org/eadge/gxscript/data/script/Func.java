@@ -8,7 +8,7 @@ package org.eadge.gxscript.data.script;
 public abstract class Func
 {
     /**
-     * Run function
+     * Run script
      * @param program containing all called funcs, pointer on the current read funcs and memory stack
      */
     public abstract void run(Program program);

@@ -22,7 +22,7 @@ public abstract class ListGXEntity extends CollectionGXEntity
     @Override
     public Func getFunc()
     {
-        // If the source function entry is used
+        // If the source script entry is used
         if (isInputUsed(SOURCE_INPUT_INDEX) )
         {
             // Create list from the collection

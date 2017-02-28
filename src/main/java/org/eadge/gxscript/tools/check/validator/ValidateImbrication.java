@@ -46,7 +46,7 @@ public class ValidateImbrication extends ValidatorModel
                 // Get his level of imbrication
                 ImbricationNode highestImbricationNode = root.getHighestImbricationNode(beingTreated);
 
-                // If GXEntity have in function, entities not in lower or equal imbrication level
+                // If GXEntity have in script, entities not in lower or equal imbrication level
                 GXEntity inputNotInLowerOrEqualLevel = highestImbricationNode.getInputNotInLowerOrEqualLevel
                         (beingTreated);
                 if (inputNotInLowerOrEqualLevel != null)
@@ -105,7 +105,7 @@ public class ValidateImbrication extends ValidatorModel
             // Get not treated entities
             Collection<? extends GXEntity> allNotTreatedElements = leaf.getAllNotTreatedElements();
 
-            // Check if entities have function in different level of imbrication
+            // Check if entities have script in different level of imbrication
             for (GXEntity notTreatedElement : allNotTreatedElements)
             {
                 if (hasInputsInParallelsImbrications(notTreatedElement, leaf, alreadyTreated))
@@ -115,12 +115,12 @@ public class ValidateImbrication extends ValidatorModel
     }
 
     /**
-     * Check if GXEntity have in function different output level of imbrication from one start GXEntity imbrication
+     * Check if GXEntity have in script different output level of imbrication from one start GXEntity imbrication
      *
      * @param GXEntity                 checked GXEntity inputs
      * @param highestImbricationNode his highest imbrication node
      *
-     * @return true if GXEntity has in function different output level of imbrication
+     * @return true if GXEntity has in script different output level of imbrication
      */
     private static boolean isInParallelsImbrications(GXEntity GXEntity,
                                                      ImbricationNode highestImbricationNode)
@@ -131,14 +131,14 @@ public class ValidateImbrication extends ValidatorModel
         if (startImbricationEntity == null)
             return false;
 
-        // Get the imbrication id to be compared with function imbrication id with same start imbrication GXEntity
+        // Get the imbrication id to be compared with script imbrication id with same start imbrication GXEntity
         int currentImbrication = highestImbricationNode.getImbricationOutputIndex();
 
         for (int inputIndex = 0; inputIndex < GXEntity.getNumberOfInputs(); inputIndex++)
         {
             GXEntity inputGXEntity = GXEntity.getInputEntity(inputIndex);
 
-            // If function is start imbrication GXEntity
+            // If script is start imbrication GXEntity
             if (inputGXEntity == startImbricationEntity)
             {
                 // Get the index
@@ -169,7 +169,7 @@ public class ValidateImbrication extends ValidatorModel
     /**
      * Check if GXEntity has inputs recursively in parallels level of imbrication.
      *
-     * @param GXEntity                 checked GXEntity function
+     * @param GXEntity                 checked GXEntity script
      * @param highestImbricationNode GXEntity's highest imbrication node
      * @param safeEntities           entities safe, that doesn't need to be treated
      *
@@ -197,13 +197,13 @@ public class ValidateImbrication extends ValidatorModel
             if (isInParallelsImbrications(poppedGXEntity, highestImbricationNode))
                 return true;
 
-            // Add function entities not treated
+            // Add script entities not treated
             Collection<GXEntity> allInputEntities = poppedGXEntity.getAllInputEntities();
             for (GXEntity inputGXEntity : allInputEntities)
             {
                 if (inputGXEntity != null)
                 {
-                    // If function GXEntity is not safe and it is not already treated
+                    // If script GXEntity is not safe and it is not already treated
                     if (!safeEntities.contains(inputGXEntity) && !alreadyTreated.contains(inputGXEntity))
                         toBeTreatedEntities.add(inputGXEntity);
                 }

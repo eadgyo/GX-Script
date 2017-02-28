@@ -14,12 +14,13 @@ public class DebugCompiledGXScript extends CompiledGXScript
 {
     private DebugMemory[] debugMemories;
 
-    public DebugCompiledGXScript(int numberOfScriptParameters,
+    public DebugCompiledGXScript(Collection<Class> inputsScriptClasses,
+                                 Collection<Class> outputsScriptClasses,
                                  Collection<Func> calledFunctions,
                                  Collection<FuncDataAddresses> calledFunctionsParameters,
                                  Collection<DebugMemory> debugMemories)
     {
-        super(numberOfScriptParameters, calledFunctions, calledFunctionsParameters);
+        super(inputsScriptClasses, outputsScriptClasses, calledFunctions, calledFunctionsParameters);
 
         this.debugMemories = new DebugMemory[debugMemories.size()];
         debugMemories.toArray(this.debugMemories);

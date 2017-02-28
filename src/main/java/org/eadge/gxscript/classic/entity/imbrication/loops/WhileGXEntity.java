@@ -24,10 +24,10 @@ public class WhileGXEntity extends DefaultStartImbricationGXEntity
         super("While");
 
         // Input
-        // Add source function
+        // Add source script
         addInputEntry(TEST_INPUT_INDEX, "Test", Boolean.class);
 
-        // Add next function
+        // Add next script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Output

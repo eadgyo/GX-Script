@@ -28,7 +28,7 @@ public class IfGXEntity extends DefaultStartImbricationGXEntity
         // Add source index
         addInputEntry(TEST_INPUT_INDEX, "Test", Boolean.class);
 
-        // Add next function
+        // Add next script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Output

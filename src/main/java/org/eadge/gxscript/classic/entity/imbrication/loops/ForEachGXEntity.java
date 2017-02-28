@@ -34,7 +34,7 @@ public class ForEachGXEntity extends DefaultStartImbricationGXEntity
         // Add collection source
         addInputEntry(COLLECTION_INPUT_INDEX, "Collection", Collection.class);
 
-        // Add next function
+        // Add next script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Output

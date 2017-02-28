@@ -12,7 +12,7 @@ public class GXRunnerDebug extends GXRunner
 {
     public void runDebug(DebugCompiledGXScript compiledGXScript)
     {
-        // Create program memory and add pointer reading first function
+        // Create program memory and add pointer reading first script
         DebugProgram program = new DebugProgram(compiledGXScript.getCalledFunctions(),
                                                 compiledGXScript.getCalledFunctionsParameters(),
                                                 compiledGXScript.getDebugMemories());
@@ -20,10 +20,10 @@ public class GXRunnerDebug extends GXRunner
         // While there are functions left
         while (!program.hasFinished())
         {
-            // Call the current pointed function
+            // Call the current pointed script
             program.callCurrentFunc();
 
-            // Go to next function
+            // Go to next script
             program.nextFuncAddress();
         }
     }

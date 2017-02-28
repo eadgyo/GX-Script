@@ -22,7 +22,7 @@ public class RemoveListGXEntity extends CollectionDefineOutput
     {
         super("Remove item from list", "List", List.class);
 
-        // Add function
+        // Add script
         addInputEntry(INDEX_INPUT_INDEX, "Item index", Integer.class);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 

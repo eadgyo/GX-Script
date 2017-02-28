@@ -4,8 +4,8 @@ package org.eadge.gxscript.data.entity;
  * Created by eadgyo on 11/08/16.
  *
  * Modifying variables GXEntity model, they have only inputs
- * First function is the modified variable
- * Second function is the value for the modified variable
+ * First script is the modified variable
+ * Second script is the value for the modified variable
  */
 public abstract class ModifyingGXEntity extends DefaultGXEntity
 {

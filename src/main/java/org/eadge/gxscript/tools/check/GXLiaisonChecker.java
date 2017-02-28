@@ -14,8 +14,8 @@ public class GXLiaisonChecker
      * Check if a connection can added to GXEntity
      * @param onOutputGXEntity GXEntity linked on output
      * @param indexOfOutputEntity index on output
-     * @param onInputGXEntity GXEntity linked on function
-     * @param indexOfInputEntity index on function
+     * @param onInputGXEntity GXEntity linked on script
+     * @param indexOfInputEntity index on script
      * @return true if connection can be made, false otherwise
      */
     public static boolean canConnect(GXEntity onOutputGXEntity, int indexOfOutputEntity, GXEntity onInputGXEntity, int indexOfInputEntity)

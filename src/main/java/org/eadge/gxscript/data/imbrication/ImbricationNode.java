@@ -187,7 +187,7 @@ public class ImbricationNode
             addAlreadyTreated(startImbricationEntity);
 
             // Add all NOT imbricated output entities of starting imbrication entiy which have all their
-            // function block treated in lower or equal imbrication level
+            // script block treated in lower or equal imbrication level
             addNotImbricatedOutputsWithInputsTreated(startImbricationEntity);
         }
     }
@@ -241,7 +241,7 @@ public class ImbricationNode
         addAlreadyTreated(startImbricationEntity);
 
         // Add all NOT imbricated output entities of starting imbrication entiy which have all their
-        // function block treated in lower or equal imbrication level
+        // script block treated in lower or equal imbrication level
         addNotImbricatedOutputsWithInputsTreated(startImbricationEntity);
     }
 
@@ -250,7 +250,7 @@ public class ImbricationNode
         // Add this GXEntity to already treated
         addAlreadyTreated(GXEntity);
 
-        // Add all output entities which have all their function block treated in lower or equal imbrication
+        // Add all output entities which have all their script block treated in lower or equal imbrication
         // level
         addOutputsWithInputsTreated(GXEntity);
     }
@@ -552,10 +552,10 @@ public class ImbricationNode
      */
     public GXEntity getInputNotInLowerOrEqualLevel(GXEntity GXEntity)
     {
-        // Get all function entities
+        // Get all script entities
         Collection<GXEntity> allInputEntities = GXEntity.getAllInputEntities();
 
-        // Search for all function entities
+        // Search for all script entities
         for (GXEntity inputGXEntity : allInputEntities)
         {
             if (!isInLowerOrEqualLevel(GXEntity))
@@ -570,16 +570,16 @@ public class ImbricationNode
     /**
      * Check if all inputs of an GXEntity are in his level or in a lower level
      *
-     * @param GXEntity checked function GXEntity
+     * @param GXEntity checked script GXEntity
      *
      * @return true if they are all in lower or equal level of imbrication, false if they are not all
      */
     public boolean hasAllInputInLowerOrEqualLevel(GXEntity GXEntity)
     {
-        // Get all function entities
+        // Get all script entities
         Collection<GXEntity> allInputEntities = GXEntity.getAllInputEntities();
 
-        // Search for all function entities
+        // Search for all script entities
         for (GXEntity inputGXEntity : allInputEntities)
         {
             if (!isInLowerOrEqualLevel(inputGXEntity))
@@ -662,7 +662,7 @@ public class ImbricationNode
         // the startImbricationEntity.
         ImbricationNode pushedImbrication = pushImbrication(index, startImbricationEntity, inImbricationEntities);
 
-        // Add all imbricated output entities which have all their function block treated in lower or equal
+        // Add all imbricated output entities which have all their script block treated in lower or equal
         // imbrication level.
         pushedImbrication.addImbricatedOutputsWithInputsTreated(index);
     }

@@ -1,5 +1,6 @@
 package org.eadge.gxscript.tools;
 
+import org.eadge.gxscript.classic.entity.script.InputScriptGXEntity;
 import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
@@ -18,7 +19,7 @@ public class Tools
 {
     /**
      * Get all starting entities from collection of entities. Start entities are those who have no entities linked in
-     * function.
+     * script.
      *
      * @param entities collection of entities to be treated
      *
@@ -30,7 +31,7 @@ public class Tools
 
         for (GXEntity GXEntity : entities)
         {
-            // If GXEntity has no linked GXEntity block at function
+            // If GXEntity has no linked GXEntity block at script
             if (!GXEntity.hasInputsUsed())
             {
                 // This GXEntity is a starting GXEntity
@@ -133,14 +134,33 @@ public class Tools
     }
 
     /**
-     * Check if classes are equals or function class derived from output class
+     * Check if classes are equals or script class derived from output class
      * @param outputClass output class
-     * @param inputClass function class
-     * @return true if classes are equals or function class derived from output class
+     * @param inputClass script class
+     * @return true if classes are equals or script class derived from output class
      */
     public static boolean isEqualOrDerivedFrom(Class outputClass, Class inputClass)
     {
         //noinspection unchecked
         return inputClass.isAssignableFrom(outputClass) && (outputClass != Void.class || inputClass == Void.class);
+    }
+
+    /**
+     * Retrieve all parameter entities from collection of entities
+     * @param entities used collection of entities
+     * @return collection of parameter entities
+     */
+    public static Collection<InputScriptGXEntity> getParameterEntities(Collection<GXEntity> entities)
+    {
+        ArrayList<InputScriptGXEntity> parameterGXEntities = new ArrayList<>();
+
+        for (GXEntity entity : entities)
+        {
+            if (Tools.isEqualOrDerivedFrom(InputScriptGXEntity.class, entity.getClass()))
+            {
+                parameterGXEntities.add((InputScriptGXEntity) entity);
+            }
+        }
+        return parameterGXEntities;
     }
 }

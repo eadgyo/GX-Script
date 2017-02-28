@@ -132,13 +132,13 @@ public abstract class DefaultStartImbricationGXEntity extends DefaultGXEntity im
     }
 
     /**
-     * Create collection of addresses containing parameters addresses of function
+     * Create collection of addresses containing parameters addresses of script
      * For n imbrication, they are n + 1 addresses, the first n addresses are for start of imbrication and the last
      * address for the end of last imbrication
      *
-     * @param addressesMap map to get function memory stack
+     * @param addressesMap map to get script memory stack
      *
-     * @return created parameters addresses of function
+     * @return created parameters addresses of script
      */
     protected FuncImbricationDataAddresses createFuncDataAddresses(Map<GXEntity, OutputAddresses> addressesMap,
                                                                    FuncAddress[] imbricatedStartFuncAddresses)
@@ -187,7 +187,7 @@ public abstract class DefaultStartImbricationGXEntity extends DefaultGXEntity im
         // Add the func
         calledFunctions.add(getFunc());
 
-        // Create function parameters addresses
+        // Create script parameters addresses
         FuncImbricationDataAddresses funcParameters = createFuncDataAddresses(addressesMap,
                                                                               imbricatedStartFuncAddresses);
 

@@ -8,7 +8,7 @@ import org.eadge.gxscript.data.script.address.FuncImbricationDataAddresses;
 /**
  * Created by eadgyo on 11/08/16.
  *
- * Holds memory, script and current read function
+ * Holds memory, script and current read script
  */
 public class Program
 {
@@ -18,7 +18,7 @@ public class Program
     private MemoryStack memoryStack = new MemoryStack();
 
     /**
-     * Current read function
+     * Current read script
      */
     private FuncAddress currentFuncAddress = new FuncAddress(0);
 
@@ -38,7 +38,7 @@ public class Program
     }
 
     /**
-     * Call the current pointed function
+     * Call the current pointed script
      */
     public void callCurrentFunc()
     {
@@ -76,7 +76,7 @@ public class Program
     }
 
     /**
-     * Get objects pointed by the read function parameters
+     * Get objects pointed by the read script parameters
      *
      * @return current parameters objects
      */
@@ -150,9 +150,9 @@ public class Program
     // Current Func Address
 
     /**
-     * Set the address of the current read function
+     * Set the address of the current read script
      *
-     * @param currentFuncAddress address of read function
+     * @param currentFuncAddress address of read script
      */
     public void setCurrentFuncAddress(FuncAddress currentFuncAddress)
     {
@@ -160,9 +160,9 @@ public class Program
     }
 
     /**
-     * Set the address of the next read function
+     * Set the address of the next read script
      *
-     * @param nextReadAddress address of read function
+     * @param nextReadAddress address of read script
      */
     public void setNextFuncAddress(FuncAddress nextReadAddress)
     {
@@ -315,10 +315,10 @@ public class Program
 
         while (!isOnAddress(targetAddress) && !hasPassedAddress(targetAddress))
         {
-            // Call the current pointed function
+            // Call the current pointed script
             callCurrentFunc();
 
-            // Go to next function
+            // Go to next script
             nextFuncAddress();
         }
 

@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * Parent GXEntity model
  *
- * GXEntity can have one GXEntity per function and multiples entities per output
+ * GXEntity can have one GXEntity per script and multiples entities per output
  */
 public interface GXEntity extends Cloneable
 {
@@ -30,97 +30,97 @@ public interface GXEntity extends Cloneable
     //----------------------------
 
     /**
-     * Get the class of the function object at the index
+     * Get the class of the script object at the index
      *
-     * @param index function index
+     * @param index script index
      *
-     * @return class of the function object at the index
+     * @return class of the script object at the index
      */
     public abstract Class getInputClass(int index);
 
     /**
-     * Get all the classes of the function objects
+     * Get all the classes of the script objects
      *
-     * @return classes of the function objects
+     * @return classes of the script objects
      */
     public abstract Collection<Class> getAllInputClasses();
 
     /**
-     * Get the number of function objects
+     * Get the number of script objects
      *
-     * @return number of function objects
+     * @return number of script objects
      */
     public abstract int getNumberOfInputs();
 
     /**
-     * Check if one GXEntity is contained at the function
-     * @param inputIndex function index
+     * Check if one GXEntity is contained at the script
+     * @param inputIndex script index
      * @param GXEntity tested GXEntity
-     * @return true if GXEntity is contained at function index, false otherwise
+     * @return true if GXEntity is contained at script index, false otherwise
      */
     public abstract boolean inputContains(int inputIndex, GXEntity GXEntity);
 
     /**
-     * Get the function GXEntity at the index or null if there are no entities
+     * Get the script GXEntity at the index or null if there are no entities
      *
-     * @param index function index
+     * @param index script index
      *
-     * @return function GXEntity at the index or null if there are no entities
+     * @return script GXEntity at the index or null if there are no entities
      */
     public abstract GXEntity getInputEntity(int index);
 
     /**
-     * Check if function entry at index is used
+     * Check if script entry at index is used
      *
-     * @param index function index
+     * @param index script index
      *
-     * @return true if the function entry is used, false otherwise
+     * @return true if the script entry is used, false otherwise
      */
     public abstract boolean isInputUsed(int index);
 
     /**
      * Get the index of the output linked to one GXEntity or -1 if it's not a output GXEntity
      *
-     * @param inputIndex used function index
+     * @param inputIndex used script index
      *
      * @return index of the linked to output GXEntity, or -1 if GXEntity is not link on output
      */
     public abstract int getIndexOfOutputFromEntityOnInput(int inputIndex);
 
     /**
-     * Get output class from the GXEntity on function
+     * Get output class from the GXEntity on script
      *
-     * @param inputIndex function index
+     * @param inputIndex script index
      *
-     * @return class linked on from function GXEntity
+     * @return class linked on from script GXEntity
      */
     public abstract Class getOutputClassFromInputEntity(int inputIndex);
 
     /**
-     * Get all the function entities
+     * Get all the script entities
      *
-     * @return all function entities
+     * @return all script entities
      */
     public abstract Collection<GXEntity> getAllInputEntities();
 
     /**
-     * Check if GXEntity have necessary function
+     * Check if GXEntity have necessary script
      *
-     * @return true if GXEntity have enough function, false otherwise
+     * @return true if GXEntity have enough script, false otherwise
      */
     public abstract boolean hasAllNeededInput();
 
     /**
-     * Check if the function at the index is valid
+     * Check if the script at the index is valid
      *
-     * @param inputIndex function index
+     * @param inputIndex script index
      *
-     * @return true if the function is valid, false otherwise
+     * @return true if the script is valid, false otherwise
      */
     public boolean isValidInput(int inputIndex);
 
     /**
-     * Add link on function
+     * Add link on script
      * DO NOT USE THIS ALONE
      * @param inputIndex output index
      * @param GXEntity added GXEntity
@@ -129,22 +129,22 @@ public interface GXEntity extends Cloneable
     public abstract void addLinkInput(int inputIndex, int entityOutputIndex, GXEntity GXEntity);
 
     /**
-     * Remove one GXEntity link on function at the given index
+     * Remove one GXEntity link on script at the given index
      * DO NOT USE THIS ALONE
-     * @param inputIndex function entry to remove GXEntity
+     * @param inputIndex script entry to remove GXEntity
      */
     public abstract void removeLinkInput(int inputIndex);
 
     /**
      * Modify the information on the linked index of one inputEntity
-     * @param inputIndex function index
+     * @param inputIndex script index
      * @param newOutputIndex updated output index
      */
     public abstract void changeIndexOfOutputFromEntityOnInput(int inputIndex, int newOutputIndex);
 
     /**
-     * Create a link between this GXEntity considered as function and one other output GXEntity
-     * @param inputIndex function index
+     * Create a link between this GXEntity considered as script and one other output GXEntity
+     * @param inputIndex script index
      * @param entityOutput other GXEntity output index
      * @param GXEntity output GXEntity
      */
@@ -152,8 +152,8 @@ public interface GXEntity extends Cloneable
 
 
     /**
-     * Remove link on function at the given function index
-     * @param inputIndex function index
+     * Remove link on script at the given script index
+     * @param inputIndex script index
      */
     public abstract void unlinkAsInput(int inputIndex);
 
@@ -172,16 +172,16 @@ public interface GXEntity extends Cloneable
     public abstract int getNumberOfVariableOutput();
 
     /**
-     * Check if an function takes variable
-     * @param inputIndex function index
-     * @return true if function takes variable, false otherwise
+     * Check if an script takes variable
+     * @param inputIndex script index
+     * @return true if script takes variable, false otherwise
      */
     public abstract boolean isVariableInput(int inputIndex);
 
     /**
-     * Check if an function at the given index is necessary
-     * @param inputIndex function index
-     * @return true if the function at index is needed, false otherwise
+     * Check if an script at the given index is necessary
+     * @param inputIndex script index
+     * @return true if the script at index is needed, false otherwise
      */
     public abstract boolean isInputNeeded(int inputIndex);
 
@@ -209,7 +209,7 @@ public interface GXEntity extends Cloneable
      *
      * @return classes of the output objects in collection
      */
-    public abstract Collection<Class> getAllOutputClasses();
+    public abstract Collection<Class> getOutputClasses();
 
     /**
      * Get the number of output objects
@@ -217,6 +217,15 @@ public interface GXEntity extends Cloneable
      * @return number of output objects
      */
     public abstract int getNumberOfOutputs();
+
+    /**
+     * Get the number output entities at the index
+     *
+     * @param outputIndex output index
+     *
+     * @return number of output entities at the index
+     */
+    public abstract int getNumberOfOutputEntities(int outputIndex);
 
     /**
      * Get the output entities at the index
@@ -245,12 +254,12 @@ public interface GXEntity extends Cloneable
     public abstract boolean outputContains(int outputIndex, GXEntity GXEntity);
 
     /**
-     * Get the index of the function linked to one GXEntity or -1 if it's not a function GXEntity
+     * Get the index of the script linked to one GXEntity or -1 if it's not a script GXEntity
      *
      * @param index  GXEntity output index
-     * @param outputGXEntity linked to function GXEntity
+     * @param outputGXEntity linked to script GXEntity
      *
-     * @return index of the linked to function GXEntity, or -1 if GXEntity is not link on function
+     * @return index of the linked to script GXEntity, or -1 if GXEntity is not link on script
      */
     public abstract int getIndexOfInputFromEntityOnOutput(int index, GXEntity outputGXEntity);
 
@@ -262,14 +271,14 @@ public interface GXEntity extends Cloneable
     public abstract Collection<? extends Collection<GXEntity>> getAllOutputEntities();
 
     /**
-     * Get number of function taking variables
+     * Get number of script taking variables
      *
-     * @return number of function taking variables
+     * @return number of script taking variables
      */
     public abstract int getNumberOfVariableInput();
 
     /**
-     * Get number of used function taking variables
+     * Get number of used script taking variables
      *
      * @return number of inputs taking variables
      */
@@ -294,7 +303,7 @@ public interface GXEntity extends Cloneable
      * Modify the information on the linked index of one outputGXEntity
      * @param outputIndex output index
      * @param outputGXEntity output GXEntity
-     * @param newInputIndex updated function index
+     * @param newInputIndex updated script index
      */
     public abstract void changeIndexOfInputFromEntityOnOutput(int outputIndex, GXEntity outputGXEntity, int newInputIndex);
 
@@ -302,7 +311,7 @@ public interface GXEntity extends Cloneable
      * Add link on output
      * DO NOT USE THIS ALONE
      * @param outputIndex output index
-     * @param inputEntityIndex corresponding function index
+     * @param inputEntityIndex corresponding script index
      * @param GXEntity added GXEntity
      */
     public abstract void addLinkOutput(int outputIndex, int inputEntityIndex, GXEntity GXEntity);
@@ -315,10 +324,10 @@ public interface GXEntity extends Cloneable
     public abstract Func getFunc();
 
     /**
-     * Create a link between this GXEntity considered as output and one other function GXEntity
+     * Create a link between this GXEntity considered as output and one other script GXEntity
      * @param outputIndex output index
-     * @param entityInput other GXEntity function index
-     * @param GXEntity function GXEntity
+     * @param entityInput other GXEntity script index
+     * @param GXEntity script GXEntity
      */
     void linkAsOutput(int outputIndex, int entityInput, GXEntity GXEntity);
     /**
@@ -331,8 +340,8 @@ public interface GXEntity extends Cloneable
     /**
      * Default add funcs and funcs params
      *
-     * @param calledFunctions          list of called function
-     * @param calledFunctionAddresses list of used called function data
+     * @param calledFunctions          list of called script
+     * @param calledFunctionAddresses list of used called script data
      * @param addressesMap                      map to link GXEntity to corresponding GXEntity output addresses
      */
     void pushEntityCode(ArrayList<Func> calledFunctions,

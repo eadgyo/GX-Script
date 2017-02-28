@@ -7,7 +7,7 @@ import java.util.Set;
  * Created by eadgyo on 03/08/16.
  *
  * Variable GXEntity model
- * Variable have function and output as GXEntity, but also have modified lane
+ * Variable have script and output as GXEntity, but also have modified lane
  */
 public abstract class DefaultVariableGXEntity extends DefaultGXEntity implements VariableGXEntity
 {

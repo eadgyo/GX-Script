@@ -6,7 +6,7 @@ import org.eadge.gxscript.data.entity.GXEntity;
 /**
  * Created by eadgyo on 05/09/16.
  *
- * One function object define the output class object
+ * One script object define the output class object
  */
 public abstract class OneInputDefinesOneOutput extends DefaultGXEntity
 {
@@ -49,7 +49,7 @@ public abstract class OneInputDefinesOneOutput extends DefaultGXEntity
             // Get output class
             Class sourceOutputClass = getOutputClassFromInputEntity(SOURCE_INPUT_INDEX);
 
-            // If there is a linked function GXEntity
+            // If there is a linked script GXEntity
             if (sourceOutputClass != null)
             {
                 setOutputClass(RESULT_INPUT_INDEX, sourceOutputClass);

@@ -22,7 +22,7 @@ public class AddListGXEntity extends CollectionDefineInput
     {
         super("Add item in list", "List", List.class);
 
-        // Add function
+        // Add script
         addInputEntryNotNeeded(INDEX_INPUT_INDEX, "Index", Integer.class);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 

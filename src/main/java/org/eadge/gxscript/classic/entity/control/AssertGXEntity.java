@@ -23,7 +23,7 @@ public class AssertGXEntity extends DefaultGXEntity
         // Add source checking value
         addInputEntry(SOURCE_INPUT_INDEX, "Checked", Boolean.class);
 
-        // Add next function
+        // Add next script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add continue output

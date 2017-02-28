@@ -23,13 +23,13 @@ public class EqualGXEntity extends DefaultGXEntity
     {
         super("Equal");
 
-        // Add object 0 function
+        // Add object 0 script
         addInputEntry(V0_INPUT_INDEX, "V0", Boolean.class);
 
-        // Add object 1 function
+        // Add object 1 script
         addInputEntry(V1_INPUT_INDEX, "V1", Boolean.class);
 
-        // Add next function
+        // Add next script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add output entry

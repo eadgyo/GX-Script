@@ -1,30 +1,30 @@
 package org.eadge.gxscript.tools.check.validator;
 
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.classic.entity.script.InputScriptGXEntity;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.tools.check.ValidatorModel;
 
 import java.util.Collection;
 
 /**
- * Created by eadgyo on 03/08/16.
+ * Created by eadgyo on 28/02/17.
  *
- * Check if there are no entities alone
+ * Validate that all parameters entities are connected with valid output
  */
-public class ValidateEntityHaveInput extends ValidatorModel
+public class ValidateValidParameters extends ValidatorModel
 {
     public boolean validate(RawGXScript rawGXScript)
     {
         super.validate(rawGXScript);
 
-        Collection<GXEntity> entities = rawGXScript.getEntities();
+        Collection<InputScriptGXEntity> entities = rawGXScript.getScriptInputEntities();
 
         // Check if all entities have necessary script
-        for (GXEntity GXEntity : entities)
+        for (InputScriptGXEntity entity : entities)
         {
-            if (!GXEntity.hasAllNeededInput())
+            if (!entity.isValidParameter())
             {
-                entitiesWithError.add(GXEntity);
+                entitiesWithError.add(entity);
             }
         }
 

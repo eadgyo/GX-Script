@@ -69,7 +69,7 @@ public class TestValidateNoInterdependency
         RealGXEntity realEntity2 = new RealGXEntity(10f);
         RealGXEntity realEntity3 = new RealGXEntity();
 
-        // Link realEntity2 on realEntity3 function
+        // Link realEntity2 on realEntity3 script
         realEntity3.linkAsInput(RealGXEntity.SET_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity2);
 
         // Create real comparison

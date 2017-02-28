@@ -35,7 +35,7 @@ public abstract class Collection2Define2Inputs extends DefaultGXEntity
             Class itemClass0 = ((Class2Items) getInputEntity(COLLECTION2_INPUT_INDEX)).getItem0Class();
             Class itemClass1 = ((Class2Items) getInputEntity(COLLECTION2_INPUT_INDEX)).getItem1Class();
 
-            // Change function item class
+            // Change script item class
             setInputClass(E0_INPUT_INDEX, itemClass0);
             setInputClass(E1_INPUT_INDEX, itemClass1);
         }

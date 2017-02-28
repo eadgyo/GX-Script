@@ -28,10 +28,10 @@ public class PrintGXEntity extends DefaultGXEntity
     {
         super("Print");
 
-        // Add source function
+        // Add source script
         addInputEntryNotNeeded(SOURCE_INPUT_INDEX, "Source", Object.class);
 
-        // Add next function
+        // Add next script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Add continue output
@@ -58,7 +58,7 @@ public class PrintGXEntity extends DefaultGXEntity
                 }
             };
         }
-        else // No function setting printed text
+        else // No script setting printed text
         {
             // Use default string
             return new Func()

@@ -39,7 +39,7 @@ public abstract class DefaultGXEntity implements GXEntity
     protected ArrayList<Class> inputClasses = new ArrayList<>();
 
     /**
-     * Linked on function entities
+     * Linked on script entities
      */
     protected ArrayList<GXEntity> inputEntities = new ArrayList<>();
 
@@ -139,7 +139,7 @@ public abstract class DefaultGXEntity implements GXEntity
 
         for (int inputIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
-            // If the function is used
+            // If the script is used
             if (getInputEntity(inputIndex) != null)
             {
                 usedInput++;
@@ -154,7 +154,7 @@ public abstract class DefaultGXEntity implements GXEntity
     {
         for (int inputIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
-            // If the function is used
+            // If the script is used
             if (getInputEntity(inputIndex) != null)
             {
                 return true;
@@ -227,6 +227,39 @@ public abstract class DefaultGXEntity implements GXEntity
         return null;
     }
 
+    /**
+     * Find the least derived output object classes from all linked on output entities on the given output index
+     * @param outputIndex output index
+     * @return least derived output object class
+     */
+    public Class findOutputClassFromLinkedEntities(int outputIndex)
+    {
+        // Set the class to default object
+        Class classOutput = null;
+
+        Collection<GXEntity> allOutputEntitiesCollection = getAllOutputEntitiesCollection();
+
+        // Search the less derived object
+        for(GXEntity outputEntity : allOutputEntitiesCollection)
+        {
+            int indexOfInput = getIndexOfInputFromEntityOnOutput(outputIndex, outputEntity);
+            Class inputClass = outputEntity.getInputClass(indexOfInput);
+
+            // If the inputClass is less derived from the classParameter
+            if (classOutput == null || Tools.isEqualOrDerivedFrom(inputClass, classOutput))
+            {
+                // Change the inputClass
+                classOutput = inputClass;
+            }
+            else if (Tools.isEqualOrDerivedFrom(classOutput, inputClass))
+            {
+                return null;
+            }
+        }
+
+        return classOutput;
+    }
+
     @Override
     public Collection<GXEntity> getAllInputEntities()
     {
@@ -240,9 +273,15 @@ public abstract class DefaultGXEntity implements GXEntity
     }
 
     @Override
-    public Collection<Class> getAllOutputClasses()
+    public Collection<Class> getOutputClasses()
     {
         return outputClasses;
+    }
+
+    @Override
+    public int getNumberOfOutputEntities(int outputIndex)
+    {
+        return outputEntities.get(outputIndex).size();
     }
 
     @Override
@@ -306,13 +345,13 @@ public abstract class DefaultGXEntity implements GXEntity
     @Override
     public boolean hasAllNeededInput()
     {
-        // Check if all needed function are linked
+        // Check if all needed script are linked
         for (Integer indexNeededInput : indicesNeededInputs)
         {
-            // If there is one function GXEntity
+            // If there is one script GXEntity
             if (getInputEntity(indexNeededInput) == null)
             {
-                // It miss needed function
+                // It miss needed script
                 return false;
             }
         }
@@ -385,27 +424,27 @@ public abstract class DefaultGXEntity implements GXEntity
     }
 
     /**
-     * Add not needed function entry at the given index
-     * @param inputIndex function index
-     * @param inputName name of function entry
-     * @param cl class of the function, void if it's just a link to another GXEntity
+     * Add not needed script entry at the given index
+     * @param inputIndex script index
+     * @param inputName name of script entry
+     * @param cl class of the script, void if it's just a link to another GXEntity
      */
     public void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl)
     {
-        // If add between two existing function entries
+        // If add between two existing script entries
         if (inputIndex != getNumberOfInputs())
         {
             addOffsetInput(inputIndex, 1);
         }
 
-        // If the function entry is not a function linker
+        // If the script entry is not a script linker
         if (cl != Void.class)
         {
             // Input entry is a variable entry
             indicesVariableInputs.add(inputIndex);
         }
 
-        // Add data associated with function entry
+        // Add data associated with script entry
         inputEntities.add(inputIndex, null);
         outputFromInputEntitiesIndices.add(inputIndex, -1);
         inputClasses.add(inputIndex, cl);
@@ -414,10 +453,10 @@ public abstract class DefaultGXEntity implements GXEntity
 
 
     /**
-     * Change function entry name
+     * Change script entry name
      *
-     * @param inputIndex function index
-     * @param inputName new function name
+     * @param inputIndex script index
+     * @param inputName new script name
      */
     public void setInputName(int inputIndex, String inputName)
     {
@@ -425,8 +464,8 @@ public abstract class DefaultGXEntity implements GXEntity
     }
 
     /**
-     * Change set function class and remove function if the new class is not compatible with the old one
-     * @param inputIndex function entry index
+     * Change set script class and remove script if the new class is not compatible with the old one
+     * @param inputIndex script entry index
      * @param cl new class
      */
     public void setInputClass(int inputIndex, Class cl)
@@ -434,42 +473,42 @@ public abstract class DefaultGXEntity implements GXEntity
         // If new link class is not compatible with the last one
         if (!Tools.isEqualOrDerivedFrom(cl, getInputClass(inputIndex)))
         {
-            // Remove function linked entities
+            // Remove script linked entities
             unlinkAsInput(inputIndex);
         }
 
-        // Change function class
+        // Change script class
         inputClasses.set(inputIndex, cl);
     }
 
     /**
-     * Remove linked function GXEntity
+     * Remove linked script GXEntity
      *
-     * @param inputIndex function index
+     * @param inputIndex script index
      */
     public void clearLinkedInput(int inputIndex)
     {
-        // Remove linked to function entry entities
+        // Remove linked to script entry entities
         unlinkAsInput(inputIndex);
     }
 
     /**
-     * Remove one function entry
-     * @param inputIndex function index
+     * Remove one script entry
+     * @param inputIndex script index
      */
     public void removeInputEntry(int inputIndex)
     {
         // Remove linked to entry entities
         clearLinkedInput(inputIndex);
 
-        // Remove associated data with function entry
+        // Remove associated data with script entry
         indicesVariableOutputs.remove(inputIndex);
         inputEntities.remove(inputIndex);
         outputFromInputEntitiesIndices.remove(inputIndex);
         inputClasses.remove(inputIndex);
         inputsNames.remove(inputIndex);
 
-        // If the function is not the last
+        // If the script is not the last
         if (inputIndex != getNumberOfInputs())
         {
             // Update inputs indices of upper inputs
@@ -478,8 +517,8 @@ public abstract class DefaultGXEntity implements GXEntity
     }
 
     /**
-     * Add offset on function indices
-     * @param startInputIndex inclusive start function index
+     * Add offset on script indices
+     * @param startInputIndex inclusive start script index
      * @param offset offset to add to index
      */
     protected void addOffsetInput(int startInputIndex, int offset)
@@ -488,14 +527,14 @@ public abstract class DefaultGXEntity implements GXEntity
         {
             int updatedIndex = inputIndex + offset;
 
-            // If the function is needed
+            // If the script is needed
             if (isInputNeeded(inputIndex))
             {
                 indicesNeededInputs.remove(inputIndex);
                 indicesNeededInputs.add(updatedIndex);
             }
 
-            // If the function is already linked
+            // If the script is already linked
             GXEntity inputGXEntity = getInputEntity(inputIndex);
             if (inputGXEntity != null)
             {
@@ -503,7 +542,7 @@ public abstract class DefaultGXEntity implements GXEntity
                 inputGXEntity.changeIndexOfInputFromEntityOnOutput(outputIndex, this, updatedIndex);
             }
 
-            // If the function is a variable entry
+            // If the script is a variable entry
             if (isVariableInput(inputIndex))
             {
                 indicesVariableInputs.remove(inputIndex);
@@ -559,7 +598,7 @@ public abstract class DefaultGXEntity implements GXEntity
             addOffsetOutput(outputIndex, 1);
         }
 
-        // If the output entry is not a function linker
+        // If the output entry is not a script linker
         if (cl != Void.class)
         {
             // Output entry is a variable entry
@@ -597,7 +636,7 @@ public abstract class DefaultGXEntity implements GXEntity
             unlinkAsOutput(outputIndex);
         }
 
-        // Change function class
+        // Change script class
         inputClasses.set(outputIndex, cl);
     }
 
@@ -718,9 +757,9 @@ public abstract class DefaultGXEntity implements GXEntity
     }
 
     /**
-     * Create collection of addresses containing parameters addresses of function
-     * @param addressesMap map to get function memory stack
-     * @return created parameters addresses of function
+     * Create collection of addresses containing parameters addresses of script
+     * @param addressesMap map to get script memory stack
+     * @return created parameters addresses of script
      */
     protected FuncDataAddresses createFuncDataAddresses(Map<GXEntity, OutputAddresses> addressesMap)
     {
@@ -730,16 +769,16 @@ public abstract class DefaultGXEntity implements GXEntity
     }
 
     /**
-     * Fill parameters Data addresses of function
-     * @param addressesMap map to get function memory stack
-     * @param funcDataAddresses filled Data parameters addresses for function call
+     * Fill parameters Data addresses of script
+     * @param addressesMap map to get script memory stack
+     * @param funcDataAddresses filled Data parameters addresses for script call
      */
     protected void initFuncDataAddresses(Map<GXEntity, OutputAddresses> addressesMap, FuncDataAddresses funcDataAddresses)
     {
-        // For each variable function
+        // For each variable script
         for (int inputIndex = 0, variableIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
         {
-            // If the function is taking variable and is used
+            // If the script is taking variable and is used
             if (isVariableInput(inputIndex) && isInputUsed(inputIndex))
             {
                 // Get variable address
@@ -760,10 +799,10 @@ public abstract class DefaultGXEntity implements GXEntity
     }
 
     /**
-     * Create a link between this GXEntity considered as output and one other function GXEntity
+     * Create a link between this GXEntity considered as output and one other script GXEntity
      * @param outputIndex output index
-     * @param entityInput other GXEntity function index
-     * @param GXEntity function GXEntity
+     * @param entityInput other GXEntity script index
+     * @param GXEntity script GXEntity
      */
     public void linkAsOutput(int outputIndex, int entityInput, GXEntity GXEntity)
     {
@@ -797,8 +836,8 @@ public abstract class DefaultGXEntity implements GXEntity
     /**
      * Default add funcs and funcs params
      *
-     * @param calledFunctions          list of called function
-     * @param calledFunctionAddresses list of used called function data
+     * @param calledFunctions          list of called script
+     * @param calledFunctionAddresses list of used called script data
      * @param addressesMap                      map to link GXEntity to corresponding GXEntity output addresses
      */
     public void pushEntityCode(ArrayList<Func> calledFunctions,
@@ -809,7 +848,7 @@ public abstract class DefaultGXEntity implements GXEntity
         Func func = getFunc();
         calledFunctions.add(func);
 
-        // Link function to corresponding outputs addresses and add it to called function addresses
+        // Link script to corresponding outputs addresses and add it to called script addresses
         FuncDataAddresses funcDataAddresses = createAndLinkFuncDataAddresses(addressesMap);
         calledFunctionAddresses.add(funcDataAddresses);
     }
@@ -845,7 +884,7 @@ public abstract class DefaultGXEntity implements GXEntity
      */
     public FuncDataAddresses createAndLinkFuncDataAddresses(Map<GXEntity, OutputAddresses> addressesMap)
     {
-        // Create function data addresses (inputs of the GXEntity)
+        // Create script data addresses (inputs of the GXEntity)
         FuncDataAddresses funcDataAddresses = new FuncDataAddresses(getNumberOfUsedVariableInput());
 
         // Link data addresses
@@ -855,7 +894,7 @@ public abstract class DefaultGXEntity implements GXEntity
             {
                 GXEntity inputGXEntity = getInputEntity(inputIndex);
 
-                // If the GXEntity is linked at this function
+                // If the GXEntity is linked at this script
                 if (inputGXEntity != null)
                 {
                     // Get the corresponding outputs addresses
@@ -865,15 +904,15 @@ public abstract class DefaultGXEntity implements GXEntity
 
                     int outputIndex = getIndexOfOutputFromEntityOnInput(inputIndex);
 
-                    // Get the address of the corresponding output/function link
+                    // Get the address of the corresponding output/script link
                     DataAddress outputAddress = outputAddresses.getOutputAddress(outputIndex);
 
-                    // Store the output address, use variable index instead of function index
+                    // Store the output address, use variable index instead of script index
                     funcDataAddresses.setInputAddress(variableIndex, outputAddress);
                 }
                 else
                 {
-                    // Use variable index instead of function index, funcDataAddresses doesn't contain non
+                    // Use variable index instead of script index, funcDataAddresses doesn't contain non
                     // variables inputs
                     funcDataAddresses.setInputAddress(variableIndex, null);
                 }
@@ -944,7 +983,7 @@ public abstract class DefaultGXEntity implements GXEntity
         // Check for all inputs
         for (int index = 0; index < getNumberOfInputs(); index++)
         {
-            // If the function is not valid
+            // If the script is not valid
             if (!isValidInput(index))
             {
                 return false;
@@ -954,17 +993,17 @@ public abstract class DefaultGXEntity implements GXEntity
     }
 
     /**
-     * Check if the function at the index is valid
+     * Check if the script at the index is valid
      *
-     * @param inputIndex function index
+     * @param inputIndex script index
      *
-     * @return true if the function is valid, false otherwise
+     * @return true if the script is valid, false otherwise
      */
     public boolean isValidInput(int inputIndex)
     {
         GXEntity inputGXEntity = getInputEntity(inputIndex);
 
-        // If function is not linked
+        // If script is not linked
         if (inputGXEntity == null)
             return true;
 
@@ -1000,7 +1039,7 @@ public abstract class DefaultGXEntity implements GXEntity
         // Check for all outputs
         for (int index = 0; index < getNumberOfOutputs(); index++)
         {
-            // If the function is not valid
+            // If the script is not valid
             if (!isValidOutput(index))
             {
                 return false;

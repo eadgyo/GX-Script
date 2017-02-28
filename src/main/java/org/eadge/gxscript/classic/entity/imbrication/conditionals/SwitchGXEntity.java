@@ -36,7 +36,7 @@ public class SwitchGXEntity extends DefaultStartImbricationGXEntity
         // Add source index
         addInputEntry(SOURCE_INPUT_INDEX, "Source", Integer.class);
 
-        // Add next function
+        // Add next script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         // Output
@@ -247,7 +247,7 @@ public class SwitchGXEntity extends DefaultStartImbricationGXEntity
                     caseAddressEnd = funcParameters.getImbricationAddress(this.defaultOutputIndex + 1);
                 }
 
-                // Run from the start and end of function
+                // Run from the start and end of script
                 program.runFromAndUntil(caseAddressStart, caseAddressEnd);
 
                 program.popMemoryLevel();

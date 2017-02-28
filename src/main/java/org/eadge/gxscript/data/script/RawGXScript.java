@@ -1,5 +1,6 @@
 package org.eadge.gxscript.data.script;
 
+import org.eadge.gxscript.classic.entity.script.InputScriptGXEntity;
 import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.tools.Tools;
 
@@ -24,6 +25,11 @@ public class RawGXScript
      * Keeps all entities with no inputs used
      */
     private Set<GXEntity> startingEntities = new HashSet<>();
+
+    /**
+     * Keeps all parameters entities
+     */
+    private Set<InputScriptGXEntity> parameterGXEntities = new HashSet<>();
 
     public RawGXScript()
     {
@@ -59,6 +65,11 @@ public class RawGXScript
         return startingEntities;
     }
 
+    public Collection<InputScriptGXEntity> getScriptInputEntities()
+    {
+        return parameterGXEntities;
+    }
+
     public int numberOfEntities()
     {
         return entities.size();
@@ -67,8 +78,10 @@ public class RawGXScript
     public void updateStartingEntities()
     {
         startingEntities.clear();
+        parameterGXEntities.clear();
 
         startingEntities.addAll(Tools.getStartingEntities(entities));
+        parameterGXEntities.addAll(Tools.getParameterEntities(startingEntities));
     }
 
     /**
@@ -109,7 +122,7 @@ public class RawGXScript
         // Get output entities
         Collection<GXEntity> inputsEntities = GXEntity.getAllInputEntities();
 
-        // Add not treated elements on function
+        // Add not treated elements on script
         addNotTreatedEntities(inputsEntities, alreadyTreated, toBeTreated);
     }
 

@@ -72,8 +72,8 @@ public interface StartImbricationGXEntity extends GXEntity
      *
      * @param addressesMap                 map to link GXEntity to corresponding GXEntity output addresses
      * @param imbricatedStartFuncAddresses addresses of imbricated addresses
-     * @param calledFunctions              list of called function
-     * @param calledFunctionsParameters    list of used called function data
+     * @param calledFunctions              list of called script
+     * @param calledFunctionsParameters    list of used called script data
      */
     void pushStartImbricationCode(Map<GXEntity, OutputAddresses> addressesMap,
                                   FuncAddress[] imbricatedStartFuncAddresses,

@@ -22,7 +22,7 @@ public class ImbricationNodeC extends ImbricationNode
     protected ArrayList<Func> calledFunctions = new ArrayList<>();
 
     /**
-     * Indices of parameters of called function
+     * Indices of parameters of called script
      */
     protected ArrayList<FuncDataAddresses> calledFunctionsParameters = new ArrayList<>();
 
@@ -81,17 +81,18 @@ public class ImbricationNodeC extends ImbricationNode
      */
     public CompiledGXScript compile()
     {
-        return new CompiledGXScript(0, calledFunctions, calledFunctionsParameters);
+        return new CompiledGXScript(new ArrayList<Class>(), new ArrayList<Class>(), calledFunctions, calledFunctionsParameters);
     }
 
     /**
      * Compile script with his parameters
-     * @param numberOfScriptParameters number of parameters used for the script
+     * @param inputsScriptClasses classes of script's inputs
+     * @param outputsScriptClasses classes of script's outputs
      * @return compiled GXScript
      */
-    public CompiledGXScript compile(int numberOfScriptParameters)
+    public CompiledGXScript compile(Collection<Class> inputsScriptClasses, Collection<Class> outputsScriptClasses)
     {
-        return new CompiledGXScript(numberOfScriptParameters, calledFunctions, calledFunctionsParameters);
+        return new CompiledGXScript(inputsScriptClasses, outputsScriptClasses, calledFunctions, calledFunctionsParameters);
     }
 
     @Override
@@ -162,7 +163,7 @@ public class ImbricationNodeC extends ImbricationNode
         assert (imbricationNodes != null);
 
         // --> Start GXEntity imbrication
-        // Get imbricated start function
+        // Get imbricated start script
         FuncAddress[] funcAddresses = getFuncAddresses(imbricationNodes);
 
         // Add code (call functions and parameters) of start imbrication GXEntity
@@ -289,11 +290,11 @@ public class ImbricationNodeC extends ImbricationNode
     }
 
     /**
-     * Transform function addresses relative at an higher level of imbrication, to absolute addresses in this
+     * Transform script addresses relative at an higher level of imbrication, to absolute addresses in this
      * imbrication
      * UPDATE BEFORE INSERTING CALLED FUNCTIONS PARAMETERS
      *
-     * @param nextAddedCalledFunctionsParameters addresses of function that will be added in this level of imbrication
+     * @param nextAddedCalledFunctionsParameters addresses of script that will be added in this level of imbrication
      */
     private void updateFuncsAddresses(Collection<FuncDataAddresses> nextAddedCalledFunctionsParameters)
     {
@@ -310,11 +311,11 @@ public class ImbricationNodeC extends ImbricationNode
     }
 
     /**
-     * Transform function addresses relative at an higher level of imbrication, to absolute addresses in this
+     * Transform script addresses relative at an higher level of imbrication, to absolute addresses in this
      * imbrication
      * UPDATE BEFORE INSERTING CALLED FUNCTIONS PARAMETERS
      *
-     * @param nextAddedCalledFunctionsParameters addresses of function that will be added in this level of imbrication
+     * @param nextAddedCalledFunctionsParameters addresses of script that will be added in this level of imbrication
      */
     private void updateFuncsAddresses(FuncAddress[] nextAddedCalledFunctionsParameters)
     {
@@ -352,7 +353,7 @@ public class ImbricationNodeC extends ImbricationNode
         OutputAddresses outputAddresses = startImbricationEntity.createAndAllocOutputs(currentDataAddress);
         outputAddressesMap.put(startImbricationEntity, outputAddresses);
 
-        // Get all function necessary output entities addresses
+        // Get all script necessary output entities addresses
         Map<GXEntity, OutputAddresses> outputAddressesMap = getOutputAddresses(startImbricationEntity
                                                                                      .getAllInputEntities());
     }
@@ -361,7 +362,7 @@ public class ImbricationNodeC extends ImbricationNode
     {
         super.treatEntity(GXEntity);
 
-        // Get all function necessary output entities addresses
+        // Get all script necessary output entities addresses
         Map<GXEntity, OutputAddresses> outputAddressesMap = getOutputAddresses(GXEntity.getAllInputEntities());
 
         // Add funcs and funcsData of GXEntity

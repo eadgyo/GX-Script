@@ -1,15 +1,14 @@
 package org.eadge.gxscript.tools.compile;
 
-import org.eadge.gxscript.classic.entity.function.ParameterGXEntity;
+import org.eadge.gxscript.classic.entity.script.InputScriptGXEntity;
+import org.eadge.gxscript.classic.entity.script.OutputScriptGXEntity;
 import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 import org.eadge.gxscript.data.imbrication.compile.ImbricationNodeC;
 import org.eadge.gxscript.data.script.CompiledGXScript;
-import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.data.script.address.DataAddress;
-import org.eadge.gxscript.data.script.address.FuncDataAddresses;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.*;
@@ -51,33 +50,22 @@ public class GXCompiler
      */
     protected ImbricationNodeC generateCompilationObjects(RawGXScript rawGXScript)
     {
-        return generateCompilationObjects(new DataAddress(0),
-                                          new ArrayList<Func>(),
-                                          new ArrayList<FuncDataAddresses>(),
-                                          rawGXScript);
+        return generateCompilationObjects(new DataAddress(0), rawGXScript);
     }
 
     /**
      * Compute imbrication func and data objects necessary for compilation
      * @param startAddress start data address
-     * @param GXScriptFuncParameters script parameters funcs
-     * @param GXScriptFuncParametersAddresses script parameters addresses
      * @param rawGXScript GXScript to compile
      * @return ImbricationNode containing necessary data to compile
      */
-    protected ImbricationNodeC generateCompilationObjects(DataAddress startAddress,
-                                                          Collection<Func> GXScriptFuncParameters,
-                                                          Collection<FuncDataAddresses> GXScriptFuncParametersAddresses,
-                                                          RawGXScript rawGXScript)
+    protected ImbricationNodeC generateCompilationObjects(DataAddress startAddress, RawGXScript rawGXScript)
     {
         Collection<GXEntity> entities = rawGXScript.getEntities();
 
         // Create level 0 of imbrication, it's the root of the tree
         // All entities are in this level
-        ImbricationNodeC root = createImbricationNode(startAddress,
-                                                      GXScriptFuncParameters,
-                                                      GXScriptFuncParametersAddresses,
-                                                      entities);
+        ImbricationNodeC root = createImbricationNode(startAddress, entities);
 
         // Get starting entities
         Collection<GXEntity> startingEntities = rawGXScript.getStartingEntities();
@@ -118,20 +106,22 @@ public class GXCompiler
     public CompiledGXScript compile(RawGXScript rawGXScript)
     {
         // Get script's parameters
-        Collection<GXEntity> parameterEntities = getParameterEntities(rawGXScript);
+        Collection<InputScriptGXEntity> inputEntities = rawGXScript.getScriptInputEntities();
+        Collection<OutputScriptGXEntity> outputEntities = rawGXScript.getScriptOutputEntities();
 
         // Generate parameters func
-        ArrayList<Func> funcs = new ArrayList<>(parameterEntities.size());
-        ArrayList<FuncDataAddresses>  funcDataAddresses = new ArrayList<>(parameterEntities.size());
+        ArrayList<Class> inputsScriptClasses = new ArrayList<>();
+        ArrayList<Class> outputsScriptClasses = new ArrayList<>();
 
         // Alloc parameters input and retrieve the start address
-        DataAddress startAddress = allocParametersInputs(parameterEntities, funcs, funcDataAddresses);
+        DataAddress startAddress = new DataAddress(0);
+        startAddress.addOffset(allocScriptOutputs(outputEntities, outputsScriptClasses));
+        startAddress.addOffset(allocScriptInputs(inputEntities, inputsScriptClasses));
 
         // Generate compilation objects
-        ImbricationNodeC root = generateCompilationObjects(startAddress, funcs, funcDataAddresses, rawGXScript);
+        ImbricationNodeC root = generateCompilationObjects(startAddress, rawGXScript);
 
-        int numberOfScriptParameters = funcDataAddresses.size();
-        return root.compile(numberOfScriptParameters);
+        return root.compile(inputsScriptClasses, outputsScriptClasses);
     }
 
     protected ImbricationNodeC createImbricationNode(Collection<GXEntity> entities)
@@ -139,56 +129,42 @@ public class GXCompiler
         return new ImbricationNodeC(entities);
     }
 
-    protected ImbricationNodeC createImbricationNode(DataAddress startAddress,
-                                                     Collection<Func> GXScriptFuncParameters,
-                                                     Collection<FuncDataAddresses> GXScriptFuncParametersAddresses,
-                                                     Collection<GXEntity> entities)
+    protected ImbricationNodeC createImbricationNode(DataAddress startAddress, Collection<GXEntity> entities)
     {
-        return new ImbricationNodeC(startAddress, GXScriptFuncParameters, GXScriptFuncParametersAddresses, entities);
-    }
-
-    protected Collection<GXEntity> getParameterEntities(RawGXScript rawGXScript)
-    {
-        // Parameters entities have no inputs
-        // Get all starting entities with no inputs used
-        Collection<GXEntity> startingEntities = rawGXScript.getStartingEntities();
-
-        // Init parameter entities
-        Collection<GXEntity> parameterEntities = new HashSet<>();
-
-        // Search for parameters entities
-        for (GXEntity GXEntity : startingEntities)
-        {
-            if (GXEntity instanceof ParameterGXEntity)
-            {
-                parameterEntities.add(GXEntity);
-            }
-        }
-
-        return parameterEntities;
+        return new ImbricationNodeC(startAddress, entities);
     }
 
     /**
      * Alloc data address for script input parameters and retrieve the corresponding start address
-     * @param parameterEntities used parameter entities
-     * @param funcs funcs array to be filled with parameter entities func
-     * @param funcDataAddresses funcs array to be filled with parameter entities func data addresses
-     * @return start address
+     * @param inputScriptGXEntities used parameter entities
+     * @return inputScriptClasses store script's inputs
      */
-    protected DataAddress allocParametersInputs(Collection<GXEntity> parameterEntities,
-                                                  ArrayList<Func> funcs,
-                                                  ArrayList<FuncDataAddresses>  funcDataAddresses)
+    protected ArrayList<Class> getScriptInputClasses(Collection<InputScriptGXEntity> inputScriptGXEntities)
     {
-        DataAddress startAddress = new DataAddress();
+        ArrayList<Class> inputScriptClasses = new ArrayList<>();
 
-        int i = 0;
-        for (Iterator<GXEntity> it = parameterEntities.iterator(); it.hasNext(); i++)
+        for (InputScriptGXEntity gxEntity : inputScriptGXEntities)
         {
-            GXEntity GXEntity = it.next();
-            funcs.set(i, GXEntity.getFunc());
-            funcDataAddresses.set(i, ((ParameterGXEntity) GXEntity).allocParameterAddresses(startAddress));
+            inputScriptClasses.addAll(gxEntity.getScriptInputClasses(inputScriptClasses));
         }
 
-        return startAddress;
+        return inputScriptClasses;
+    }
+
+    /**
+     * Alloc data address for script input parameters and retrieve the corresponding start address
+     * @param outputEntities used parameter entities
+     * @return outputScriptClasses store script's outputs
+     */
+    protected ArrayList<Class> getScriptOutputsClasses(Collection<OutputScriptGXEntity> outputEntities)
+    {
+        ArrayList<Class> outputScriptClasses = new ArrayList<>();
+
+        for (OutputScriptGXEntity gxEntity : outputEntities)
+        {
+            outputScriptClasses.addAll(gxEntity.getScriptOutputClasses());
+        }
+
+        return outputScriptClasses;
     }
 }
