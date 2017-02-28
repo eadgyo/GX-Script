@@ -1,6 +1,6 @@
 package org.eadge.gxscript.tools.check;
 
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.tools.Tools;
 
 /**
@@ -11,16 +11,16 @@ import org.eadge.gxscript.tools.Tools;
 public class GXLiaisonChecker
 {
     /**
-     * Check if a connection can added to entity
-     * @param onOutputEntity entity linked on output
+     * Check if a connection can added to GXEntity
+     * @param onOutputGXEntity GXEntity linked on output
      * @param indexOfOutputEntity index on output
-     * @param onInputEntity entity linked on function
+     * @param onInputGXEntity GXEntity linked on function
      * @param indexOfInputEntity index on function
      * @return true if connection can be made, false otherwise
      */
-    public static boolean canConnect(Entity onOutputEntity, int indexOfOutputEntity, Entity onInputEntity, int indexOfInputEntity)
+    public static boolean canConnect(GXEntity onOutputGXEntity, int indexOfOutputEntity, GXEntity onInputGXEntity, int indexOfInputEntity)
     {
         // If they have no matching intput/output types
-        return Tools.isEqualOrDerivedFrom(onOutputEntity.getOutputClass(indexOfOutputEntity), onInputEntity.getInputClass(indexOfInputEntity));
+        return Tools.isEqualOrDerivedFrom(onOutputGXEntity.getOutputClass(indexOfOutputEntity), onInputGXEntity.getInputClass(indexOfInputEntity));
     }
 }

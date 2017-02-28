@@ -1,15 +1,15 @@
 package org.eadge.gxscript.classic.entity.types.collection2.model;
 
 import org.eadge.gxscript.classic.entity.types.collection2.Class2Items;
-import org.eadge.gxscript.data.entity.DefaultEntity;
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
 
 /**
  * Created by eadgyo on 11/09/16.
  *
  * Collection2 define 2 inputs
  */
-public abstract class Collection2Define2Inputs extends DefaultEntity
+public abstract class Collection2Define2Inputs extends DefaultGXEntity
 {
     public static final int COLLECTION2_INPUT_INDEX = 0;
     public static final int E0_INPUT_INDEX          = 1;
@@ -25,9 +25,9 @@ public abstract class Collection2Define2Inputs extends DefaultEntity
     }
 
     @Override
-    public void linkAsInput(int inputIndex, int entityOutput, Entity entity)
+    public void linkAsInput(int inputIndex, int entityOutput, GXEntity GXEntity)
     {
-        super.linkAsInput(inputIndex, entityOutput, entity);
+        super.linkAsInput(inputIndex, entityOutput, GXEntity);
 
         if (inputIndex == COLLECTION2_INPUT_INDEX)
         {

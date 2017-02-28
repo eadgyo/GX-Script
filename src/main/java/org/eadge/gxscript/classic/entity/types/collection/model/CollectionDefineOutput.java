@@ -1,15 +1,15 @@
 package org.eadge.gxscript.classic.entity.types.collection.model;
 
 import org.eadge.gxscript.classic.entity.types.collection.ClassItem;
-import org.eadge.gxscript.data.entity.DefaultEntity;
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
 
 /**
  * Created by eadgyo on 10/09/16.
  *
  * Collection in function define output
  */
-public abstract class CollectionDefineOutput extends DefaultEntity
+public abstract class CollectionDefineOutput extends DefaultGXEntity
 {
     public static final int COLLECTION_INPUT_INDEX = 0;
     public static final int ITEM_OUTPUT_INDEX = 0;
@@ -24,9 +24,9 @@ public abstract class CollectionDefineOutput extends DefaultEntity
     }
 
     @Override
-    public void linkAsInput(int inputIndex, int entityOutput, Entity entity)
+    public void linkAsInput(int inputIndex, int entityOutput, GXEntity GXEntity)
     {
-        super.linkAsInput(inputIndex, entityOutput, entity);
+        super.linkAsInput(inputIndex, entityOutput, GXEntity);
 
         if (inputIndex == COLLECTION_INPUT_INDEX)
         {

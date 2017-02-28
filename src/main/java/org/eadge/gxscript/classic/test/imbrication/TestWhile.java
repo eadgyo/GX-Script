@@ -1,14 +1,14 @@
 package org.eadge.gxscript.classic.test.imbrication;
 
-import org.eadge.gxscript.classic.entity.displayer.PrintEntity;
-import org.eadge.gxscript.classic.entity.imbrication.loops.WhileEntity;
-import org.eadge.gxscript.classic.entity.types.bool.BoolEntity;
-import org.eadge.gxscript.classic.entity.types.bool.ModifyBoolEntity;
-import org.eadge.gxscript.classic.entity.types.bool.transform.InvertBoolEntity;
-import org.eadge.gxscript.classic.entity.types.number.IntEntity;
-import org.eadge.gxscript.classic.entity.types.number.comparison.EqualToNumberEntity;
-import org.eadge.gxscript.classic.entity.types.number.operations.maths.AddNumbersEntity;
-import org.eadge.gxscript.data.entity.ModifyingEntity;
+import org.eadge.gxscript.classic.entity.displayer.PrintGXEntity;
+import org.eadge.gxscript.classic.entity.imbrication.loops.WhileGXEntity;
+import org.eadge.gxscript.classic.entity.types.bool.BoolGXEntity;
+import org.eadge.gxscript.classic.entity.types.bool.ModifyBoolGXEntity;
+import org.eadge.gxscript.classic.entity.types.bool.transform.InvertBoolGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.IntGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.comparison.EqualToNumberGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.operations.maths.AddNumbersGXEntity;
+import org.eadge.gxscript.data.entity.ModifyingGXEntity;
 import org.eadge.gxscript.data.script.RawGXScriptDebug;
 import org.eadge.gxscript.test.PrintTest;
 
@@ -34,73 +34,73 @@ public class TestWhile
 
         // Create blocks
         // Create the integer to be used with while
-        IntEntity intEntity = new IntEntity(2);
-        IntEntity intEntity1 = new IntEntity(0);
+        IntGXEntity intEntity  = new IntGXEntity(2);
+        IntGXEntity intEntity1 = new IntGXEntity(0);
 
-        IntEntity addEntity = new IntEntity(-1);
+        IntGXEntity addEntity = new IntGXEntity(-1);
 
-        // Create while entity
-        WhileEntity whileEntity = new WhileEntity();
+        // Create while GXEntity
+        WhileGXEntity whileEntity = new WhileGXEntity();
 
         // Create test block
-        EqualToNumberEntity equalToNumberEntity = new EqualToNumberEntity();
-        EqualToNumberEntity equalToNumberEntity1 = new EqualToNumberEntity();
+        EqualToNumberGXEntity equalToNumberEntity  = new EqualToNumberGXEntity();
+        EqualToNumberGXEntity equalToNumberEntity1 = new EqualToNumberGXEntity();
 
         // Invert result
-        InvertBoolEntity invertBoolEntity = new InvertBoolEntity();
-        InvertBoolEntity invertBoolEntity1 = new InvertBoolEntity();
+        InvertBoolGXEntity invertBoolEntity  = new InvertBoolGXEntity();
+        InvertBoolGXEntity invertBoolEntity1 = new InvertBoolGXEntity();
 
         // Save the result
-        BoolEntity boolEntity = new BoolEntity();
-        ModifyBoolEntity modifyBoolEntity = new ModifyBoolEntity();
+        BoolGXEntity       boolEntity       = new BoolGXEntity();
+        ModifyBoolGXEntity modifyBoolEntity = new ModifyBoolGXEntity();
 
         // Create modifiying elements
-        ModifyingEntity modificationEntity = intEntity.createModificationEntity(IntEntity.INT_OUTPUT_INDEX);
+        ModifyingGXEntity modificationEntity = intEntity.createModificationEntity(IntGXEntity.INT_OUTPUT_INDEX);
 
         // Create print
-        PrintEntity printEntity = new PrintEntity("I'm here 2 times");
+        PrintGXEntity printEntity = new PrintGXEntity("I'm here 2 times");
 
-        // Test add entity
-        AddNumbersEntity addNumbersEntity = new AddNumbersEntity();
+        // Test add GXEntity
+        AddNumbersGXEntity addNumbersEntity = new AddNumbersGXEntity();
 
         // Create links
         // Link entities to equals comparison
-        equalToNumberEntity.linkAsInput(EqualToNumberEntity.V0_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
-        equalToNumberEntity.linkAsInput(EqualToNumberEntity.V1_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity1);
+        equalToNumberEntity.linkAsInput(EqualToNumberGXEntity.V0_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity);
+        equalToNumberEntity.linkAsInput(EqualToNumberGXEntity.V1_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity1);
 
         // Invert the result
-        invertBoolEntity.linkAsInput(InvertBoolEntity.SOURCE_INPUT_INDEX, EqualToNumberEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity);
+        invertBoolEntity.linkAsInput(InvertBoolGXEntity.SOURCE_INPUT_INDEX, EqualToNumberGXEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity);
 
         // Save the result
-        boolEntity.linkAsInput(BoolEntity.SET_INPUT_INDEX, InvertBoolEntity.INVERTED_OUTPUT_INDEX, invertBoolEntity);
+        boolEntity.linkAsInput(BoolGXEntity.SET_INPUT_INDEX, InvertBoolGXEntity.INVERTED_OUTPUT_INDEX, invertBoolEntity);
 
         // Link result to while
-        whileEntity.linkAsInput(WhileEntity.TEST_INPUT_INDEX, BoolEntity.BOOL_OUTPUT_INDEX, boolEntity);
+        whileEntity.linkAsInput(WhileGXEntity.TEST_INPUT_INDEX, BoolGXEntity.BOOL_OUTPUT_INDEX, boolEntity);
 
         // WHILE PROCESS
         // Link print to while do
-        printEntity.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, WhileEntity.DO_OUTPUT_INDEX, whileEntity);
+        printEntity.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, WhileGXEntity.DO_OUTPUT_INDEX, whileEntity);
 
         // Then remove one from the int 0
-        addNumbersEntity.linkAsInput(AddNumbersEntity.S0_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
-        addNumbersEntity.linkAsInput(AddNumbersEntity.S1_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, addEntity);
-        addNumbersEntity.linkAsInput(AddNumbersEntity.NEXT_INPUT_INDEX, PrintEntity.CONTINUE_OUTPUT_INDEX, printEntity);
+        addNumbersEntity.linkAsInput(AddNumbersGXEntity.S0_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity);
+        addNumbersEntity.linkAsInput(AddNumbersGXEntity.S1_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, addEntity);
+        addNumbersEntity.linkAsInput(AddNumbersGXEntity.NEXT_INPUT_INDEX, PrintGXEntity.CONTINUE_OUTPUT_INDEX, printEntity);
 
         // Modify int
-        modificationEntity.linkAsInput(0, IntEntity.INT_OUTPUT_INDEX, intEntity);
-        modificationEntity.linkAsInput(1, AddNumbersEntity.RESULT_OUTPUT_INDEX, addNumbersEntity);
+        modificationEntity.linkAsInput(0, IntGXEntity.INT_OUTPUT_INDEX, intEntity);
+        modificationEntity.linkAsInput(1, AddNumbersGXEntity.RESULT_OUTPUT_INDEX, addNumbersEntity);
 
         // Test conditions
-        equalToNumberEntity1.linkAsInput(EqualToNumberEntity.V0_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
-        equalToNumberEntity1.linkAsInput(EqualToNumberEntity.V1_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity1);
-        equalToNumberEntity1.linkAsInput(EqualToNumberEntity.NEXT_INPUT_INDEX, 0, modificationEntity);
+        equalToNumberEntity1.linkAsInput(EqualToNumberGXEntity.V0_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity);
+        equalToNumberEntity1.linkAsInput(EqualToNumberGXEntity.V1_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity1);
+        equalToNumberEntity1.linkAsInput(EqualToNumberGXEntity.NEXT_INPUT_INDEX, 0, modificationEntity);
 
         // Invert the result
-        invertBoolEntity1.linkAsInput(InvertBoolEntity.SOURCE_INPUT_INDEX, EqualToNumberEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity1);
+        invertBoolEntity1.linkAsInput(InvertBoolGXEntity.SOURCE_INPUT_INDEX, EqualToNumberGXEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity1);
 
         // Modify the boolean
-        modifyBoolEntity.linkAsInput(ModifyBoolEntity.MODIFIED_INPUT_INDEX, BoolEntity.BOOL_OUTPUT_INDEX, boolEntity);
-        modifyBoolEntity.linkAsInput(ModifyBoolEntity.SOURCE_INPUT_INDEX, InvertBoolEntity.INVERTED_OUTPUT_INDEX, invertBoolEntity1);
+        modifyBoolEntity.linkAsInput(ModifyBoolGXEntity.MODIFIED_INPUT_INDEX, BoolGXEntity.BOOL_OUTPUT_INDEX, boolEntity);
+        modifyBoolEntity.linkAsInput(ModifyBoolGXEntity.SOURCE_INPUT_INDEX, InvertBoolGXEntity.INVERTED_OUTPUT_INDEX, invertBoolEntity1);
 
         rawGXScript.addEntityRecursiveSearch(intEntity);
         return RunTest.run(rawGXScript);

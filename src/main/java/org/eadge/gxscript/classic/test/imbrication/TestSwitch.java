@@ -1,8 +1,8 @@
 package org.eadge.gxscript.classic.test.imbrication;
 
-import org.eadge.gxscript.classic.entity.displayer.PrintEntity;
-import org.eadge.gxscript.classic.entity.imbrication.conditionals.SwitchEntity;
-import org.eadge.gxscript.classic.entity.types.number.IntEntity;
+import org.eadge.gxscript.classic.entity.displayer.PrintGXEntity;
+import org.eadge.gxscript.classic.entity.imbrication.conditionals.SwitchGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.IntGXEntity;
 import org.eadge.gxscript.data.script.RawGXScriptDebug;
 import org.eadge.gxscript.test.PrintTest;
 
@@ -27,39 +27,39 @@ public class TestSwitch
         RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
 
         // Create switch component
-        SwitchEntity switchEntity = new SwitchEntity();
+        SwitchGXEntity switchEntity = new SwitchGXEntity();
 
-        // Create source entity
-        IntEntity intEntity = new IntEntity(3);
+        // Create source GXEntity
+        IntGXEntity intEntity = new IntGXEntity(3);
 
         // Link source to switch
-        switchEntity.linkAsInput(SwitchEntity.SOURCE_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
+        switchEntity.linkAsInput(SwitchGXEntity.SOURCE_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity);
 
-        PrintEntity printEntityCont = new PrintEntity("Continue");
-        printEntityCont.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, switchEntity.getContinueOutputIndex(), switchEntity);
+        PrintGXEntity printEntityCont = new PrintGXEntity("Continue");
+        printEntityCont.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, switchEntity.getContinueOutputIndex(), switchEntity);
 
         // Link 0 to printEntity0
-        PrintEntity printEntity0 = new PrintEntity("0");
-        printEntity0.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex() + 1, switchEntity);
+        PrintGXEntity printEntity0 = new PrintGXEntity("0");
+        printEntity0.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex() + 1, switchEntity);
 
         // Add 1 as output
         switchEntity.addOutputCase(1);
 
         // Link 1 to printEntity1
-        PrintEntity printEntity1 = new PrintEntity("1");
-        printEntity1.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex() + 2, switchEntity);
+        PrintGXEntity printEntity1 = new PrintGXEntity("1");
+        printEntity1.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex() + 2, switchEntity);
 
         // Add 3 as output corresponding to 3rd value and change it to 4
         switchEntity.addOutputCase(3);
         switchEntity.setOutputCaseValue(2, 5); // last added is 2
 
         // Link 5 to printEntity5
-        PrintEntity printEntity5 = new PrintEntity("5");
-        printEntity5.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex() + 3, switchEntity);
+        PrintGXEntity printEntity5 = new PrintGXEntity("5");
+        printEntity5.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex() + 3, switchEntity);
 
         // Link def to printEntityDef
-        PrintEntity printEntityDef = new PrintEntity("Def");
-        printEntityDef.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex(), switchEntity);
+        PrintGXEntity printEntityDef = new PrintGXEntity("Def");
+        printEntityDef.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, switchEntity.getDefaultOutputIndex(), switchEntity);
 
         rawGXScript.addEntity("Cont", printEntityCont);
         rawGXScript.addEntity("p0", printEntity0);

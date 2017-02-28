@@ -1,8 +1,8 @@
 package org.eadge.gxscript.tools.compile;
 
-import org.eadge.gxscript.classic.entity.function.ParameterEntity;
-import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.StartImbricationEntity;
+import org.eadge.gxscript.classic.entity.function.ParameterGXEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 import org.eadge.gxscript.data.imbrication.compile.ImbricationNodeC;
 import org.eadge.gxscript.data.script.CompiledGXScript;
@@ -21,10 +21,10 @@ import java.util.*;
  */
 public class GXCompiler
 {
-    protected Set<Entity> entitiesWithError = new HashSet<>();
+    protected Set<GXEntity> entitiesWithError = new HashSet<>();
 
     /**
-     * Hold output index of one entity
+     * Hold output index of one GXEntity
      */
     private class OutputIndex
     {
@@ -32,7 +32,7 @@ public class GXCompiler
     }
 
     /**
-     * Holds all outputs index for one entity
+     * Holds all outputs index for one GXEntity
      */
     private class EntityOutputIndices
     {
@@ -41,7 +41,7 @@ public class GXCompiler
 
     private class EntityToOutputIndices
     {
-        public Map<Entity, EntityOutputIndices> entityToOutputIndices;
+        public Map<GXEntity, EntityOutputIndices> entityToOutputIndices;
     }
 
     /**
@@ -70,7 +70,7 @@ public class GXCompiler
                                                           Collection<FuncDataAddresses> GXScriptFuncParametersAddresses,
                                                           RawGXScript rawGXScript)
     {
-        Collection<Entity> entities = rawGXScript.getEntities();
+        Collection<GXEntity> entities = rawGXScript.getEntities();
 
         // Create level 0 of imbrication, it's the root of the tree
         // All entities are in this level
@@ -80,7 +80,7 @@ public class GXCompiler
                                                       entities);
 
         // Get starting entities
-        Collection<Entity> startingEntities = rawGXScript.getStartingEntities();
+        Collection<GXEntity> startingEntities = rawGXScript.getStartingEntities();
 
         // Add them to the to be treated stack
         root.addAllToBeTreated(startingEntities);
@@ -92,20 +92,20 @@ public class GXCompiler
             while (!root.isToBeTreatedEmpty())
             {
                 // Get the first element
-                Entity beingTreated = root.popToBeTreated();
+                GXEntity beingTreated = root.popToBeTreated();
 
                 // Get his level of imbrication
                 ImbricationNode highestImbricationNode = root.getHighestImbricationNode(beingTreated);
 
-                // If the entity is a start imbrication entity
-                if (beingTreated instanceof StartImbricationEntity)
+                // If the GXEntity is a start imbrication GXEntity
+                if (beingTreated instanceof StartImbricationGXEntity)
                 {
                     // Start a new imbrication node on top of the highest imbrication node
-                    highestImbricationNode.startImbricationNode((StartImbricationEntity) beingTreated);
+                    highestImbricationNode.startImbricationNode((StartImbricationGXEntity) beingTreated);
                 }
                 else
                 {
-                    // It's a normal entity
+                    // It's a normal GXEntity
                     highestImbricationNode.treatEntity(beingTreated);
                 }
             }
@@ -118,7 +118,7 @@ public class GXCompiler
     public CompiledGXScript compile(RawGXScript rawGXScript)
     {
         // Get script's parameters
-        Collection<Entity> parameterEntities = getParameterEntities(rawGXScript);
+        Collection<GXEntity> parameterEntities = getParameterEntities(rawGXScript);
 
         // Generate parameters func
         ArrayList<Func> funcs = new ArrayList<>(parameterEntities.size());
@@ -130,10 +130,11 @@ public class GXCompiler
         // Generate compilation objects
         ImbricationNodeC root = generateCompilationObjects(startAddress, funcs, funcDataAddresses, rawGXScript);
 
-        return root.compile();
+        int numberOfScriptParameters = funcDataAddresses.size();
+        return root.compile(numberOfScriptParameters);
     }
 
-    protected ImbricationNodeC createImbricationNode(Collection<Entity> entities)
+    protected ImbricationNodeC createImbricationNode(Collection<GXEntity> entities)
     {
         return new ImbricationNodeC(entities);
     }
@@ -141,26 +142,26 @@ public class GXCompiler
     protected ImbricationNodeC createImbricationNode(DataAddress startAddress,
                                                      Collection<Func> GXScriptFuncParameters,
                                                      Collection<FuncDataAddresses> GXScriptFuncParametersAddresses,
-                                                     Collection<Entity> entities)
+                                                     Collection<GXEntity> entities)
     {
         return new ImbricationNodeC(startAddress, GXScriptFuncParameters, GXScriptFuncParametersAddresses, entities);
     }
 
-    protected Collection<Entity> getParameterEntities(RawGXScript rawGXScript)
+    protected Collection<GXEntity> getParameterEntities(RawGXScript rawGXScript)
     {
         // Parameters entities have no inputs
         // Get all starting entities with no inputs used
-        Collection<Entity> startingEntities = rawGXScript.getStartingEntities();
+        Collection<GXEntity> startingEntities = rawGXScript.getStartingEntities();
 
         // Init parameter entities
-        Collection<Entity> parameterEntities = new HashSet<>();
+        Collection<GXEntity> parameterEntities = new HashSet<>();
 
         // Search for parameters entities
-        for (Entity entity : startingEntities)
+        for (GXEntity GXEntity : startingEntities)
         {
-            if (entity instanceof ParameterEntity)
+            if (GXEntity instanceof ParameterGXEntity)
             {
-                parameterEntities.add(entity);
+                parameterEntities.add(GXEntity);
             }
         }
 
@@ -174,18 +175,18 @@ public class GXCompiler
      * @param funcDataAddresses funcs array to be filled with parameter entities func data addresses
      * @return start address
      */
-    protected DataAddress allocParametersInputs(Collection<Entity> parameterEntities,
+    protected DataAddress allocParametersInputs(Collection<GXEntity> parameterEntities,
                                                   ArrayList<Func> funcs,
                                                   ArrayList<FuncDataAddresses>  funcDataAddresses)
     {
         DataAddress startAddress = new DataAddress();
 
         int i = 0;
-        for (Iterator<Entity> it = parameterEntities.iterator(); it.hasNext(); i++)
+        for (Iterator<GXEntity> it = parameterEntities.iterator(); it.hasNext(); i++)
         {
-            Entity entity = it.next();
-            funcs.set(i, entity.getFunc());
-            funcDataAddresses.set(i, ((ParameterEntity) entity).allocParameterAddresses(startAddress));
+            GXEntity GXEntity = it.next();
+            funcs.set(i, GXEntity.getFunc());
+            funcDataAddresses.set(i, ((ParameterGXEntity) GXEntity).allocParameterAddresses(startAddress));
         }
 
         return startAddress;

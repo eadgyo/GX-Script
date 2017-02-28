@@ -1,6 +1,6 @@
 package org.eadge.gxscript.tools.check.validator;
 
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.tools.check.ValidatorModel;
 
@@ -17,29 +17,29 @@ public class ValidateAllEntitiesPresent extends ValidatorModel
     {
         super.validate(rawGXScript);
 
-        Collection<Entity> entities = rawGXScript.getEntities();
+        Collection<GXEntity> entities = rawGXScript.getEntities();
 
         // Check if all entities have necessary function
-        loop: for (Entity entity : entities)
+        loop: for (GXEntity GXEntity : entities)
         {
-            Collection<Entity> allInputEntities = entity.getAllInputEntities();
+            Collection<GXEntity> allInputEntities = GXEntity.getAllInputEntities();
 
-            for (Entity inputEntity : allInputEntities)
+            for (GXEntity inputGXEntity : allInputEntities)
             {
-                if (inputEntity != null && !entities.contains(inputEntity))
+                if (inputGXEntity != null && !entities.contains(inputGXEntity))
                 {
-                    entitiesWithError.add(inputEntity);
+                    entitiesWithError.add(inputGXEntity);
                     continue loop;
                 }
             }
 
-            Collection<Entity> allOutputEntitiesCollection = entity.getAllOutputEntitiesCollection();
+            Collection<GXEntity> allOutputEntitiesCollection = GXEntity.getAllOutputEntitiesCollection();
 
-            for (Entity outputEntity : allOutputEntitiesCollection)
+            for (GXEntity outputGXEntity : allOutputEntitiesCollection)
             {
-                if (outputEntity != null && !entities.contains(outputEntity))
+                if (outputGXEntity != null && !entities.contains(outputGXEntity))
                 {
-                    entitiesWithError.add(outputEntity);
+                    entitiesWithError.add(outputGXEntity);
                     continue loop;
                 }
             }

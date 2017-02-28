@@ -1,10 +1,10 @@
 package org.eadge.gxscript.test.validator;
 
-import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.classic.entity.displayer.PrintEntity;
-import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfEntity;
-import org.eadge.gxscript.classic.entity.imbrication.loops.ForEntity;
-import org.eadge.gxscript.classic.entity.types.number.RealEntity;
+import org.eadge.gxscript.classic.entity.displayer.PrintGXEntity;
+import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.RealGXEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.classic.entity.imbrication.loops.ForGXEntity;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.data.script.RawGXScriptDebug;
 import org.eadge.gxscript.test.CreateGXScript;
@@ -65,18 +65,18 @@ public class TestValidateImbrication
     {
         RawGXScriptDebug script = CreateGXScript.createComplexScript();
 
-        Entity forEntity = script.getEntity("for");
+        GXEntity forGXEntity = script.getEntity("for");
 
-        // Create real entity
-        RealEntity realEntity = new RealEntity(10f);
-        forEntity.linkAsInput(ForEntity.NEXT_INPUT_INDEX, RealEntity.CONTINUE_OUTPUT_INDEX, realEntity);
+        // Create real GXEntity
+        RealGXEntity realEntity = new RealGXEntity(10f);
+        forGXEntity.linkAsInput(ForGXEntity.NEXT_INPUT_INDEX, RealGXEntity.CONTINUE_OUTPUT_INDEX, realEntity);
 
         // Create print in imbrication
-        PrintEntity printEntity = new PrintEntity();
-        printEntity.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, ForEntity.DO_OUTPUT_INDEX, forEntity);
+        PrintGXEntity printEntity = new PrintGXEntity();
+        printEntity.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, ForGXEntity.DO_OUTPUT_INDEX, forGXEntity);
 
-        // Link index of in imbrication with print entity after imbrication
-        printEntity.linkAsInput(PrintEntity.SOURCE_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity);
+        // Link index of in imbrication with print GXEntity after imbrication
+        printEntity.linkAsInput(PrintGXEntity.SOURCE_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity);
 
         // Add them in script and update
         script.addEntity("real1", realEntity);
@@ -93,18 +93,18 @@ public class TestValidateImbrication
         RawGXScriptDebug script = CreateGXScript.createScriptIf();
 
         // Get if
-        Entity ifEntity = script.getEntity("if");
+        GXEntity ifGXEntity = script.getEntity("if");
 
         // Create a new real in first imbrication
-        RealEntity realEntity = new RealEntity(10f);
-        realEntity.linkAsInput(RealEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        RealGXEntity realEntity = new RealGXEntity(10f);
+        realEntity.linkAsInput(RealGXEntity.NEXT_INPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, ifGXEntity);
 
         // Create a printEntity in second imbrication
-        PrintEntity printEntity = new PrintEntity();
-        printEntity.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.FAIL_OUTPUT_INDEX, ifEntity);
+        PrintGXEntity printEntity = new PrintGXEntity();
+        printEntity.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.FAIL_OUTPUT_INDEX, ifGXEntity);
 
         // Link first to second imbrication using real in first and print in second
-        printEntity.linkAsInput(PrintEntity.SOURCE_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity);
+        printEntity.linkAsInput(PrintGXEntity.SOURCE_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity);
 
         // Add them in script and update
         script.addEntity("real4", realEntity);
@@ -121,18 +121,18 @@ public class TestValidateImbrication
         RawGXScriptDebug script = CreateGXScript.createScriptIf();
 
         // Get if
-        Entity ifEntity = script.getEntity("if");
+        GXEntity ifGXEntity = script.getEntity("if");
 
         // Create a new real in first imbrication
-        RealEntity realEntity = new RealEntity(10f);
-        realEntity.linkAsInput(RealEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        RealGXEntity realEntity = new RealGXEntity(10f);
+        realEntity.linkAsInput(RealGXEntity.NEXT_INPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, ifGXEntity);
 
         // Create a printEntity after imbrications
-        PrintEntity printEntity = new PrintEntity();
-        printEntity.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.CONTINUE_OUTPUT_INDEX, ifEntity);
+        PrintGXEntity printEntity = new PrintGXEntity();
+        printEntity.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.CONTINUE_OUTPUT_INDEX, ifGXEntity);
 
         // Link first to second imbrication using real in first and print after imbrications
-        printEntity.linkAsInput(PrintEntity.SOURCE_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity);
+        printEntity.linkAsInput(PrintGXEntity.SOURCE_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity);
 
         // Add them in script and update
         script.addEntity("real4", realEntity);
@@ -148,19 +148,19 @@ public class TestValidateImbrication
     {
         RawGXScriptDebug script = CreateGXScript.createComplexScript();
 
-        Entity ifEntity = script.getEntity("if");
-        Entity forEntity = script.getEntity("for");
+        GXEntity ifGXEntity  = script.getEntity("if");
+        GXEntity forGXEntity = script.getEntity("for");
 
         // Create real in if success imbrication
-        RealEntity realEntity = new RealEntity(10f);
-        realEntity.linkAsInput(RealEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        RealGXEntity realEntity = new RealGXEntity(10f);
+        realEntity.linkAsInput(RealGXEntity.NEXT_INPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, ifGXEntity);
 
         // Create print in for after imbrication
-        PrintEntity printEntity = new PrintEntity();
-        printEntity.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, ForEntity.CONTINUE_OUTPUT_INDEX, forEntity);
+        PrintGXEntity printEntity = new PrintGXEntity();
+        printEntity.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, ForGXEntity.CONTINUE_OUTPUT_INDEX, forGXEntity);
 
         // Link second level to after imbrication using real in first and print after imbrications
-        printEntity.linkAsInput(PrintEntity.SOURCE_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity);
+        printEntity.linkAsInput(PrintGXEntity.SOURCE_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity);
 
         // Add them in script and update
         script.addEntity("real4", realEntity);
@@ -176,23 +176,23 @@ public class TestValidateImbrication
     {
         RawGXScriptDebug script = CreateGXScript.createComplexScript();
 
-        Entity ifEntity = script.getEntity("if");
-        Entity forEntity = script.getEntity("for");
+        GXEntity ifGXEntity  = script.getEntity("if");
+        GXEntity forGXEntity = script.getEntity("for");
 
         // Create real in if success imbrication
-        RealEntity realEntity = new RealEntity(10f);
-        realEntity.linkAsInput(RealEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        RealGXEntity realEntity = new RealGXEntity(10f);
+        realEntity.linkAsInput(RealGXEntity.NEXT_INPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, ifGXEntity);
 
-        // DIFFERENCE TO 2 -> add entity between print and create real
+        // DIFFERENCE TO 2 -> add GXEntity between print and create real
 
         // Create print in for after imbrication
-        PrintEntity printEntity0 = new PrintEntity();
-        PrintEntity printEntity = new PrintEntity();
-        printEntity.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, PrintEntity.CONTINUE_OUTPUT_INDEX, printEntity0);
-        printEntity0.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, ForEntity.CONTINUE_OUTPUT_INDEX, forEntity);
+        PrintGXEntity printEntity0 = new PrintGXEntity();
+        PrintGXEntity printEntity  = new PrintGXEntity();
+        printEntity.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, PrintGXEntity.CONTINUE_OUTPUT_INDEX, printEntity0);
+        printEntity0.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, ForGXEntity.CONTINUE_OUTPUT_INDEX, forGXEntity);
 
         // Link second level to after imbrication using real in first and print after imbrications
-        printEntity.linkAsInput(PrintEntity.SOURCE_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity);
+        printEntity.linkAsInput(PrintGXEntity.SOURCE_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity);
 
         // Add them in script and update
         script.addEntity("real4", realEntity);
@@ -208,14 +208,14 @@ public class TestValidateImbrication
     {
         RawGXScriptDebug script = CreateGXScript.createComplexScript();
 
-        Entity forEntity = script.getEntity("for");
+        GXEntity forGXEntity = script.getEntity("for");
 
         // Create print after imbrication
-        PrintEntity printEntity = new PrintEntity();
-        printEntity.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, ForEntity.CONTINUE_OUTPUT_INDEX, forEntity);
+        PrintGXEntity printEntity = new PrintGXEntity();
+        printEntity.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, ForGXEntity.CONTINUE_OUTPUT_INDEX, forGXEntity);
 
-        // Link index with print entity after imbrication
-        printEntity.linkAsInput(PrintEntity.SOURCE_INPUT_INDEX, ForEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
+        // Link index with print GXEntity after imbrication
+        printEntity.linkAsInput(PrintGXEntity.SOURCE_INPUT_INDEX, ForGXEntity.INDEX_FOR_OUTPUT_INDEX, forGXEntity);
 
         // Add them in script and update
         script.addEntity("print", printEntity);

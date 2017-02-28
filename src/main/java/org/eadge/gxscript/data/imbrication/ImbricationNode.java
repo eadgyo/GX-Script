@@ -1,7 +1,7 @@
 package org.eadge.gxscript.data.imbrication;
 
-import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.StartImbricationEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.ArrayList;
@@ -27,9 +27,9 @@ public class ImbricationNode
     protected Set<ImbricationNode> children = new HashSet<>();
 
     /**
-     * Entity starting the imbrication
+     * GXEntity starting the imbrication
      */
-    protected StartImbricationEntity startImbricationEntity;
+    protected StartImbricationGXEntity startImbricationEntity;
 
     /**
      * Holds index of imbrication output
@@ -39,32 +39,32 @@ public class ImbricationNode
     /**
      * All elements in imbrication
      */
-    protected Set<Entity> allElements;
+    protected Set<GXEntity> allElements;
 
     /**
      * Already processed entities at this level
      */
-    protected Set<Entity> alreadyTreatedEntities = new HashSet<>();
+    protected Set<GXEntity> alreadyTreatedEntities = new HashSet<>();
 
     /**
      * Entities ready to be processed
      */
-    protected Set<Entity> toBeTreatedEntities = new HashSet<>();
+    protected Set<GXEntity> toBeTreatedEntities = new HashSet<>();
 
-    public ImbricationNode(int index, StartImbricationEntity startImbricationEntity, Set<Entity> allElements)
+    public ImbricationNode(int index, StartImbricationGXEntity startImbricationEntity, Set<GXEntity> allElements)
     {
         this.imbricationOutputIndex = index;
         this.startImbricationEntity = startImbricationEntity;
         this.allElements = allElements;
     }
 
-    public ImbricationNode(Set<Entity> allElements)
+    public ImbricationNode(Set<GXEntity> allElements)
     {
         this.startImbricationEntity = null;
         this.allElements = allElements;
     }
 
-    public ImbricationNode(Collection<Entity> allElements)
+    public ImbricationNode(Collection<GXEntity> allElements)
     {
         this.startImbricationEntity = null;
         this.allElements = new HashSet<>(allElements);
@@ -74,14 +74,14 @@ public class ImbricationNode
      * Create one level of imbrication, add it to this level and return the created imbrication.
      *
      * @param imbricationIndex imbrication index
-     * @param startImbricationEntity entity starting imbrication
+     * @param startImbricationEntity GXEntity starting imbrication
      * @param inImbricationEntities  entities imbricated in the startImbricationEntity imbrication
      *
      * @return create imbricationNode
      */
     public ImbricationNode pushImbrication(int imbricationIndex,
-                                           StartImbricationEntity startImbricationEntity,
-                                           Set<Entity> inImbricationEntities)
+                                           StartImbricationGXEntity startImbricationEntity,
+                                           Set<GXEntity> inImbricationEntities)
     {
         // Create imbrication
         ImbricationNode child = createImbrication(imbricationIndex, startImbricationEntity, inImbricationEntities);
@@ -93,14 +93,14 @@ public class ImbricationNode
     }
 
     protected ImbricationNode createImbrication(int imbricationIndex,
-                                                 StartImbricationEntity startImbricationEntity,
-                                                 Set<Entity> inImbricationEntities)
+                                                 StartImbricationGXEntity startImbricationEntity,
+                                                 Set<GXEntity> inImbricationEntities)
     {
         return new ImbricationNode(imbricationIndex, startImbricationEntity, inImbricationEntities);
     }
 
     /**
-     * Add all imbricated outputs from the start entity imbrication, which have all inputs treated to the to be treated
+     * Add all imbricated outputs from the start GXEntity imbrication, which have all inputs treated to the to be treated
      * stack
      *
      * @param index imbrication index
@@ -108,9 +108,9 @@ public class ImbricationNode
     public void addImbricatedOutputsWithInputsTreated(int index)
     {
         // Check all outputs entities imbricated of starting block, add those who have all entries treated
-        Collection<Entity> imbricatedOutputs = startImbricationEntity.getImbricatedOutputs(index);
+        Collection<GXEntity> imbricatedOutputs = startImbricationEntity.getImbricatedOutputs(index);
 
-        for (Entity imbricatedOutput : imbricatedOutputs)
+        for (GXEntity imbricatedOutput : imbricatedOutputs)
         {
             // If all inputs have benn treated
             if (hasAllInputsTreatedAtLevelOrLower(imbricatedOutput))
@@ -121,15 +121,15 @@ public class ImbricationNode
     }
 
     /**
-     * Add all not imbricated outputs from the start entity imbrication, which have all inputs treated to the to be
+     * Add all not imbricated outputs from the start GXEntity imbrication, which have all inputs treated to the to be
      * treated stack
      */
-    public void addNotImbricatedOutputsWithInputsTreated(StartImbricationEntity startImbricationEntity)
+    public void addNotImbricatedOutputsWithInputsTreated(StartImbricationGXEntity startImbricationEntity)
     {
         // Check all outputs entities not imbricated of starting block, add those who have all entries treated
-        Collection<Entity> notImbricatedOutputs = startImbricationEntity.getNotImbricatedOutputs();
+        Collection<GXEntity> notImbricatedOutputs = startImbricationEntity.getNotImbricatedOutputs();
 
-        for (Entity notImbricatedOutput : notImbricatedOutputs)
+        for (GXEntity notImbricatedOutput : notImbricatedOutputs)
         {
             // If all inputs have been treated
             if (hasAllInputsTreatedAtLevelOrLower(notImbricatedOutput))
@@ -140,22 +140,22 @@ public class ImbricationNode
     }
 
     /**
-     * Add all not outputs from the start entity imbrication, which have all inputs treated to the to be
+     * Add all not outputs from the start GXEntity imbrication, which have all inputs treated to the to be
      * treated stack
      *
-     * @param entity checked entity
+     * @param GXEntity checked GXEntity
      */
-    public void addOutputsWithInputsTreated(Entity entity)
+    public void addOutputsWithInputsTreated(GXEntity GXEntity)
     {
         // Check all outputs entities of this block, add those who have all entries treated
-        Collection<Entity> outputEntities = entity.getAllOutputEntitiesCollection();
+        Collection<GXEntity> outputEntities = GXEntity.getAllOutputEntitiesCollection();
 
-        for (Entity outputEntity : outputEntities)
+        for (GXEntity outputGXEntity : outputEntities)
         {
             // If all inputs have been treated
-            if (hasAllInputsTreated(outputEntity))
+            if (hasAllInputsTreated(outputGXEntity))
             {
-                addToBeTreated(outputEntity);
+                addToBeTreated(outputGXEntity);
             }
         }
     }
@@ -173,7 +173,7 @@ public class ImbricationNode
         // Remove imbrication and all elements in imbrications
         removeImbricationAndAllElementsInImbrication(child);
 
-        StartImbricationEntity startImbricationEntity = child.getStartImbricationEntity();
+        StartImbricationGXEntity startImbricationEntity = child.getStartImbricationEntity();
         
         // If all parallels imbrications have NOT been treated
         if (child.getImbricationOutputIndex() != startImbricationEntity.getNumberOfParallelsImbrications() - 1)
@@ -183,7 +183,7 @@ public class ImbricationNode
         }
         else
         {
-            // Add this start imbrication entity as treated
+            // Add this start imbrication GXEntity as treated
             addAlreadyTreated(startImbricationEntity);
 
             // Add all NOT imbricated output entities of starting imbrication entiy which have all their
@@ -210,34 +210,34 @@ public class ImbricationNode
      *
      * @param allElements removed elements
      */
-    private void removeElementsRecursive(Collection<Entity> allElements)
+    private void removeElementsRecursive(Collection<GXEntity> allElements)
     {
-        for (Entity entity : allElements)
+        for (GXEntity GXEntity : allElements)
         {
-            removeElementRecursive(entity);
+            removeElementRecursive(GXEntity);
         }
     }
 
     /**
-     * Remove from parents one entity
+     * Remove from parents one GXEntity
      *
-     * @param entity removed entity
+     * @param GXEntity removed GXEntity
      */
-    private void removeElementRecursive(Entity entity)
+    private void removeElementRecursive(GXEntity GXEntity)
     {
-        allElements.remove(entity);
+        allElements.remove(GXEntity);
 
         // If the node is not a root node
         if (parent != null)
         {
             // Remove this element from parent
-            parent.removeElementRecursive(entity);
+            parent.removeElementRecursive(GXEntity);
         }
     }
 
-    public void treatStartImbricationEntity(StartImbricationEntity startImbricationEntity)
+    public void treatStartImbricationEntity(StartImbricationGXEntity startImbricationEntity)
     {
-        // Add this start imbrication entity as treated
+        // Add this start imbrication GXEntity as treated
         addAlreadyTreated(startImbricationEntity);
 
         // Add all NOT imbricated output entities of starting imbrication entiy which have all their
@@ -245,34 +245,34 @@ public class ImbricationNode
         addNotImbricatedOutputsWithInputsTreated(startImbricationEntity);
     }
 
-    public void treatEntity(Entity entity)
+    public void treatEntity(GXEntity GXEntity)
     {
-        // Add this entity to already treated
-        addAlreadyTreated(entity);
+        // Add this GXEntity to already treated
+        addAlreadyTreated(GXEntity);
 
         // Add all output entities which have all their function block treated in lower or equal imbrication
         // level
-        addOutputsWithInputsTreated(entity);
+        addOutputsWithInputsTreated(GXEntity);
     }
 
     // Recursive getter
 
     /**
-     * Get the highest imbrication node for one entity
+     * Get the highest imbrication node for one GXEntity
      *
-     * @param entity used entity
+     * @param GXEntity used GXEntity
      *
-     * @return highest imbrication node or null if it does not contain entity
+     * @return highest imbrication node or null if it does not contain GXEntity
      */
-    public ImbricationNode getHighestImbricationNode(Entity entity)
+    public ImbricationNode getHighestImbricationNode(GXEntity GXEntity)
     {
-        // If entity in this level or higher
-        if (isInImbrication(entity))
+        // If GXEntity in this level or higher
+        if (isInImbrication(GXEntity))
         {
             for (ImbricationNode child : children)
             {
                 // Get highest imbrication node from this child
-                ImbricationNode highestImbricationNode = child.getHighestImbricationNode(entity);
+                ImbricationNode highestImbricationNode = child.getHighestImbricationNode(GXEntity);
 
                 // If we found the highest Imbrication node
                 if (highestImbricationNode != null)
@@ -289,40 +289,40 @@ public class ImbricationNode
     }
 
     /**
-     * Check if one entity had been treated in actual or lower imbrication
+     * Check if one GXEntity had been treated in actual or lower imbrication
      *
-     * @param entity checked entity
+     * @param GXEntity checked GXEntity
      *
      * @return true if it had been treated in actual or lower imbrication
      */
-    public boolean wasTreatedLowerRecursive(Entity entity)
+    public boolean wasTreatedLowerRecursive(GXEntity GXEntity)
     {
-        if (wasTreated(entity))
+        if (wasTreated(GXEntity))
         {
             return true;
         }
         else if (parent != null)
         {
             // Check if it was treated in lower imbrication
-            return parent.wasTreatedLowerRecursive(entity);
+            return parent.wasTreatedLowerRecursive(GXEntity);
         }
         return false;
     }
 
     /**
-     * Check if one entity has all inputs treated in THIS actual or lower imbrication
+     * Check if one GXEntity has all inputs treated in THIS actual or lower imbrication
      *
-     * @param entity entity with checked entries
+     * @param GXEntity GXEntity with checked entries
      *
      * @return true if all inputs had been treated in THIS actual or lower imbrication
      */
-    public boolean hasAllInputsTreatedAtLevelOrLower(Entity entity)
+    public boolean hasAllInputsTreatedAtLevelOrLower(GXEntity GXEntity)
     {
         // Check for each inputs
-        for (int inputIndex = 0; inputIndex < entity.getNumberOfInputs(); inputIndex++)
+        for (int inputIndex = 0; inputIndex < GXEntity.getNumberOfInputs(); inputIndex++)
         {
             // If it's not treated at an actual or lower level
-            if (!wasTreatedLowerRecursive(entity.getInputEntity(inputIndex)))
+            if (!wasTreatedLowerRecursive(GXEntity.getInputEntity(inputIndex)))
             {
                 return false;
             }
@@ -332,23 +332,23 @@ public class ImbricationNode
     }
 
     /**
-     * Check if one entity has all inputs treated in HIS actual or lower imbrication
-     * HIS mean it will get entity higher imbrication node first
+     * Check if one GXEntity has all inputs treated in HIS actual or lower imbrication
+     * HIS mean it will get GXEntity higher imbrication node first
      *
-     * @param entity entity with checked entries
+     * @param GXEntity GXEntity with checked entries
      *
      * @return true if all inputs had been treated in HIS actual or lower imbrication
      */
-    public boolean hasAllInputsTreated(Entity entity)
+    public boolean hasAllInputsTreated(GXEntity GXEntity)
     {
-        ImbricationNode highestImbricationNode = getHighestImbricationNode(entity);
+        ImbricationNode highestImbricationNode = getHighestImbricationNode(GXEntity);
         assert (highestImbricationNode != null);
-        return highestImbricationNode.hasAllInputsTreatedAtLevelOrLower(entity);
+        return highestImbricationNode.hasAllInputsTreatedAtLevelOrLower(GXEntity);
     }
 
 
     // Getter
-    public Set<Entity> getAllElements()
+    public Set<GXEntity> getAllElements()
     {
         return allElements;
     }
@@ -387,16 +387,16 @@ public class ImbricationNode
     }
 
     /**
-     * Remove the next entity to be treated from to be treated collection
+     * Remove the next GXEntity to be treated from to be treated collection
      *
-     * @return next entity to be treated
+     * @return next GXEntity to be treated
      */
-    public Entity popToBeTreated()
+    public GXEntity popToBeTreated()
     {
         if (toBeTreatedEntities.size() != 0)
         {
             // Remove the first element
-            Entity next = toBeTreatedEntities.iterator().next();
+            GXEntity next = toBeTreatedEntities.iterator().next();
             removeToBeTreated(next);
 
             return next;
@@ -406,22 +406,22 @@ public class ImbricationNode
             // Search in children
             for (ImbricationNode child : children)
             {
-                Entity entity = child.popToBeTreated();
+                GXEntity GXEntity = child.popToBeTreated();
 
-                if (entity != null)
-                    return entity;
+                if (GXEntity != null)
+                    return GXEntity;
             }
         }
 
         return null;
     }
 
-    public void removeToBeTreated(Entity entity)
+    public void removeToBeTreated(GXEntity GXEntity)
     {
-        toBeTreatedEntities.remove(entity);
+        toBeTreatedEntities.remove(GXEntity);
     }
 
-    public StartImbricationEntity getStartImbricationEntity()
+    public StartImbricationGXEntity getStartImbricationEntity()
     {
         return startImbricationEntity;
     }
@@ -441,26 +441,26 @@ public class ImbricationNode
         return children;
     }
 
-    public boolean isStartingEntity(Entity entity)
+    public boolean isStartingEntity(GXEntity GXEntity)
     {
-        return startImbricationEntity == entity;
+        return startImbricationEntity == GXEntity;
     }
 
-    public boolean isInImbrication(Entity entity)
+    public boolean isInImbrication(GXEntity GXEntity)
     {
-        return allElements.contains(entity);
+        return allElements.contains(GXEntity);
     }
 
-    public boolean wasTreated(Entity entity)
+    public boolean wasTreated(GXEntity GXEntity)
     {
-        // Check if Entity has already been processed Or entity is the start entity, and we know that Start entity
+        // Check if GXEntity has already been processed Or GXEntity is the start GXEntity, and we know that Start GXEntity
         // has already been processed at this level
-        return alreadyTreatedEntities.contains(entity) || startImbricationEntity == entity;
+        return alreadyTreatedEntities.contains(GXEntity) || startImbricationEntity == GXEntity;
     }
 
-    public boolean isGoingToBeTreated(Entity entity)
+    public boolean isGoingToBeTreated(GXEntity GXEntity)
     {
-        return toBeTreatedEntities.contains(entity);
+        return toBeTreatedEntities.contains(GXEntity);
     }
 
     public boolean hasChild()
@@ -515,22 +515,22 @@ public class ImbricationNode
         child.setParent(this);
     }
 
-    public void addToBeTreated(Entity entity)
+    public void addToBeTreated(GXEntity GXEntity)
     {
-        toBeTreatedEntities.add(entity);
+        toBeTreatedEntities.add(GXEntity);
     }
 
-    public void addAllToBeTreated(Collection<Entity> entities)
+    public void addAllToBeTreated(Collection<GXEntity> entities)
     {
         toBeTreatedEntities.addAll(entities);
     }
 
-    public void addAlreadyTreated(Entity entity)
+    public void addAlreadyTreated(GXEntity GXEntity)
     {
-        alreadyTreatedEntities.add(entity);
+        alreadyTreatedEntities.add(GXEntity);
     }
 
-    public void addAllAlreadyTreated(Collection<Entity> entities)
+    public void addAllAlreadyTreated(Collection<GXEntity> entities)
     {
         alreadyTreatedEntities.addAll(entities);
     }
@@ -542,25 +542,25 @@ public class ImbricationNode
     }
 
     /**
-     * Get the first entity not in lower or equal level of imbrication, or null if all of them are in lower or equal
+     * Get the first GXEntity not in lower or equal level of imbrication, or null if all of them are in lower or equal
      * level of imbrication
      *
-     * @param entity checked inputs entity
+     * @param GXEntity checked inputs GXEntity
      *
-     * @return the first entity not in lower or equal level of imbrication, or null if all of them are in lower or equal
+     * @return the first GXEntity not in lower or equal level of imbrication, or null if all of them are in lower or equal
      * level of imbrication
      */
-    public Entity getInputNotInLowerOrEqualLevel(Entity entity)
+    public GXEntity getInputNotInLowerOrEqualLevel(GXEntity GXEntity)
     {
         // Get all function entities
-        Collection<Entity> allInputEntities = entity.getAllInputEntities();
+        Collection<GXEntity> allInputEntities = GXEntity.getAllInputEntities();
 
         // Search for all function entities
-        for (Entity inputEntity : allInputEntities)
+        for (GXEntity inputGXEntity : allInputEntities)
         {
-            if (!isInLowerOrEqualLevel(entity))
+            if (!isInLowerOrEqualLevel(GXEntity))
             {
-                return inputEntity;
+                return inputGXEntity;
             }
         }
 
@@ -568,21 +568,21 @@ public class ImbricationNode
     }
 
     /**
-     * Check if all inputs of an entity are in his level or in a lower level
+     * Check if all inputs of an GXEntity are in his level or in a lower level
      *
-     * @param entity checked function entity
+     * @param GXEntity checked function GXEntity
      *
      * @return true if they are all in lower or equal level of imbrication, false if they are not all
      */
-    public boolean hasAllInputInLowerOrEqualLevel(Entity entity)
+    public boolean hasAllInputInLowerOrEqualLevel(GXEntity GXEntity)
     {
         // Get all function entities
-        Collection<Entity> allInputEntities = entity.getAllInputEntities();
+        Collection<GXEntity> allInputEntities = GXEntity.getAllInputEntities();
 
         // Search for all function entities
-        for (Entity inputEntity : allInputEntities)
+        for (GXEntity inputGXEntity : allInputEntities)
         {
-            if (!isInLowerOrEqualLevel(inputEntity))
+            if (!isInLowerOrEqualLevel(inputGXEntity))
             {
                 return false;
             }
@@ -592,73 +592,73 @@ public class ImbricationNode
     }
 
     /**
-     * Check if one entity is in higher imbrication node
+     * Check if one GXEntity is in higher imbrication node
      * We don't need to check all highers imbrication nodes, just the first
      * As all parents imbrication nodes have their children.
      *
-     * @param entity checked entity
+     * @param GXEntity checked GXEntity
      *
-     * @return true if the entity is present in a higher level of imbrication, false otherwise.
+     * @return true if the GXEntity is present in a higher level of imbrication, false otherwise.
      */
-    public boolean isInHigherImbricationNode(Entity entity)
+    public boolean isInHigherImbricationNode(GXEntity GXEntity)
     {
         for (ImbricationNode child : children)
         {
-            if (child.isInImbrication(entity))
+            if (child.isInImbrication(GXEntity))
                 return true;
         }
         return false;
     }
 
     /**
-     * Check if one entity (higheest level of imbrication) is in lower or equal level of imbrication
+     * Check if one GXEntity (higheest level of imbrication) is in lower or equal level of imbrication
      *
-     * @param entity checked entity
+     * @param GXEntity checked GXEntity
      *
      * @return true if it is in a lower or equal level of imbrication, false otherwise
      */
-    public boolean isInLowerOrEqualLevel(Entity entity)
+    public boolean isInLowerOrEqualLevel(GXEntity GXEntity)
     {
-        // If the entity is in this level of imbrication
-        if (isInImbrication(entity))
+        // If the GXEntity is in this level of imbrication
+        if (isInImbrication(GXEntity))
         {
             // Return true if this level is his highest level of imbrication, false otherwise
-            return !isInHigherImbricationNode(entity);
+            return !isInHigherImbricationNode(GXEntity);
         }
         else if (parent != null) // Else if this node is not a root
         {
             // Search for lower imbrication node
-            return isInLowerOrEqualLevel(entity);
+            return isInLowerOrEqualLevel(GXEntity);
         }
         else
         {
-            // We didn't found the entity in a lower or equal level
+            // We didn't found the GXEntity in a lower or equal level
             return false;
         }
     }
 
     /**
-     * Start a new imbrication from start imbrication entity
+     * Start a new imbrication from start imbrication GXEntity
      *
-     * @param startImbricationEntity entity starting imbrication
+     * @param startImbricationEntity GXEntity starting imbrication
      */
-    public void startImbricationNode(StartImbricationEntity startImbricationEntity)
+    public void startImbricationNode(StartImbricationGXEntity startImbricationEntity)
     {
         startImbricationNode(startImbricationEntity, 0);
     }
 
     /**
-     * Start a new imbrication from start imbrication entity
+     * Start a new imbrication from start imbrication GXEntity
      *
-     * @param startImbricationEntity entity starting imbrication
+     * @param startImbricationEntity GXEntity starting imbrication
      * @param index                  imbrication index
      */
-    public void startImbricationNode(StartImbricationEntity startImbricationEntity, int index)
+    public void startImbricationNode(StartImbricationGXEntity startImbricationEntity, int index)
     {
-        // Get all imbricated entities from this start imbrication entity
-        Set<Entity> inImbricationEntities = Tools.getInImbricationEntities(startImbricationEntity, index);
+        // Get all imbricated entities from this start imbrication GXEntity
+        Set<GXEntity> inImbricationEntities = Tools.getInImbricationEntities(startImbricationEntity, index);
 
-        // Push one level of imbrication in actual entity's imbrication and add imbricated entities from
+        // Push one level of imbrication in actual GXEntity's imbrication and add imbricated entities from
         // the startImbricationEntity.
         ImbricationNode pushedImbrication = pushImbrication(index, startImbricationEntity, inImbricationEntities);
 
@@ -671,9 +671,9 @@ public class ImbricationNode
      * Get all not treated elements
      * @return all not treated elements
      */
-    public Collection<? extends Entity> getAllNotTreatedElements()
+    public Collection<? extends GXEntity> getAllNotTreatedElements()
     {
-        Set<Entity> allNotTreatedElements = new HashSet<>(this.allElements);
+        Set<GXEntity> allNotTreatedElements = new HashSet<>(this.allElements);
         allNotTreatedElements.removeAll(this.alreadyTreatedEntities);
 
         return allNotTreatedElements;

@@ -1,6 +1,6 @@
 package org.eadge.gxscript.tools.check.validator;
 
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.tools.check.ValidatorModel;
 
@@ -18,13 +18,13 @@ public class ValidateLinks extends ValidatorModel
     {
         super.validate(rawGXScript);
 
-        Collection<Entity> entities = rawGXScript.getEntities();
+        Collection<GXEntity> entities = rawGXScript.getEntities();
 
         // For each entities check if their function are good
-        for (Entity entity : entities)
+        for (GXEntity GXEntity : entities)
         {
             // If output is not valid
-            if (!entity.hasValidOutput())
+            if (!GXEntity.hasValidOutput())
             {
                 return false;
             }

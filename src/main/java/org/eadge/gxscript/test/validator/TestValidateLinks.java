@@ -1,8 +1,8 @@
 package org.eadge.gxscript.test.validator;
 
-import org.eadge.gxscript.data.entity.DefaultEntity;
-import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfEntity;
-import org.eadge.gxscript.classic.entity.types.number.RealEntity;
+import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.RealGXEntity;
+import org.eadge.gxscript.data.entity.DefaultGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.test.CreateGXScript;
@@ -41,14 +41,14 @@ public class TestValidateLinks
         RawGXScript script = new RawGXScript();
 
         // Create entities
-        RealEntity realEntity = new RealEntity();
+        RealGXEntity realEntity = new RealGXEntity();
         script.addEntity(realEntity);
 
-        IfEntity ifEntity = new IfEntity();
+        IfGXEntity ifEntity = new IfGXEntity();
         script.addEntity(ifEntity);
 
         // Not valid link real to boolean
-        linkAsInput(IfEntity.TEST_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, ifEntity, realEntity);
+        linkAsInput(IfGXEntity.TEST_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, ifEntity, realEntity);
 
         ValidatorModel validator = new ValidateLinks();
         return !validator.validate(script);
@@ -59,14 +59,14 @@ public class TestValidateLinks
         RawGXScript script = new RawGXScript();
 
         // Create entities
-        RealEntity realEntity = new RealEntity();
+        RealGXEntity realEntity = new RealGXEntity();
         script.addEntity(realEntity);
 
-        IfEntity ifEntity = new IfEntity();
+        IfGXEntity ifEntity = new IfGXEntity();
         script.addEntity(ifEntity);
 
         // Not valid link void to real
-        linkAsInput(RealEntity.REAL_OUTPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, realEntity, ifEntity);
+        linkAsInput(RealGXEntity.REAL_OUTPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, realEntity, ifEntity);
 
         ValidatorModel validator = new ValidateLinks();
         return !validator.validate(script);
@@ -77,9 +77,9 @@ public class TestValidateLinks
         RawGXScript script = new RawGXScript();
 
         // Create entities
-        DefaultEntity objectEntity = new DefaultEntity()
+        DefaultGXEntity objectEntity = new DefaultGXEntity()
         {
-            public DefaultEntity init()
+            public DefaultGXEntity init()
             {
                 // Create one output creating object
                 addOutputEntry("Source", Object.class);
@@ -95,17 +95,17 @@ public class TestValidateLinks
         }.init();
         script.addEntity(objectEntity);
 
-        IfEntity ifEntity = new IfEntity();
+        IfGXEntity ifEntity = new IfGXEntity();
         script.addEntity(ifEntity);
 
         // Not valid link void to real
-        linkAsInput(IfEntity.TEST_INPUT_INDEX, 0, ifEntity, objectEntity);
+        linkAsInput(IfGXEntity.TEST_INPUT_INDEX, 0, ifEntity, objectEntity);
 
         ValidatorModel validator = new ValidateLinks();
         return !validator.validate(script);
     }
 
-    public static void linkAsInput(int inputIndex, int outputIndex, DefaultEntity inputEntity, DefaultEntity entityOutput)
+    public static void linkAsInput(int inputIndex, int outputIndex, DefaultGXEntity inputEntity, DefaultGXEntity entityOutput)
     {
         inputEntity.addLinkInput(inputIndex, outputIndex, entityOutput);
         entityOutput.addLinkOutput(outputIndex, inputIndex, inputEntity);

@@ -1,14 +1,14 @@
 package org.eadge.gxscript.test;
 
-import org.eadge.gxscript.data.entity.DefaultEntity;
-import org.eadge.gxscript.data.entity.ModifyingEntity;
-import org.eadge.gxscript.classic.entity.displayer.PrintEntity;
-import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfEntity;
-import org.eadge.gxscript.classic.entity.imbrication.loops.ForEntity;
-import org.eadge.gxscript.classic.entity.types.number.IntEntity;
-import org.eadge.gxscript.classic.entity.types.number.ModifyNumberEntity;
-import org.eadge.gxscript.classic.entity.types.number.RealEntity;
-import org.eadge.gxscript.classic.entity.types.number.comparison.EqualToNumberEntity;
+import org.eadge.gxscript.classic.entity.displayer.PrintGXEntity;
+import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfGXEntity;
+import org.eadge.gxscript.classic.entity.imbrication.loops.ForGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.IntGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.RealGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.comparison.EqualToNumberGXEntity;
+import org.eadge.gxscript.data.entity.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.ModifyingGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.ModifyNumberGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.RawGXScript;
@@ -25,27 +25,27 @@ public class CreateGXScript
         RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
 
         // Create 3 real variables
-        RealEntity realEntity1 = new RealEntity(20f);
-        RealEntity realEntity2 = new RealEntity(20f);
+        RealGXEntity realEntity1 = new RealGXEntity(20f);
+        RealGXEntity realEntity2 = new RealGXEntity(20f);
 
         // Create real comparison
-        EqualToNumberEntity equalToNumberEntity = new EqualToNumberEntity();
-        equalToNumberEntity.linkAsInput(EqualToNumberEntity.V0_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity1);
-        equalToNumberEntity.linkAsInput(EqualToNumberEntity.V1_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity2);
+        EqualToNumberGXEntity equalToNumberEntity = new EqualToNumberGXEntity();
+        equalToNumberEntity.linkAsInput(EqualToNumberGXEntity.V0_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity1);
+        equalToNumberEntity.linkAsInput(EqualToNumberGXEntity.V1_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity2);
 
-        // Create if entity block control
-        IfEntity ifEntity = new IfEntity();
-        ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, EqualToNumberEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity);
+        // Create if GXEntity block control
+        IfGXEntity ifEntity = new IfGXEntity();
+        ifEntity.linkAsInput(IfGXEntity.TEST_INPUT_INDEX, EqualToNumberGXEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity);
 
         // Create 3 prints for each path
-        PrintEntity success = new PrintEntity("EQUAL");
-        success.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        PrintGXEntity success = new PrintGXEntity("EQUAL");
+        success.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
 
-        PrintEntity fail = new PrintEntity("DIFF");
-        fail.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.FAIL_OUTPUT_INDEX, ifEntity);
+        PrintGXEntity fail = new PrintGXEntity("DIFF");
+        fail.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.FAIL_OUTPUT_INDEX, ifEntity);
 
-        PrintEntity continueP = new PrintEntity("Continue");
-        continueP.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.CONTINUE_OUTPUT_INDEX, ifEntity);
+        PrintGXEntity continueP = new PrintGXEntity("Continue");
+        continueP.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.CONTINUE_OUTPUT_INDEX, ifEntity);
 
         // Add all created entities to raw gx script
         rawGXScript.addEntity("real1", realEntity1);
@@ -66,31 +66,31 @@ public class CreateGXScript
         RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
 
         // Create 3 real variables
-        RealEntity realEntity1 = new RealEntity(20f);
-        RealEntity realEntity2 = new RealEntity(10f);
-        RealEntity realEntity3 = new RealEntity();
+        RealGXEntity realEntity1 = new RealGXEntity(20f);
+        RealGXEntity realEntity2 = new RealGXEntity(10f);
+        RealGXEntity realEntity3 = new RealGXEntity();
 
         // Link realEntity2 on realEntity3 function
-        realEntity3.linkAsInput(RealEntity.SET_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity2);
+        realEntity3.linkAsInput(RealGXEntity.SET_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity2);
 
         // Create real comparison
-        EqualToNumberEntity equalToNumberEntity = new EqualToNumberEntity();
-        equalToNumberEntity.linkAsInput(EqualToNumberEntity.V0_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity1);
-        equalToNumberEntity.linkAsInput(EqualToNumberEntity.V1_INPUT_INDEX, RealEntity.REAL_OUTPUT_INDEX, realEntity3);
+        EqualToNumberGXEntity equalToNumberEntity = new EqualToNumberGXEntity();
+        equalToNumberEntity.linkAsInput(EqualToNumberGXEntity.V0_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity1);
+        equalToNumberEntity.linkAsInput(EqualToNumberGXEntity.V1_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, realEntity3);
 
-        // Create if entity block control
-        IfEntity ifEntity = new IfEntity();
-        ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, EqualToNumberEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity);
+        // Create if GXEntity block control
+        IfGXEntity ifEntity = new IfGXEntity();
+        ifEntity.linkAsInput(IfGXEntity.TEST_INPUT_INDEX, EqualToNumberGXEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity);
 
         // Create 3 prints for each path
-        PrintEntity success = new PrintEntity("Success");
-        success.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        PrintGXEntity success = new PrintGXEntity("Success");
+        success.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
 
-        PrintEntity fail = new PrintEntity("Fail");
-        fail.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.FAIL_OUTPUT_INDEX, ifEntity);
+        PrintGXEntity fail = new PrintGXEntity("Fail");
+        fail.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.FAIL_OUTPUT_INDEX, ifEntity);
 
-        PrintEntity continueP = new PrintEntity("Continue");
-        continueP.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.CONTINUE_OUTPUT_INDEX, ifEntity);
+        PrintGXEntity continueP = new PrintGXEntity("Continue");
+        continueP.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.CONTINUE_OUTPUT_INDEX, ifEntity);
 
         // Add all created entities to raw gx script
         rawGXScript.addEntity("real1", realEntity1);
@@ -111,24 +111,24 @@ public class CreateGXScript
     {
         RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
 
-        IntEntity intEntity = new IntEntity(1);
-        ForEntity forEntity = new ForEntity();
+        IntGXEntity intEntity = new IntGXEntity(1);
+        ForGXEntity forEntity = new ForGXEntity();
 
-        forEntity.linkAsInput(ForEntity.ADD_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
+        forEntity.linkAsInput(ForGXEntity.ADD_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity);
 
-        DefaultEntity isEven = createIsEven();
+        DefaultGXEntity isEven = createIsEven();
 
-        isEven.linkAsInput(0, ForEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
-        isEven.linkAsInput(1, ForEntity.DO_OUTPUT_INDEX, forEntity);
+        isEven.linkAsInput(0, ForGXEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
+        isEven.linkAsInput(1, ForGXEntity.DO_OUTPUT_INDEX, forEntity);
 
-        IfEntity ifEntity = new IfEntity();
-        ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, 0, isEven);
+        IfGXEntity ifEntity = new IfGXEntity();
+        ifEntity.linkAsInput(IfGXEntity.TEST_INPUT_INDEX, 0, isEven);
 
-        PrintEntity printEntityEven = new PrintEntity("Even");
-        PrintEntity printEntityOdd = new PrintEntity("Odd");
+        PrintGXEntity printEntityEven = new PrintGXEntity("Even");
+        PrintGXEntity printEntityOdd  = new PrintGXEntity("Odd");
 
-        printEntityEven.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
-        printEntityOdd.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.FAIL_OUTPUT_INDEX, ifEntity);
+        printEntityEven.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        printEntityOdd.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.FAIL_OUTPUT_INDEX, ifEntity);
 
         rawGXScript.addEntity("int", intEntity);
         rawGXScript.addEntity("for", forEntity);
@@ -146,35 +146,35 @@ public class CreateGXScript
     {
         RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
 
-        IntEntity intEntity = new IntEntity(1);
-        ForEntity forEntity = new ForEntity();
+        IntGXEntity intEntity = new IntGXEntity(1);
+        ForGXEntity forEntity = new ForGXEntity();
 
-        forEntity.linkAsInput(ForEntity.ADD_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
+        forEntity.linkAsInput(ForGXEntity.ADD_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity);
 
-        DefaultEntity isEven = createIsEven();
+        DefaultGXEntity isEven = createIsEven();
 
-        isEven.linkAsInput(0, ForEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
-        isEven.linkAsInput(1, ForEntity.DO_OUTPUT_INDEX, forEntity);
+        isEven.linkAsInput(0, ForGXEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
+        isEven.linkAsInput(1, ForGXEntity.DO_OUTPUT_INDEX, forEntity);
 
-        IfEntity ifEntity = new IfEntity();
-        ifEntity.linkAsInput(IfEntity.TEST_INPUT_INDEX, 0, isEven);
+        IfGXEntity ifEntity = new IfGXEntity();
+        ifEntity.linkAsInput(IfGXEntity.TEST_INPUT_INDEX, 0, isEven);
 
-        PrintEntity printEntityEven = new PrintEntity("Even");
-        PrintEntity printEntityOdd = new PrintEntity("Odd");
+        PrintGXEntity printEntityEven = new PrintGXEntity("Even");
+        PrintGXEntity printEntityOdd  = new PrintGXEntity("Odd");
 
-        printEntityEven.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
-        printEntityOdd.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, IfEntity.FAIL_OUTPUT_INDEX, ifEntity);
+        printEntityEven.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        printEntityOdd.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.FAIL_OUTPUT_INDEX, ifEntity);
 
-        IntEntity intSetter = new IntEntity(10);
-        intSetter.linkAsInput(IntEntity.NEXT_INPUT_INDEX, PrintEntity.CONTINUE_OUTPUT_INDEX, printEntityOdd);
+        IntGXEntity intSetter = new IntGXEntity(10);
+        intSetter.linkAsInput(IntGXEntity.NEXT_INPUT_INDEX, PrintGXEntity.CONTINUE_OUTPUT_INDEX, printEntityOdd);
 
-        ModifyingEntity modificationInt = intEntity.createModificationEntity(IntEntity.INT_OUTPUT_INDEX);
-        modificationInt.linkAsInput(ModifyNumberEntity.MODIFIED_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
-        modificationInt.linkAsInput(ModifyNumberEntity.SOURCE_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intSetter);
+        ModifyingGXEntity modificationInt = intEntity.createModificationEntity(IntGXEntity.INT_OUTPUT_INDEX);
+        modificationInt.linkAsInput(ModifyNumberGXEntity.MODIFIED_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity);
+        modificationInt.linkAsInput(ModifyNumberGXEntity.SOURCE_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intSetter);
 
-        PrintEntity printChange = new PrintEntity();
-        printChange.linkAsInput(PrintEntity.SOURCE_INPUT_INDEX, IntEntity.INT_OUTPUT_INDEX, intEntity);
-        printChange.linkAsInput(PrintEntity.NEXT_INPUT_INDEX, ModifyNumberEntity.CONTINUE_OUTPUT_INDEX, modificationInt);
+        PrintGXEntity printChange = new PrintGXEntity();
+        printChange.linkAsInput(PrintGXEntity.SOURCE_INPUT_INDEX, IntGXEntity.INT_OUTPUT_INDEX, intEntity);
+        printChange.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, ModifyNumberGXEntity.CONTINUE_OUTPUT_INDEX, modificationInt);
 
         rawGXScript.addEntity("int", intEntity);
         rawGXScript.addEntity("for", forEntity);
@@ -191,16 +191,16 @@ public class CreateGXScript
         return rawGXScript;
     }
 
-    private static DefaultEntity createIsEven()
+    private static DefaultGXEntity createIsEven()
     {
-        return new DefaultEntity()
+        return new DefaultGXEntity()
         {
             public final int SOURCE_INPUT_INDEX = 0;
             public final int NEXT_INPUT_INDEX = 1;
 
             public final int RESULT_OUTPUT_INDEX = 0;
 
-            DefaultEntity init()
+            DefaultGXEntity init()
             {
                 setName("IsEven");
 

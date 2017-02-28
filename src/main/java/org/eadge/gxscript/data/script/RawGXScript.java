@@ -1,6 +1,6 @@
 package org.eadge.gxscript.data.script;
 
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.Collection;
@@ -18,43 +18,43 @@ public class RawGXScript
     /**
      * Keeps all entities
      */
-    private Set<Entity> entities         = new HashSet<>();
+    private Set<GXEntity> entities = new HashSet<>();
 
     /**
      * Keeps all entities with no inputs used
      */
-    private Set<Entity> startingEntities = new HashSet<>();
+    private Set<GXEntity> startingEntities = new HashSet<>();
 
     public RawGXScript()
     {
     }
 
-    public void addEntity(Entity entity)
+    public void addEntity(GXEntity GXEntity)
     {
-        entities.add(entity);
+        entities.add(GXEntity);
     }
 
-    public void addAllEntities(Collection<Entity> entities)
+    public void addAllEntities(Collection<GXEntity> entities)
     {
         this.entities.addAll(entities);
     }
 
-    public void removeEntity(Entity entity)
+    public void removeEntity(GXEntity GXEntity)
     {
-        entities.remove(entity);
+        entities.remove(GXEntity);
     }
 
-    public Collection<Entity> getEntities()
+    public Collection<GXEntity> getEntities()
     {
         return entities;
     }
 
-    public void setEntities(Set<Entity> entities)
+    public void setEntities(Set<GXEntity> entities)
     {
         this.entities = entities;
     }
 
-    public Collection<Entity> getStartingEntities()
+    public Collection<GXEntity> getStartingEntities()
     {
         return startingEntities;
     }
@@ -72,25 +72,25 @@ public class RawGXScript
     }
 
     /**
-     * Add entity and all linked entities in the same process recursively.
+     * Add GXEntity and all linked entities in the same process recursively.
      *
-     * @param entity added entity
+     * @param GXEntity added GXEntity
      */
-    public void addEntityRecursiveSearch(Entity entity)
+    public void addEntityRecursiveSearch(GXEntity GXEntity)
     {
-        Set<Entity> alreadyTreated = new HashSet<>();
-        Set<Entity> toBeTreated    = new HashSet<>();
+        Set<GXEntity> alreadyTreated = new HashSet<>();
+        Set<GXEntity> toBeTreated    = new HashSet<>();
 
         // Add the first element
-        toBeTreated.add(entity);
+        toBeTreated.add(GXEntity);
 
         // While there are still entities to be treated
         while (toBeTreated.size() != 0)
         {
-            Iterator<Entity> iterator = toBeTreated.iterator();
+            Iterator<GXEntity> iterator = toBeTreated.iterator();
 
             // Get the first element to be treated
-            Entity next = iterator.next();
+            GXEntity next = iterator.next();
 
             // Remove this element from toBeDone and add it to already treated
             iterator.remove();
@@ -104,34 +104,34 @@ public class RawGXScript
         addAllEntities(alreadyTreated);
     }
 
-    private void treatEntityInputs(Entity entity, Set<Entity> alreadyTreated, Set<Entity> toBeTreated)
+    private void treatEntityInputs(GXEntity GXEntity, Set<GXEntity> alreadyTreated, Set<GXEntity> toBeTreated)
     {
         // Get output entities
-        Collection<Entity> inputsEntities = entity.getAllInputEntities();
+        Collection<GXEntity> inputsEntities = GXEntity.getAllInputEntities();
 
         // Add not treated elements on function
         addNotTreatedEntities(inputsEntities, alreadyTreated, toBeTreated);
     }
 
-    private void treatEntityOutputs(Entity entity, Set<Entity> alreadyTreated, Set<Entity> toBeTreated)
+    private void treatEntityOutputs(GXEntity GXEntity, Set<GXEntity> alreadyTreated, Set<GXEntity> toBeTreated)
     {
         // Get output entities
-        Collection<Entity> outputEntities = entity.getAllOutputEntitiesCollection();
+        Collection<GXEntity> outputEntities = GXEntity.getAllOutputEntitiesCollection();
 
         // Add not treated elements on output
         addNotTreatedEntities(outputEntities, alreadyTreated, toBeTreated);
     }
 
-    private void addNotTreatedEntities(Collection<Entity> testedEntities, Set<Entity> alreadyTreated, Set<Entity> toBeTreated)
+    private void addNotTreatedEntities(Collection<GXEntity> testedEntities, Set<GXEntity> alreadyTreated, Set<GXEntity> toBeTreated)
     {
         // For all output entities not already treated
-        for (Entity entity : testedEntities)
+        for (GXEntity GXEntity : testedEntities)
         {
-            // If the entity is not treated
-            if (entity != null && !alreadyTreated.contains(entity))
+            // If the GXEntity is not treated
+            if (GXEntity != null && !alreadyTreated.contains(GXEntity))
             {
                 // If element is already in toBeDone entities, it will do nothing on toBeDone Set
-                toBeTreated.add(entity);
+                toBeTreated.add(GXEntity);
             }
         }
     }

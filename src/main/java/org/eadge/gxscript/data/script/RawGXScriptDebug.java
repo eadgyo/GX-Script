@@ -1,6 +1,6 @@
 package org.eadge.gxscript.data.script;
 
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.GXEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,32 +12,32 @@ import java.util.Map;
  */
 public class RawGXScriptDebug extends RawGXScript
 {
-    public Map<String, Entity> map = new HashMap<>();
+    public Map<String, GXEntity> map = new HashMap<>();
 
-    public void addEntity(String name, Entity entity)
+    public void addEntity(String name, GXEntity GXEntity)
     {
-        addEntity(entity);
+        addEntity(GXEntity);
 
         assert (!map.containsKey(name));
 
-        map.put(name, entity);
+        map.put(name, GXEntity);
     }
 
-    public Entity getEntity(String name)
+    public GXEntity getEntity(String name)
     {
-        Entity entity = map.get(name);
+        GXEntity GXEntity = map.get(name);
 
-        assert (entity != null);
+        assert (GXEntity != null);
 
-        return entity;
+        return GXEntity;
     }
 
     public void removeEntity(String name)
     {
-        Entity entity = getEntity(name);
+        GXEntity GXEntity = getEntity(name);
 
         assert (map.containsKey(name));
 
-        removeEntity(entity);
+        removeEntity(GXEntity);
     }
 }

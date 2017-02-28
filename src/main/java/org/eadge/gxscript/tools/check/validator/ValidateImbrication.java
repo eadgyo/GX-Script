@@ -1,7 +1,7 @@
 package org.eadge.gxscript.tools.check.validator;
 
-import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.StartImbricationEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.tools.Tools;
@@ -21,10 +21,10 @@ public class ValidateImbrication extends ValidatorModel
     {
         super.validate(rawGXScript);
 
-        Collection<Entity> entities         = rawGXScript.getEntities();
-        Collection<Entity> startingEntities = rawGXScript.getStartingEntities();
+        Collection<GXEntity> entities         = rawGXScript.getEntities();
+        Collection<GXEntity> startingEntities = rawGXScript.getStartingEntities();
 
-        Set<Entity> alreadyTreated = new HashSet<>();
+        Set<GXEntity> alreadyTreated = new HashSet<>();
 
         // Create level 0 of imbrication, it's the root of the tree
         // All entities are in this level
@@ -40,19 +40,19 @@ public class ValidateImbrication extends ValidatorModel
             while (!root.isToBeTreatedEmpty())
             {
                 // Get the first element
-                Entity beingTreated = root.popToBeTreated();
+                GXEntity beingTreated = root.popToBeTreated();
                 alreadyTreated.add(beingTreated);
 
                 // Get his level of imbrication
                 ImbricationNode highestImbricationNode = root.getHighestImbricationNode(beingTreated);
 
-                // If entity have in function, entities not in lower or equal imbrication level
-                Entity inputNotInLowerOrEqualLevel = highestImbricationNode.getInputNotInLowerOrEqualLevel
+                // If GXEntity have in function, entities not in lower or equal imbrication level
+                GXEntity inputNotInLowerOrEqualLevel = highestImbricationNode.getInputNotInLowerOrEqualLevel
                         (beingTreated);
                 if (inputNotInLowerOrEqualLevel != null)
                 {
-                    // Entity can be in a removed, higher or parallels imbricated level
-                    // Add being treated entity and entity not found
+                    // GXEntity can be in a removed, higher or parallels imbricated level
+                    // Add being treated GXEntity and GXEntity not found
                     entitiesWithError.add(beingTreated);
                     entitiesWithError.add(inputNotInLowerOrEqualLevel);
                     return false;
@@ -60,21 +60,21 @@ public class ValidateImbrication extends ValidatorModel
 
                 if (isInParallelsImbrications(beingTreated, highestImbricationNode))
                 {
-                    // Entity can be in a removed, higher or parallels imbricated level
-                    // Add being treated entity and entity not found
+                    // GXEntity can be in a removed, higher or parallels imbricated level
+                    // Add being treated GXEntity and GXEntity not found
                     entitiesWithError.add(beingTreated);
                     return false;
                 }
 
-                // If the entity is a start imbrication entity
-                if (beingTreated instanceof StartImbricationEntity)
+                // If the GXEntity is a start imbrication GXEntity
+                if (beingTreated instanceof StartImbricationGXEntity)
                 {
                     // Start a new imbrication node on top of the highest imbrication node
-                    highestImbricationNode.startImbricationNode((StartImbricationEntity) beingTreated);
+                    highestImbricationNode.startImbricationNode((StartImbricationGXEntity) beingTreated);
                 }
                 else
                 {
-                    // It's a normal entity
+                    // It's a normal GXEntity
                     highestImbricationNode.treatEntity(beingTreated);
                 }
             }
@@ -97,16 +97,16 @@ public class ValidateImbrication extends ValidatorModel
      *
      * @param root imbrication root
      */
-    private void addBlockingEntities(ImbricationNode root, Set<Entity> alreadyTreated)
+    private void addBlockingEntities(ImbricationNode root, Set<GXEntity> alreadyTreated)
     {
         ArrayList<ImbricationNode> leaves = root.getLeaves();
         for (ImbricationNode leaf : leaves)
         {
             // Get not treated entities
-            Collection<? extends Entity> allNotTreatedElements = leaf.getAllNotTreatedElements();
+            Collection<? extends GXEntity> allNotTreatedElements = leaf.getAllNotTreatedElements();
 
             // Check if entities have function in different level of imbrication
-            for (Entity notTreatedElement : allNotTreatedElements)
+            for (GXEntity notTreatedElement : allNotTreatedElements)
             {
                 if (hasInputsInParallelsImbrications(notTreatedElement, leaf, alreadyTreated))
                     entitiesWithError.add(notTreatedElement);
@@ -115,34 +115,34 @@ public class ValidateImbrication extends ValidatorModel
     }
 
     /**
-     * Check if entity have in function different output level of imbrication from one start entity imbrication
+     * Check if GXEntity have in function different output level of imbrication from one start GXEntity imbrication
      *
-     * @param entity                 checked entity inputs
+     * @param GXEntity                 checked GXEntity inputs
      * @param highestImbricationNode his highest imbrication node
      *
-     * @return true if entity has in function different output level of imbrication
+     * @return true if GXEntity has in function different output level of imbrication
      */
-    private static boolean isInParallelsImbrications(Entity entity,
+    private static boolean isInParallelsImbrications(GXEntity GXEntity,
                                                      ImbricationNode highestImbricationNode)
     {
-        StartImbricationEntity startImbricationEntity = highestImbricationNode.getStartImbricationEntity();
+        StartImbricationGXEntity startImbricationEntity = highestImbricationNode.getStartImbricationEntity();
 
         // It's the root imbrication
         if (startImbricationEntity == null)
             return false;
 
-        // Get the imbrication id to be compared with function imbrication id with same start imbrication entity
+        // Get the imbrication id to be compared with function imbrication id with same start imbrication GXEntity
         int currentImbrication = highestImbricationNode.getImbricationOutputIndex();
 
-        for (int inputIndex = 0; inputIndex < entity.getNumberOfInputs(); inputIndex++)
+        for (int inputIndex = 0; inputIndex < GXEntity.getNumberOfInputs(); inputIndex++)
         {
-            Entity inputEntity = entity.getInputEntity(inputIndex);
+            GXEntity inputGXEntity = GXEntity.getInputEntity(inputIndex);
 
-            // If function is start imbrication entity
-            if (inputEntity == startImbricationEntity)
+            // If function is start imbrication GXEntity
+            if (inputGXEntity == startImbricationEntity)
             {
                 // Get the index
-                int outputIndex = entity.getIndexOfOutputFromEntityOnInput(inputIndex);
+                int outputIndex = GXEntity.getIndexOfOutputFromEntityOnInput(inputIndex);
 
                 // Get the imbrication index at the output index
                 int outputImbrication = startImbricationEntity.getOutputImbrication(outputIndex);
@@ -159,7 +159,7 @@ public class ValidateImbrication extends ValidatorModel
         ImbricationNode parent = highestImbricationNode.getParent();
         if (parent != null)
         {
-            if (isInParallelsImbrications(entity, parent))
+            if (isInParallelsImbrications(GXEntity, parent))
                 return true;
         }
 
@@ -167,45 +167,45 @@ public class ValidateImbrication extends ValidatorModel
     }
 
     /**
-     * Check if entity has inputs recursively in parallels level of imbrication.
+     * Check if GXEntity has inputs recursively in parallels level of imbrication.
      *
-     * @param entity                 checked entity function
-     * @param highestImbricationNode entity's highest imbrication node
+     * @param GXEntity                 checked GXEntity function
+     * @param highestImbricationNode GXEntity's highest imbrication node
      * @param safeEntities           entities safe, that doesn't need to be treated
      *
-     * @return true if entity has inputs in parallels level of imbrication, false otherwise.
+     * @return true if GXEntity has inputs in parallels level of imbrication, false otherwise.
      */
-    private static boolean hasInputsInParallelsImbrications(Entity entity,
+    private static boolean hasInputsInParallelsImbrications(GXEntity GXEntity,
                                                             ImbricationNode highestImbricationNode,
-                                                            Set<Entity> safeEntities)
+                                                            Set<GXEntity> safeEntities)
     {
-        Set<Entity>   alreadyTreated      = new HashSet<Entity>();
-        Stack<Entity> toBeTreatedEntities = new Stack<>();
+        Set<GXEntity>   alreadyTreated      = new HashSet<GXEntity>();
+        Stack<GXEntity> toBeTreatedEntities = new Stack<>();
 
-        // Add the entity to check
-        toBeTreatedEntities.add(entity);
+        // Add the GXEntity to check
+        toBeTreatedEntities.add(GXEntity);
 
         // While there are entities to treat
         while (!toBeTreatedEntities.empty())
         {
-            Entity poppedEntity = toBeTreatedEntities.pop();
+            GXEntity poppedGXEntity = toBeTreatedEntities.pop();
 
-            // Treat entity
-            alreadyTreated.add(poppedEntity);
+            // Treat GXEntity
+            alreadyTreated.add(poppedGXEntity);
 
             // Check inputs levels
-            if (isInParallelsImbrications(poppedEntity, highestImbricationNode))
+            if (isInParallelsImbrications(poppedGXEntity, highestImbricationNode))
                 return true;
 
             // Add function entities not treated
-            Collection<Entity> allInputEntities = poppedEntity.getAllInputEntities();
-            for (Entity inputEntity : allInputEntities)
+            Collection<GXEntity> allInputEntities = poppedGXEntity.getAllInputEntities();
+            for (GXEntity inputGXEntity : allInputEntities)
             {
-                if (inputEntity != null)
+                if (inputGXEntity != null)
                 {
-                    // If function entity is not safe and it is not already treated
-                    if (!safeEntities.contains(inputEntity) && !alreadyTreated.contains(inputEntity))
-                        toBeTreatedEntities.add(inputEntity);
+                    // If function GXEntity is not safe and it is not already treated
+                    if (!safeEntities.contains(inputGXEntity) && !alreadyTreated.contains(inputGXEntity))
+                        toBeTreatedEntities.add(inputGXEntity);
                 }
             }
         }

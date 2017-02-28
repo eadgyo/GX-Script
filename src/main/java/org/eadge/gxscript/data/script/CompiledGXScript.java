@@ -11,18 +11,37 @@ import java.util.Collection;
  */
 public class CompiledGXScript
 {
-    private Func calledFunctions[];
+    /**
+     * Keeps called functions in script
+     */
+    private Func              calledFunctions[];
+
+    /**
+     * Keeps parameters used with functions
+     */
     private FuncDataAddresses calledFunctionsParameters[];
 
-    public CompiledGXScript(Collection<Func> calledFunctions, Collection<FuncDataAddresses> calledFunctionsParameters)
+    /**
+     * Number of parameters used for script
+     */
+    private int           numberOfScriptParameters;
+
+    public CompiledGXScript(int numberOfScriptParameters, Collection<Func> calledFunctions, Collection<FuncDataAddresses> calledFunctionsParameters)
     {
         assert (calledFunctions.size() == calledFunctionsParameters.size());
+
+        this.numberOfScriptParameters = numberOfScriptParameters;
 
         this.calledFunctions = new Func[calledFunctions.size()];
         this.calledFunctionsParameters = new FuncDataAddresses[calledFunctions.size()];
 
         calledFunctions.toArray(this.calledFunctions);
         calledFunctionsParameters.toArray(this.calledFunctionsParameters);
+    }
+
+    public int getNumberOfScriptParameters()
+    {
+        return numberOfScriptParameters;
     }
 
     public Func[] getCalledFunctions()

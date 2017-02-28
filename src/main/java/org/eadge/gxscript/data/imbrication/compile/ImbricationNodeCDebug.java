@@ -1,7 +1,7 @@
 package org.eadge.gxscript.data.imbrication.compile;
 
-import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.StartImbricationEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
 import org.eadge.gxscript.data.script.DebugCompiledGXScript;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.address.DataAddress;
@@ -26,13 +26,13 @@ public class ImbricationNodeCDebug extends ImbricationNodeC
 
 
     public ImbricationNodeCDebug(int imbricationNode,
-                                 StartImbricationEntity startImbricationEntity,
-                                 Set<Entity> allElements)
+                                 StartImbricationGXEntity startImbricationEntity,
+                                 Set<GXEntity> allElements)
     {
         super(imbricationNode, startImbricationEntity, allElements);
     }
 
-    public ImbricationNodeCDebug(Collection<Entity> allElements)
+    public ImbricationNodeCDebug(Collection<GXEntity> allElements)
     {
         super(allElements);
     }
@@ -40,22 +40,22 @@ public class ImbricationNodeCDebug extends ImbricationNodeC
     public ImbricationNodeCDebug(DataAddress dataAddress,
                                  Collection<Func> GXScriptFuncParameters,
                                  Collection<FuncDataAddresses> GXScriptFuncParametersAddresses,
-                                 Collection<Entity> allElements,
+                                 Collection<GXEntity> allElements,
                                  ArrayList<DebugMemory> debugMemoriesAddresses)
     {
         super(dataAddress, GXScriptFuncParameters, GXScriptFuncParametersAddresses, allElements);
         this.debugMemoriesAddresses = debugMemoriesAddresses;
     }
 
-    public ImbricationNodeCDebug(Set<Entity> allElements)
+    public ImbricationNodeCDebug(Set<GXEntity> allElements)
     {
         super(allElements);
     }
 
     @Override
     protected ImbricationNodeCDebug createImbrication(int imbricationIndex,
-                                                 StartImbricationEntity startImbricationEntity,
-                                                 Set<Entity> inImbricationEntities)
+                                                 StartImbricationGXEntity startImbricationEntity,
+                                                 Set<GXEntity> inImbricationEntities)
     {
         return new ImbricationNodeCDebug(imbricationIndex, startImbricationEntity, inImbricationEntities);
     }
@@ -98,15 +98,15 @@ public class ImbricationNodeCDebug extends ImbricationNodeC
         }
     }
 
-    public void treatEntity(Entity entity)
+    public void treatEntity(GXEntity GXEntity)
     {
-        super.treatEntity(entity);
+        super.treatEntity(GXEntity);
 
         debugMemoriesAddresses.add(new DebugMemory(currentDataAddress));
     }
 
     @Override
-    public void treatStartImbricationEntity(StartImbricationEntity startImbricationEntity)
+    public void treatStartImbricationEntity(StartImbricationGXEntity startImbricationEntity)
     {
         super.treatStartImbricationEntity(startImbricationEntity);
 
@@ -115,6 +115,11 @@ public class ImbricationNodeCDebug extends ImbricationNodeC
 
     public DebugCompiledGXScript compile()
     {
-        return new DebugCompiledGXScript(calledFunctions, calledFunctionsParameters, debugMemoriesAddresses);
+        return new DebugCompiledGXScript(0, calledFunctions, calledFunctionsParameters, debugMemoriesAddresses);
+    }
+
+    public DebugCompiledGXScript compile(int numberOfScriptParameters)
+    {
+        return new DebugCompiledGXScript(numberOfScriptParameters, calledFunctions, calledFunctionsParameters, debugMemoriesAddresses);
     }
 }

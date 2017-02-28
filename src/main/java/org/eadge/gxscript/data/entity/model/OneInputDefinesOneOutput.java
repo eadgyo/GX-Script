@@ -1,14 +1,14 @@
 package org.eadge.gxscript.data.entity.model;
 
-import org.eadge.gxscript.data.entity.DefaultEntity;
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
 
 /**
  * Created by eadgyo on 05/09/16.
  *
  * One function object define the output class object
  */
-public abstract class OneInputDefinesOneOutput extends DefaultEntity
+public abstract class OneInputDefinesOneOutput extends DefaultGXEntity
 {
     public static final int SOURCE_INPUT_INDEX = 0;
     public static final int NEXT_INPUT_INDEX   = 1;
@@ -40,16 +40,16 @@ public abstract class OneInputDefinesOneOutput extends DefaultEntity
     }
 
     @Override
-    public void linkAsInput(int inputIndex, int entityOutput, Entity entity)
+    public void linkAsInput(int inputIndex, int entityOutput, GXEntity GXEntity)
     {
-        super.linkAsInput(inputIndex, entityOutput, entity);
+        super.linkAsInput(inputIndex, entityOutput, GXEntity);
 
         if (inputIndex != NEXT_INPUT_INDEX)
         {
             // Get output class
             Class sourceOutputClass = getOutputClassFromInputEntity(SOURCE_INPUT_INDEX);
 
-            // If there is a linked function entity
+            // If there is a linked function GXEntity
             if (sourceOutputClass != null)
             {
                 setOutputClass(RESULT_INPUT_INDEX, sourceOutputClass);

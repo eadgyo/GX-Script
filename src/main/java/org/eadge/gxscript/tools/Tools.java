@@ -1,7 +1,7 @@
 package org.eadge.gxscript.tools;
 
-import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.StartImbricationEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Created by eadgyo on 03/08/16.
  *
- * Tools shared with entity processes
+ * Tools shared with GXEntity processes
  */
 public class Tools
 {
@@ -24,17 +24,17 @@ public class Tools
      *
      * @return collection of starting entities
      */
-    public static Collection<Entity> getStartingEntities(Collection<Entity> entities)
+    public static Collection<GXEntity> getStartingEntities(Collection<GXEntity> entities)
     {
-        Set<Entity> startingEntities = new HashSet<>();
+        Set<GXEntity> startingEntities = new HashSet<>();
 
-        for (Entity entity : entities)
+        for (GXEntity GXEntity : entities)
         {
-            // If entity has no linked entity block at function
-            if (!entity.hasInputsUsed())
+            // If GXEntity has no linked GXEntity block at function
+            if (!GXEntity.hasInputsUsed())
             {
-                // This entity is a starting entity
-                startingEntities.add(entity);
+                // This GXEntity is a starting GXEntity
+                startingEntities.add(GXEntity);
             }
         }
 
@@ -49,17 +49,17 @@ public class Tools
      *
      * @return collection of ending entities
      */
-    public static Collection<Entity> getEndingEntities(Collection<Entity> entities)
+    public static Collection<GXEntity> getEndingEntities(Collection<GXEntity> entities)
     {
-        Set<Entity> endingEntities = new HashSet<>();
+        Set<GXEntity> endingEntities = new HashSet<>();
 
-        for (Entity entity : entities)
+        for (GXEntity GXEntity : entities)
         {
-            // If entity has no linked entity block at output
-            if (entity.getNumberOfOutputs() == 0)
+            // If GXEntity has no linked GXEntity block at output
+            if (GXEntity.getNumberOfOutputs() == 0)
             {
-                // This entity is a ending entity
-                endingEntities.add(entity);
+                // This GXEntity is a ending GXEntity
+                endingEntities.add(GXEntity);
             }
         }
 
@@ -67,19 +67,19 @@ public class Tools
     }
 
     /**
-     * Get all entities in the imbrication of this start imbrication entity
-     * @param startImbricationEntity used start imbrication entity
+     * Get all entities in the imbrication of this start imbrication GXEntity
+     * @param startImbricationEntity used start imbrication GXEntity
      * @param index imbrication index
      * @return all imbricated entities
      */
-    public static Set<Entity> getInImbricationEntities(StartImbricationEntity startImbricationEntity, int index)
+    public static Set<GXEntity> getInImbricationEntities(StartImbricationGXEntity startImbricationEntity, int index)
     {
         // Create set of imbricated entities
-        Set<Entity> imbricatedEntities = new HashSet<>();
+        Set<GXEntity> imbricatedEntities = new HashSet<>();
 
         // For each imbricated output
-        Collection<Entity> imbricatedOutputs = startImbricationEntity.getImbricatedOutputs(index);
-        for (Entity imbricatedOutput : imbricatedOutputs)
+        Collection<GXEntity> imbricatedOutputs = startImbricationEntity.getImbricatedOutputs(index);
+        for (GXEntity imbricatedOutput : imbricatedOutputs)
         {
             // Add their outputs recursively
             addInImbricationEntities(imbricatedOutput, imbricatedEntities);
@@ -88,21 +88,21 @@ public class Tools
         return imbricatedEntities;
     }
 
-    private static void addInImbricationEntities(Entity entity, Set<Entity> imbricatedEntities)
+    private static void addInImbricationEntities(GXEntity GXEntity, Set<GXEntity> imbricatedEntities)
     {
-        // Add this entity to all imbricated entities
-        imbricatedEntities.add(entity);
+        // Add this GXEntity to all imbricated entities
+        imbricatedEntities.add(GXEntity);
 
         // Get outputs
-        Collection<Entity> outputEntities = entity.getAllOutputEntitiesCollection();
+        Collection<GXEntity> outputEntities = GXEntity.getAllOutputEntitiesCollection();
 
         // Add all not treated outputs
-        for (Entity outputEntity : outputEntities)
+        for (GXEntity outputGXEntity : outputEntities)
         {
             // If the output is not already treated
-            if (!imbricatedEntities.contains(outputEntity))
+            if (!imbricatedEntities.contains(outputGXEntity))
             {
-                addInImbricationEntities(outputEntity, imbricatedEntities);
+                addInImbricationEntities(outputGXEntity, imbricatedEntities);
             }
         }
     }

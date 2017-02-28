@@ -1,7 +1,7 @@
 package org.eadge.gxscript.data.imbrication.compile;
 
-import org.eadge.gxscript.data.entity.Entity;
-import org.eadge.gxscript.data.entity.StartImbricationEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 import org.eadge.gxscript.data.script.CompiledGXScript;
 import org.eadge.gxscript.data.script.Func;
@@ -29,7 +29,7 @@ public class ImbricationNodeC extends ImbricationNode
     /**
      * Saved Outputs addresses at this exact level of imbrication
      */
-    protected Map<Entity, OutputAddresses> outputAddressesMap = new HashMap<>();
+    protected Map<GXEntity, OutputAddresses> outputAddressesMap = new HashMap<>();
 
     /**
      * All Saved Outputs addresses at HIGHER level of imbrication
@@ -45,16 +45,16 @@ public class ImbricationNodeC extends ImbricationNode
     /**
      * Save imbrication node to make imbrication code continuous (call and stack)
      */
-    protected Map<StartImbricationEntity, ArrayList<ImbricationNodeC>> savedParallelsImbricationsNodes = new HashMap<>();
+    protected Map<StartImbricationGXEntity, ArrayList<ImbricationNodeC>> savedParallelsImbricationsNodes = new HashMap<>();
 
     public ImbricationNodeC(int imbricationNode,
-                            StartImbricationEntity startImbricationEntity,
-                            Set<Entity> allElements)
+                            StartImbricationGXEntity startImbricationEntity,
+                            Set<GXEntity> allElements)
     {
         super(imbricationNode, startImbricationEntity, allElements);
     }
 
-    public ImbricationNodeC(Collection<Entity> allElements)
+    public ImbricationNodeC(Collection<GXEntity> allElements)
     {
         super(allElements);
     }
@@ -62,7 +62,7 @@ public class ImbricationNodeC extends ImbricationNode
     public ImbricationNodeC(DataAddress dataAddress,
                             Collection<Func> GXScriptFuncParameters,
                             Collection<FuncDataAddresses> GXScriptFuncParametersAddresses,
-                            Collection<Entity> allElements)
+                            Collection<GXEntity> allElements)
     {
         super(allElements);
         this.currentDataAddress.setAddress(dataAddress);
@@ -70,20 +70,34 @@ public class ImbricationNodeC extends ImbricationNode
         this.calledFunctionsParameters.addAll(GXScriptFuncParametersAddresses);
     }
 
-    public ImbricationNodeC(Set<Entity> allElements)
+    public ImbricationNodeC(Set<GXEntity> allElements)
     {
         super(allElements);
     }
 
+    /**
+     * Compile script with no parameters
+     * @return compiled GXScript
+     */
     public CompiledGXScript compile()
     {
-        return new CompiledGXScript(calledFunctions, calledFunctionsParameters);
+        return new CompiledGXScript(0, calledFunctions, calledFunctionsParameters);
+    }
+
+    /**
+     * Compile script with his parameters
+     * @param numberOfScriptParameters number of parameters used for the script
+     * @return compiled GXScript
+     */
+    public CompiledGXScript compile(int numberOfScriptParameters)
+    {
+        return new CompiledGXScript(numberOfScriptParameters, calledFunctions, calledFunctionsParameters);
     }
 
     @Override
     public ImbricationNodeC pushImbrication(int imbricationIndex,
-                                            StartImbricationEntity startImbricationEntity,
-                                            Set<Entity> inImbricationEntities)
+                                            StartImbricationGXEntity startImbricationEntity,
+                                            Set<GXEntity> inImbricationEntities)
     {
         // Create imbrication
         ImbricationNodeC child = createImbrication(imbricationIndex, startImbricationEntity, inImbricationEntities);
@@ -102,8 +116,8 @@ public class ImbricationNodeC extends ImbricationNode
 
     @Override
     protected ImbricationNodeC createImbrication(int imbricationIndex,
-                                                 StartImbricationEntity startImbricationEntity,
-                                                 Set<Entity> inImbricationEntities)
+                                                 StartImbricationGXEntity startImbricationEntity,
+                                                 Set<GXEntity> inImbricationEntities)
     {
         return new ImbricationNodeC(imbricationIndex, startImbricationEntity, inImbricationEntities);
     }
@@ -115,11 +129,11 @@ public class ImbricationNodeC extends ImbricationNode
      */
     protected void saveImbricationNode(ImbricationNodeC child)
     {
-        StartImbricationEntity startImbricationEntity = child.getStartImbricationEntity();
+        StartImbricationGXEntity startImbricationEntity = child.getStartImbricationEntity();
 
         ArrayList<ImbricationNodeC> imbricationNodeCs;
 
-        // If it's the first imbrication from this start imbrication entity
+        // If it's the first imbrication from this start imbrication GXEntity
         if (child.getImbricationOutputIndex() == 0)
         {
             // Create a new Imbrication level
@@ -139,7 +153,7 @@ public class ImbricationNodeC extends ImbricationNode
     }
 
     @Override
-    public void treatStartImbricationEntity(StartImbricationEntity startImbricationEntity)
+    public void treatStartImbricationEntity(StartImbricationGXEntity startImbricationEntity)
     {
         super.treatStartImbricationEntity(startImbricationEntity);
 
@@ -147,11 +161,11 @@ public class ImbricationNodeC extends ImbricationNode
         ArrayList<ImbricationNodeC> imbricationNodes = savedParallelsImbricationsNodes.remove(startImbricationEntity);
         assert (imbricationNodes != null);
 
-        // --> Start Entity imbrication
+        // --> Start GXEntity imbrication
         // Get imbricated start function
         FuncAddress[] funcAddresses = getFuncAddresses(imbricationNodes);
 
-        // Add code (call functions and parameters) of start imbrication entity
+        // Add code (call functions and parameters) of start imbrication GXEntity
         startImbricationEntity.pushStartImbricationCode(outputAddressesMap,
                                                         funcAddresses,
                                                         calledFunctions,
@@ -175,7 +189,7 @@ public class ImbricationNodeC extends ImbricationNode
         // Remove imbrication and all elements in imbrications
         removeImbricationAndAllElementsInImbrication(child);
 
-        StartImbricationEntity startImbricationEntity = child.getStartImbricationEntity();
+        StartImbricationGXEntity startImbricationEntity = child.getStartImbricationEntity();
 
         // If all parallels imbrications have NOT been treated
         if (child.getImbricationOutputIndex() != startImbricationEntity.getNumberOfParallelsImbrications() - 1)
@@ -185,7 +199,7 @@ public class ImbricationNodeC extends ImbricationNode
         }
         else
         {
-            // End start imbrication entity
+            // End start imbrication GXEntity
             treatStartImbricationEntity(startImbricationEntity);
         }
     }
@@ -328,34 +342,34 @@ public class ImbricationNodeC extends ImbricationNode
 
     /**
      * MUST BE CALLED ON NOT IMBRICATED NODE
-     * Treat NOT imbricated outputs and functions addresses of the start imbrication entity
+     * Treat NOT imbricated outputs and functions addresses of the start imbrication GXEntity
      *
-     * @param startImbricationEntity used start imbrication entity
+     * @param startImbricationEntity used start imbrication GXEntity
      */
-    private void treatNotImbricatedOutputs(StartImbricationEntity startImbricationEntity)
+    private void treatNotImbricatedOutputs(StartImbricationGXEntity startImbricationEntity)
     {
         // Create NOT imbricated outputs and register addresses in map addresses
         OutputAddresses outputAddresses = startImbricationEntity.createAndAllocOutputs(currentDataAddress);
         outputAddressesMap.put(startImbricationEntity, outputAddresses);
 
         // Get all function necessary output entities addresses
-        Map<Entity, OutputAddresses> outputAddressesMap = getOutputAddresses(startImbricationEntity
+        Map<GXEntity, OutputAddresses> outputAddressesMap = getOutputAddresses(startImbricationEntity
                                                                                      .getAllInputEntities());
     }
 
-    public void treatEntity(Entity entity)
+    public void treatEntity(GXEntity GXEntity)
     {
-        super.treatEntity(entity);
+        super.treatEntity(GXEntity);
 
         // Get all function necessary output entities addresses
-        Map<Entity, OutputAddresses> outputAddressesMap = getOutputAddresses(entity.getAllInputEntities());
+        Map<GXEntity, OutputAddresses> outputAddressesMap = getOutputAddresses(GXEntity.getAllInputEntities());
 
-        // Add funcs and funcsData of entity
-        entity.pushEntityCode(calledFunctions, calledFunctionsParameters, outputAddressesMap);
+        // Add funcs and funcsData of GXEntity
+        GXEntity.pushEntityCode(calledFunctions, calledFunctionsParameters, outputAddressesMap);
 
         // Create outputs and register in  map addresses
-        OutputAddresses outputAddresses = entity.createAndAllocOutputs(currentDataAddress);
-        this.outputAddressesMap.put(entity, outputAddresses);
+        OutputAddresses outputAddresses = GXEntity.createAndAllocOutputs(currentDataAddress);
+        this.outputAddressesMap.put(GXEntity, outputAddresses);
     }
 
     public ArrayList<Func> getCalledFunctions()
@@ -378,38 +392,38 @@ public class ImbricationNodeC extends ImbricationNode
         return savedOutputAddresses;
     }
 
-    public Map<Entity, OutputAddresses> getOutputAddresses(Collection<Entity> entities)
+    public Map<GXEntity, OutputAddresses> getOutputAddresses(Collection<GXEntity> entities)
     {
-        Map<Entity, OutputAddresses> allOutputAddresses = new HashMap<>();
+        Map<GXEntity, OutputAddresses> allOutputAddresses = new HashMap<>();
 
-        for (Entity entity : entities)
+        for (GXEntity GXEntity : entities)
         {
-            if (entity != null)
+            if (GXEntity != null)
             {
                 // Get the corresponding outputs
-                OutputAddresses outputAddresses = getOutputAddresses(entity);
+                OutputAddresses outputAddresses = getOutputAddresses(GXEntity);
 
                 assert (outputAddresses != null);
 
-                allOutputAddresses.put(entity, outputAddresses);
+                allOutputAddresses.put(GXEntity, outputAddresses);
             }
         }
 
         return allOutputAddresses;
     }
 
-    public OutputAddresses getOutputAddresses(Entity entity)
+    public OutputAddresses getOutputAddresses(GXEntity GXEntity)
     {
-        // Search for this entity at this level
-        OutputAddresses outputAddresses = outputAddressesMap.get(entity);
+        // Search for this GXEntity at this level
+        OutputAddresses outputAddresses = outputAddressesMap.get(GXEntity);
 
-        // If entity not found at this level
+        // If GXEntity not found at this level
         if (outputAddresses == null)
         {
             if (parent != null)
             {
                 // search in lower level
-                return ((ImbricationNodeC) parent).getOutputAddresses(entity);
+                return ((ImbricationNodeC) parent).getOutputAddresses(GXEntity);
             }
             return null;
         }

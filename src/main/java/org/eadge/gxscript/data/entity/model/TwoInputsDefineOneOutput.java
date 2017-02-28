@@ -1,14 +1,14 @@
 package org.eadge.gxscript.data.entity.model;
 
-import org.eadge.gxscript.data.entity.DefaultEntity;
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.GXEntity;
 
 /**
  * Created by eadgyo on 05/09/16.
  *
  * Two inputs define one output
  */
-public abstract class TwoInputsDefineOneOutput extends DefaultEntity
+public abstract class TwoInputsDefineOneOutput extends DefaultGXEntity
 {
     public static final int S0_INPUT_INDEX   = 0;
     public static final int S1_INPUT_INDEX   = 1;
@@ -45,9 +45,9 @@ public abstract class TwoInputsDefineOneOutput extends DefaultEntity
     }
 
     @Override
-    public void linkAsInput(int inputIndex, int entityOutput, Entity entity)
+    public void linkAsInput(int inputIndex, int entityOutput, GXEntity GXEntity)
     {
-        super.linkAsInput(inputIndex, entityOutput, entity);
+        super.linkAsInput(inputIndex, entityOutput, GXEntity);
 
         if (inputIndex != NEXT_INPUT_INDEX)
         {

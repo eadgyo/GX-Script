@@ -1,6 +1,6 @@
 package org.eadge.gxscript.tools.check.validator;
 
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.tools.check.ValidatorModel;
 
@@ -10,66 +10,66 @@ import java.util.*;
  * Created by eadgyo on 03/08/16.
  *
  * Check if there are entities with interdependency. It's game be circle of interdependency or self-function-output.
- * For example, one entity which have his function linked to his output is one case of interdependency.
+ * For example, one GXEntity which have his function linked to his output is one case of interdependency.
  *
  */
 public class ValidateNoInterdependency extends ValidatorModel
 {
     /**
-     * Holds entity and his current on lane collection of entities
+     * Holds GXEntity and his current on lane collection of entities
      */
     private class EntityAndOnLane
     {
-        private Entity      entity;
-        private Set<Entity> onLaneEntities;
+        private GXEntity      GXEntity;
+        private Set<GXEntity> onLaneEntities;
 
-        public Entity getEntity()
+        public GXEntity getGXEntity()
         {
-            return entity;
+            return GXEntity;
         }
 
-        EntityAndOnLane(Entity entity)
+        EntityAndOnLane(GXEntity GXEntity)
         {
-            this.entity = entity;
+            this.GXEntity = GXEntity;
             this.onLaneEntities = new HashSet<>();
         }
 
-        EntityAndOnLane(Entity entity, Set<Entity> onLaneEntities)
+        EntityAndOnLane(GXEntity GXEntity, Set<GXEntity> onLaneEntities)
         {
-            this.entity = entity;
+            this.GXEntity = GXEntity;
             this.onLaneEntities = onLaneEntities;
         }
 
         /**
-         * Check if one entity is already on lane
-         * @param entity checked entity
+         * Check if one GXEntity is already on lane
+         * @param GXEntity checked GXEntity
          * @return true if it is already on lane, false otherwise
          */
-        boolean isAlreadyOnLane(Entity entity)
+        boolean isAlreadyOnLane(GXEntity GXEntity)
         {
-            return onLaneEntities.contains(entity);
+            return onLaneEntities.contains(GXEntity);
         }
 
-        Set<Entity> getOnLaneEntities()
+        Set<GXEntity> getOnLaneEntities()
         {
             return onLaneEntities;
         }
 
         /**
-         * Add one entity to the collection of on lanes entities
-         * @param entity added entity
+         * Add one GXEntity to the collection of on lanes entities
+         * @param GXEntity added GXEntity
          */
-        void addEntityToOnLaneEntities(Entity entity)
+        void addEntityToOnLaneEntities(GXEntity GXEntity)
         {
-            onLaneEntities.add(entity);
+            onLaneEntities.add(GXEntity);
         }
     }
 
-    private boolean areAllTreatedEntities(Collection<Entity> entities, Set<Entity> treatedEntities)
+    private boolean areAllTreatedEntities(Collection<GXEntity> entities, Set<GXEntity> treatedEntities)
     {
-        for (Entity inputEntity : entities)
+        for (GXEntity inputGXEntity : entities)
         {
-            if (inputEntity != null && !treatedEntities.contains(inputEntity))
+            if (inputGXEntity != null && !treatedEntities.contains(inputGXEntity))
             {
                 return false;
             }
@@ -77,18 +77,18 @@ public class ValidateNoInterdependency extends ValidatorModel
         return true;
     }
 
-    private void addNextTreatedElements(Entity testedEntity,
-                                        Set<Entity> onLaneEntities,
+    private void addNextTreatedElements(GXEntity testedGXEntity,
+                                        Set<GXEntity> onLaneEntities,
                                         Stack<EntityAndOnLane> stack,
-                                        Set<Entity> treatedEntities)
+                                        Set<GXEntity> treatedEntities)
     {
-        Collection<Entity> inputEntities = testedEntity.getAllInputEntities();
+        Collection<GXEntity> inputEntities = testedGXEntity.getAllInputEntities();
 
         // If all of the blocks function are treated
         if (areAllTreatedEntities(inputEntities, treatedEntities))
         {
             // Add not treated entities to the stack of next treated entities and clone his on lane entities
-            EntityAndOnLane insertedEntityAndLane = new EntityAndOnLane(testedEntity, new HashSet<>(onLaneEntities));
+            EntityAndOnLane insertedEntityAndLane = new EntityAndOnLane(testedGXEntity, new HashSet<>(onLaneEntities));
             stack.add(insertedEntityAndLane);
         }
     }
@@ -98,21 +98,21 @@ public class ValidateNoInterdependency extends ValidatorModel
     {
         super.validate(rawGXScript);
 
-        Collection<Entity> entities = rawGXScript.getEntities();
+        Collection<GXEntity> entities = rawGXScript.getEntities();
 
-        Set<Entity> treatedEntities = new HashSet<>();
+        Set<GXEntity> treatedEntities = new HashSet<>();
 
         // Get all starting entities
-        Collection<Entity> startingEntities = rawGXScript.getStartingEntities();
+        Collection<GXEntity> startingEntities = rawGXScript.getStartingEntities();
 
         // Starting entities are added to stack of next treated entities
         // They are linked to a on lane set which contains all entities on lane
         Stack<EntityAndOnLane> stack = new Stack<>();
 
-        for (Entity startingEntity : startingEntities)
+        for (GXEntity startingGXEntity : startingEntities)
         {
-            // Create entity and his on lane entities
-            EntityAndOnLane notTreatedElement = new EntityAndOnLane(startingEntity);
+            // Create GXEntity and his on lane entities
+            EntityAndOnLane notTreatedElement = new EntityAndOnLane(startingGXEntity);
 
             // Add it to stack
             stack.add(notTreatedElement);
@@ -121,34 +121,34 @@ public class ValidateNoInterdependency extends ValidatorModel
         // While there are still not treated entities in stack
         while (stack.size() != 0)
         {
-            // Remove the first not treated entity
+            // Remove the first not treated GXEntity
             EntityAndOnLane firstElement = stack.pop();
 
-            // If the entity is already in on his lane set
-            if (firstElement.isAlreadyOnLane(firstElement.entity))
+            // If the GXEntity is already in on his lane set
+            if (firstElement.isAlreadyOnLane(firstElement.GXEntity))
             {
                 // There is interdependency
                 // Add all lane to error
-                Set<Entity> onLaneEntities = firstElement.getOnLaneEntities();
-                for (Entity onLaneEntity : onLaneEntities)
+                Set<GXEntity> onLaneEntities = firstElement.getOnLaneEntities();
+                for (GXEntity onLaneGXEntity : onLaneEntities)
                 {
-                    entitiesWithError.add(onLaneEntity);
+                    entitiesWithError.add(onLaneGXEntity);
                 }
                 // Stop process, it's not validated
                 return false;
             }
             // Add this element to the on lane set
-            firstElement.addEntityToOnLaneEntities(firstElement.entity);
+            firstElement.addEntityToOnLaneEntities(firstElement.GXEntity);
 
-            // Add this first entity to set of treated elements
-            treatedEntities.add(firstElement.entity);
+            // Add this first GXEntity to set of treated elements
+            treatedEntities.add(firstElement.GXEntity);
 
             // Add all linked output entities which have all function in treated set, and link to them the set
-            Collection<Entity> outputEntities = firstElement.entity.getAllOutputEntitiesCollection();
+            Collection<GXEntity> outputEntities = firstElement.GXEntity.getAllOutputEntitiesCollection();
 
-            for (Entity outputEntity : outputEntities)
+            for (GXEntity outputGXEntity : outputEntities)
             {
-                addNextTreatedElements(outputEntity, firstElement.getOnLaneEntities(), stack, treatedEntities);
+                addNextTreatedElements(outputGXEntity, firstElement.getOnLaneEntities(), stack, treatedEntities);
             }
         }
 

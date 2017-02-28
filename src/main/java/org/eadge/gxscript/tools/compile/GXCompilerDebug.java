@@ -1,6 +1,6 @@
 package org.eadge.gxscript.tools.compile;
 
-import org.eadge.gxscript.data.entity.Entity;
+import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.data.imbrication.compile.ImbricationNodeC;
 import org.eadge.gxscript.data.imbrication.compile.ImbricationNodeCDebug;
 import org.eadge.gxscript.data.script.DebugCompiledGXScript;
@@ -16,7 +16,7 @@ import java.util.Collection;
 public class GXCompilerDebug extends GXCompiler
 {
     @Override
-    protected ImbricationNodeC createImbricationNode(Collection<Entity> entities)
+    protected ImbricationNodeC createImbricationNode(Collection<GXEntity> entities)
     {
         return new ImbricationNodeCDebug(entities);
     }
