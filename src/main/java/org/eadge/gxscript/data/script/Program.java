@@ -147,6 +147,34 @@ public class Program
         memoryStack.popLevel();
     }
 
+    /**
+     * Get the number of pushed levels on memory
+     * @return number of pushed levels
+     */
+    public int getNumberOfLevels()
+    {
+        return memoryStack.getNumberOfLevels();
+    }
+
+    /**
+     * Get the address of the last pushed levels
+     * @return address of the last pushed levels
+     */
+    public DataAddress getLastPushedLevelAddress()
+    {
+        return memoryStack.getLastPushedLevelAddress();
+    }
+
+    /**
+     * Get the data address of the pushed level
+     * @param levelIndex used pushed level index
+     * @return data address of the pushed level
+     */
+    public DataAddress getPushedLevelAddress(int levelIndex)
+    {
+        return memoryStack.getPushedLevelAddress(levelIndex);
+    }
+
     // Current Func Address
 
     /**

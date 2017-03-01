@@ -87,4 +87,30 @@ public class MemoryStack extends ArrayList<Object>
     {
         return new DataAddress(size());
     }
+
+    /**
+     * Get the number of pushed levels on memory
+     * @return number of pushed levels
+     */
+    public int getNumberOfLevels() { return memoryLevels.size(); }
+
+    /**
+     * Get the address of the last pushed levels
+     * @return address of the last pushed levels
+     */
+    public DataAddress getLastPushedLevelAddress()
+    {
+        return getPushedLevelAddress(getNumberOfLevels() - 1);
+    }
+
+    /**
+     * Get the data address of the pushed level
+     * @param levelIndex used pushed level index
+     * @return data address of the pushed level
+     */
+    public DataAddress getPushedLevelAddress(int levelIndex)
+    {
+        return new DataAddress(memoryLevels.get(levelIndex));
+    }
+
 }
