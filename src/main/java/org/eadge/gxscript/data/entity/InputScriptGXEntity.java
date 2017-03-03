@@ -1,11 +1,13 @@
-package org.eadge.gxscript.classic.entity.script;
+package org.eadge.gxscript.data.entity;
 
-import org.eadge.gxscript.data.entity.DefaultGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
+import org.eadge.gxscript.data.script.address.DataAddress;
+import org.eadge.gxscript.data.script.address.FuncDataAddresses;
+import org.eadge.gxscript.data.script.address.OutputAddresses;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by eadgyo on 27/02/17.
@@ -30,25 +32,12 @@ public class InputScriptGXEntity extends DefaultGXEntity
     {
         return new Func()
         {
-            private Class outputClass;
-
-            public Func init(Class outputClass)
-            {
-                this.outputClass = outputClass;
-
-                return this;
-            }
-
             @Override
             public void run(Program program)
             {
-                // Get the source
-                Object[] objects = program.loadCurrentParametersObjects();
-                Object  source  = (outputClass).cast(objects[SCRIPT_INPUT_OUTPUT]);
-
-                program.pushInMemory(source);
+                // Copy is done by the script launcher
             }
-        }.init(getOutputClass(SCRIPT_INPUT_OUTPUT));
+        };
     }
 
     @Override
@@ -100,5 +89,36 @@ public class InputScriptGXEntity extends DefaultGXEntity
         ArrayList<Class> inputClasses = new ArrayList<>();
         inputClasses.add(findOutputClassFromLinkedEntities(SCRIPT_INPUT_OUTPUT));
         return inputClasses;
+    }
+
+    /**
+     * Default add funcs and funcs params
+     *
+     * @param calledFunctions          list of called script
+     * @param calledFunctionAddresses list of used called script data
+     * @param addressesMap                      map to link GXEntity to corresponding GXEntity output addresses
+     */
+    public void pushEntityCode(ArrayList<Func> calledFunctions,
+                               ArrayList<FuncDataAddresses> calledFunctionAddresses,
+                               Map<GXEntity, OutputAddresses> addressesMap)
+    {
+        // Copy is done by the script launcher
+    }
+
+    /**
+     * Create script reserved input addresses
+     * @param currentDataAddress current address on stack of data addresses
+     * @return reserved input addresses
+     */
+    public OutputAddresses createScriptInputAddresses(DataAddress currentDataAddress)
+    {
+        return super.createAndAllocOutputs(currentDataAddress);
+    }
+
+    @Override
+    public OutputAddresses createAndAllocOutputs(DataAddress currentDataAddress)
+    {
+        // OutputAddresses are already allocated, do not alloc output
+        return null;
     }
 }

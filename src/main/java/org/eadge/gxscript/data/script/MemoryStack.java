@@ -113,4 +113,32 @@ public class MemoryStack extends ArrayList<Object>
         return new DataAddress(memoryLevels.get(levelIndex));
     }
 
+    /**
+     * Get the absolute address, from the last pushed level address
+     * @param dataAddress relative address
+     * @return absolute address
+     */
+    public DataAddress getAbsoluteAddressFromLastPushedLevel(DataAddress dataAddress)
+    {
+        // Retrieve last pushed address
+        DataAddress lastPushedLevelAddress = getLastPushedLevelAddress();
+
+        // Add offset absolute address
+        return lastPushedLevelAddress.addOffset(dataAddress);
+    }
+
+    /**
+     * Get the absolute address, from pushed level address
+     * @param dataAddress relative address
+     * @param levelIndex used pushed level
+     * @return absolute address
+     */
+    public DataAddress getRelativeAddressFromPushedLevel(DataAddress dataAddress, int levelIndex)
+    {
+        // Retrieve corresponding pushed address
+        DataAddress lastPushedLevelAddress = getPushedLevelAddress(levelIndex);
+
+        // Add offset absolute address
+        return lastPushedLevelAddress.addOffset(dataAddress);
+    }
 }

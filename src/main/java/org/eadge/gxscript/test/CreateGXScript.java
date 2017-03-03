@@ -56,7 +56,7 @@ public class CreateGXScript
         rawGXScript.addEntity("fail", fail);
         rawGXScript.addEntity("continue", continueP);
 
-        rawGXScript.updateStartingEntities();
+        rawGXScript.updateEntities();
 
         return rawGXScript;
     }
@@ -102,7 +102,7 @@ public class CreateGXScript
         rawGXScript.addEntity("fail", fail);
         rawGXScript.addEntity("continue", continueP);
 
-        rawGXScript.updateStartingEntities();
+        rawGXScript.updateEntities();
 
         return rawGXScript;
     }
@@ -137,7 +137,7 @@ public class CreateGXScript
         rawGXScript.addEntity("printEven", printEntityEven);
         rawGXScript.addEntity("printOdd", printEntityOdd);
 
-        rawGXScript.updateStartingEntities();
+        rawGXScript.updateEntities();
 
         return rawGXScript;
     }
@@ -186,7 +186,7 @@ public class CreateGXScript
         rawGXScript.addEntity("printChange", printChange);
         rawGXScript.addEntity("modifying", modificationInt);
 
-        rawGXScript.updateStartingEntities();
+        rawGXScript.updateEntities();
 
         return rawGXScript;
     }

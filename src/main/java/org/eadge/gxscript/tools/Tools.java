@@ -1,7 +1,8 @@
 package org.eadge.gxscript.tools;
 
-import org.eadge.gxscript.classic.entity.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.InputScriptGXEntity;
 import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.OutputScriptGXEntity;
 import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 
@@ -146,21 +147,40 @@ public class Tools
     }
 
     /**
-     * Retrieve all parameter entities from collection of entities
+     * Retrieve all input GXScript entities from collection of entities
      * @param entities used collection of entities
-     * @return collection of parameter entities
+     * @return collection of input GXScript entities
      */
-    public static Collection<InputScriptGXEntity> getParameterEntities(Collection<GXEntity> entities)
+    public static Collection<InputScriptGXEntity> getInputGXScriptEntities(Collection<GXEntity> entities)
     {
-        ArrayList<InputScriptGXEntity> parameterGXEntities = new ArrayList<>();
+        ArrayList<InputScriptGXEntity> inputScriptGXEntities = new ArrayList<>();
 
         for (GXEntity entity : entities)
         {
             if (Tools.isEqualOrDerivedFrom(InputScriptGXEntity.class, entity.getClass()))
             {
-                parameterGXEntities.add((InputScriptGXEntity) entity);
+                inputScriptGXEntities.add((InputScriptGXEntity) entity);
             }
         }
-        return parameterGXEntities;
+        return inputScriptGXEntities;
+    }
+
+    /**
+     * Retrieve all output GXScript entities from collection of entities
+     * @param entities used collection of entities
+     * @return collection of output GXScript entities
+     */
+    public static Collection<? extends OutputScriptGXEntity> getOutputGXScriptEntities(Set<GXEntity> entities)
+    {
+        ArrayList<OutputScriptGXEntity> outputScriptGXEntities = new ArrayList<>();
+
+        for (GXEntity entity : entities)
+        {
+            if (Tools.isEqualOrDerivedFrom(OutputScriptGXEntity.class, entity.getClass()))
+            {
+                outputScriptGXEntities.add((OutputScriptGXEntity) entity);
+            }
+        }
+        return outputScriptGXEntities;
     }
 }

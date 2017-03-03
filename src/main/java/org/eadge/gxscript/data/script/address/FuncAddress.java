@@ -37,4 +37,14 @@ public class FuncAddress extends Address
     {
         return new FuncAddress(getAddress() + 1);
     }
+
+    public FuncAddress addOffset(int offset)
+    {
+        return new FuncAddress(getAddress() + offset);
+    }
+
+    public FuncAddress addOffset(Address offset)
+    {
+        return new FuncAddress(getAddress() + offset.getAddress());
+    }
 }

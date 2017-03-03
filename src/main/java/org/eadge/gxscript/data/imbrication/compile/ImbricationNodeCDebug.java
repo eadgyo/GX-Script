@@ -94,7 +94,7 @@ public class ImbricationNodeCDebug extends ImbricationNodeC
     {
         for (DebugMemory debugMemory : debugMemories)
         {
-            debugMemory.addOffset(currentDataAddress);
+            debugMemory.selfAddOffset(currentDataAddress);
         }
     }
 

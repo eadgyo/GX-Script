@@ -14,7 +14,7 @@ public class GXRunnerDebug extends GXRunner
     {
         // Create program memory and add pointer reading first script
         DebugProgram program = new DebugProgram(compiledGXScript.getCalledFunctions(),
-                                                compiledGXScript.getCalledFunctionsParameters(),
+                                                compiledGXScript.getCalledFunctionsAddresses(),
                                                 compiledGXScript.getDebugMemories());
 
         // While there are functions left

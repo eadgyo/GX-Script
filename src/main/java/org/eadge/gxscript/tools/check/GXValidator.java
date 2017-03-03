@@ -28,7 +28,7 @@ public class GXValidator extends ValidatorModel
     @Override
     public boolean validate(RawGXScript gxScript)
     {
-        gxScript.updateStartingEntities();
+        gxScript.updateEntities();
 
         if (!super.validate(validatorAllEntitiesPresent, gxScript))
             return false;

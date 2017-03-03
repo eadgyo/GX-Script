@@ -1,7 +1,8 @@
 package org.eadge.gxscript.data.script;
 
-import org.eadge.gxscript.classic.entity.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.InputScriptGXEntity;
 import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.OutputScriptGXEntity;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.Collection;
@@ -29,7 +30,12 @@ public class RawGXScript
     /**
      * Keeps all parameters entities
      */
-    private Set<InputScriptGXEntity> parameterGXEntities = new HashSet<>();
+    private Set<InputScriptGXEntity> inputScriptGXEntities = new HashSet<>();
+
+    /**
+     * Keeps all outputs entities
+     */
+    private Set<OutputScriptGXEntity> outputScriptGXEntities = new HashSet<>();
 
     public RawGXScript()
     {
@@ -67,7 +73,12 @@ public class RawGXScript
 
     public Collection<InputScriptGXEntity> getScriptInputEntities()
     {
-        return parameterGXEntities;
+        return inputScriptGXEntities;
+    }
+
+    public Collection<OutputScriptGXEntity> getScriptOutputEntities()
+    {
+        return outputScriptGXEntities;
     }
 
     public int numberOfEntities()
@@ -75,13 +86,16 @@ public class RawGXScript
         return entities.size();
     }
 
-    public void updateStartingEntities()
+    public void updateEntities()
     {
         startingEntities.clear();
-        parameterGXEntities.clear();
+        inputScriptGXEntities.clear();
+        outputScriptGXEntities.clear();
 
         startingEntities.addAll(Tools.getStartingEntities(entities));
-        parameterGXEntities.addAll(Tools.getParameterEntities(startingEntities));
+        inputScriptGXEntities.addAll(Tools.getInputGXScriptEntities(startingEntities));
+        outputScriptGXEntities.addAll(Tools.getOutputGXScriptEntities(entities));
+
     }
 
     /**

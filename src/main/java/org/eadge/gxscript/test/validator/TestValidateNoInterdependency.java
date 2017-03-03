@@ -53,7 +53,7 @@ public class TestValidateNoInterdependency
         script.addEntity(printEntity);
         script.addEntity(realEntity);
 
-        script.updateStartingEntities();
+        script.updateEntities();
 
         ValidatorModel validator = new ValidateNoInterdependency();
         return !validator.validate(script);

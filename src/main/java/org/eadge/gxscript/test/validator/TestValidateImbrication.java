@@ -82,7 +82,7 @@ public class TestValidateImbrication
         script.addEntity("real1", realEntity);
         script.addEntity("print", printEntity);
 
-        script.updateStartingEntities();
+        script.updateEntities();
 
         ValidatorModel validator = new ValidateImbrication();
         return validator.validate(script);
@@ -110,7 +110,7 @@ public class TestValidateImbrication
         script.addEntity("real4", realEntity);
         script.addEntity("print", printEntity);
 
-        script.updateStartingEntities();
+        script.updateEntities();
 
         ValidatorModel validator = new ValidateImbrication();
         return !validator.validate(script);
@@ -138,7 +138,7 @@ public class TestValidateImbrication
         script.addEntity("real4", realEntity);
         script.addEntity("print", printEntity);
 
-        script.updateStartingEntities();
+        script.updateEntities();
 
         ValidatorModel validator = new ValidateImbrication();
         return !validator.validate(script);
@@ -166,7 +166,7 @@ public class TestValidateImbrication
         script.addEntity("real4", realEntity);
         script.addEntity("print", printEntity);
 
-        script.updateStartingEntities();
+        script.updateEntities();
 
         ValidatorModel validator = new ValidateImbrication();
         return !validator.validate(script);
@@ -198,7 +198,7 @@ public class TestValidateImbrication
         script.addEntity("real4", realEntity);
         script.addEntity("print", printEntity);
 
-        script.updateStartingEntities();
+        script.updateEntities();
 
         ValidatorModel validator = new ValidateImbrication();
         return !validator.validate(script);
@@ -220,7 +220,7 @@ public class TestValidateImbrication
         // Add them in script and update
         script.addEntity("print", printEntity);
 
-        script.updateStartingEntities();
+        script.updateEntities();
 
         ValidatorModel validator = new ValidateImbrication();
         return !validator.validate(script);

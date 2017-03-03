@@ -25,7 +25,7 @@ public class TestAll
 
     public static boolean test(RawGXScript gxScript)
     {
-        gxScript.updateStartingEntities();
+        gxScript.updateEntities();
 
         ValidateAllEntitiesPresent validatorAllEntitiesPresent = new ValidateAllEntitiesPresent();
 

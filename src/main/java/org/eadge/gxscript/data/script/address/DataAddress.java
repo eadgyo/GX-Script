@@ -30,4 +30,14 @@ public class DataAddress extends Address
     {
         setAddress(address.getAddress());
     }
+
+    public DataAddress addOffset(int offset)
+    {
+        return new DataAddress(getAddress() + offset);
+    }
+
+    public DataAddress addOffset(Address offset)
+    {
+        return new DataAddress(getAddress() + offset.getAddress());
+    }
 }

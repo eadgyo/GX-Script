@@ -13,7 +13,7 @@ public class GXRunner
     public void run(CompiledGXScript compiledGXScript)
     {
         // Create program memory and add pointer reading first script
-        Program program = new Program(compiledGXScript.getCalledFunctions(), compiledGXScript.getCalledFunctionsParameters());
+        Program program = new Program(compiledGXScript.getCalledFunctions(), compiledGXScript.getCalledFunctionsAddresses());
 
         // While there are functions left
         while (!program.hasFinished())

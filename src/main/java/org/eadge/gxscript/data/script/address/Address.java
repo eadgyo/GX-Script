@@ -52,14 +52,24 @@ public class Address implements Cloneable
         address -= 1;
     }
 
-    public void addOffset(int offset)
+    public void selfAddOffset(int offset)
     {
         address += offset;
     }
 
-    public void addOffset(Address offset)
+    public void selfAddOffset(Address offset)
     {
         address += offset.getAddress();
+    }
+
+    public Address addOffset(int offset)
+    {
+        return new Address(address + offset);
+    }
+
+    public Address addOffset(Address offset)
+    {
+        return new Address(address + offset.getAddress());
     }
 
     public boolean isAfter(FuncAddress testedFuncAddress)

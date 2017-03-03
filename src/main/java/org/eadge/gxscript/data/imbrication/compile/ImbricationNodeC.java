@@ -54,6 +54,15 @@ public class ImbricationNodeC extends ImbricationNode
         super(imbricationNode, startImbricationEntity, allElements);
     }
 
+    public ImbricationNodeC(DataAddress startAddress,
+                            Map<GXEntity, OutputAddresses> outputAddressesMap,
+                            Collection<GXEntity> allElements)
+    {
+        super(allElements);
+        this.outputAddressesMap.putAll(outputAddressesMap);
+        this.currentDataAddress.setAddress(startAddress);
+    }
+
     public ImbricationNodeC(Collection<GXEntity> allElements)
     {
         super(allElements);
@@ -227,7 +236,7 @@ public class ImbricationNodeC extends ImbricationNode
             funcsAddresses[i] = currentFuncAddress.clone();
 
             // Alloc functions
-            currentFuncAddress.addOffset(imbricationNodeC.getCalledFunctions().size());
+            currentFuncAddress.selfAddOffset(imbricationNodeC.getCalledFunctions().size());
         }
 
         // Save the last address end of imbrication
@@ -324,7 +333,7 @@ public class ImbricationNodeC extends ImbricationNode
 
         for (FuncAddress calledFuncAddress : nextAddedCalledFunctionsParameters)
         {
-            calledFuncAddress.addOffset(currentFuncAddress);
+            calledFuncAddress.selfAddOffset(currentFuncAddress);
         }
     }
 
@@ -370,7 +379,11 @@ public class ImbricationNodeC extends ImbricationNode
 
         // Create outputs and register in  map addresses
         OutputAddresses outputAddresses = GXEntity.createAndAllocOutputs(currentDataAddress);
-        this.outputAddressesMap.put(GXEntity, outputAddresses);
+
+        if (outputAddresses != null)
+        {
+            this.outputAddressesMap.put(GXEntity, outputAddresses);
+        }
     }
 
     public ArrayList<Func> getCalledFunctions()

@@ -33,7 +33,7 @@ public class FuncImbricationDataAddresses extends FuncDataAddresses
     {
         for (FuncAddress startImbricationsFuncAddress : startImbricationsFuncAddresses)
         {
-            startImbricationsFuncAddress.addOffset(offset);
+            startImbricationsFuncAddress.selfAddOffset(offset);
         }
     }
 
@@ -41,7 +41,7 @@ public class FuncImbricationDataAddresses extends FuncDataAddresses
     {
         for (FuncAddress startImbricationsFuncAddress : startImbricationsFuncAddresses)
         {
-            startImbricationsFuncAddress.addOffset(offset);
+            startImbricationsFuncAddress.selfAddOffset(offset);
         }
     }
 

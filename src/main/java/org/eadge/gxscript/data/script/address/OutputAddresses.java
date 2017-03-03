@@ -38,7 +38,7 @@ public class OutputAddresses
         Collection<DataAddress> values = outputAddresses.values();
         for (Address address : values)
         {
-            address.addOffset(offset);
+            address.selfAddOffset(offset);
         }
     }
 
@@ -47,7 +47,7 @@ public class OutputAddresses
         Collection<DataAddress> values = outputAddresses.values();
         for (Address address : values)
         {
-            address.addOffset(offset);
+            address.selfAddOffset(offset);
         }
     }
 }

@@ -59,9 +59,14 @@ public class CompiledGXScript
         return outputsScriptClasses;
     }
 
-    public int getNumberOfScriptParameters()
+    public int getNumberOfScriptInputs()
     {
         return inputsScriptClasses.length;
+    }
+
+    public int getNumberOfScriptOutputs()
+    {
+        return outputsScriptClasses.length;
     }
 
     public Func[] getCalledFunctions()
@@ -69,8 +74,13 @@ public class CompiledGXScript
         return calledFunctions;
     }
 
-    public FuncDataAddresses[] getCalledFunctionsParameters()
+    public FuncDataAddresses[] getCalledFunctionsAddresses()
     {
         return calledFunctionsParameters;
+    }
+
+    public int getNumberOfFuncs()
+    {
+        return calledFunctions.length;
     }
 }

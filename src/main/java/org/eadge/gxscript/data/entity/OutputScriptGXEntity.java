@@ -1,7 +1,5 @@
-package org.eadge.gxscript.classic.entity.script;
+package org.eadge.gxscript.data.entity;
 
-import org.eadge.gxscript.data.entity.DefaultGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.DataAddress;
@@ -38,9 +36,9 @@ public class OutputScriptGXEntity extends DefaultGXEntity
     /**
      * Create output func using already allocated script output Addresses
      * @param outputAddresses addresses of allocated output
-     * @return created func
+     * @return created output script objects copy func
      */
-    private Func getOutputFunc(OutputAddresses outputAddresses)
+    private Func getOutputCopyFunc(OutputAddresses outputAddresses)
     {
         return new Func()
         {
@@ -61,11 +59,8 @@ public class OutputScriptGXEntity extends DefaultGXEntity
                 // Get object to copy on memory
                 Object copiedObject = program.loadCurrentParametersObjects()[SCRIPT_OUTPUT_INPUT];
 
-                // Get the address of the start of the last pushed script
-                DataAddress outputAddress = program.getLastPushedLevelAddress().clone();
-
-                // Compute allocated output Address
-                outputAddress.addOffset(scriptOutputAddress);
+                // Get the absolute address from the relative script Output Address
+                DataAddress outputAddress = program.getAbsoluteAddressFromLastPushedLevel(scriptOutputAddress);
 
                 // Use scriptOutputAddress
                 program.setObject(outputAddress, copiedObject);
@@ -118,7 +113,7 @@ public class OutputScriptGXEntity extends DefaultGXEntity
         OutputAddresses outputAddresses = addressesMap.get(this);
 
         // Get func and add it to called functions
-        Func func = getOutputFunc(outputAddresses);
+        Func func = getOutputCopyFunc(outputAddresses);
         calledFunctions.add(func);
 
         // Link script to corresponding outputs addresses and add it to called script addresses
@@ -137,5 +132,37 @@ public class OutputScriptGXEntity extends DefaultGXEntity
         }
 
         return outputClasses;
+    }
+
+    /**
+     * Create script reserved output addresses
+     * @param currentDataAddress current address on stack of data addresses
+     * @return reserved output addresses
+     */
+    public OutputAddresses createScriptOutputAddresses(DataAddress currentDataAddress)
+    {
+        OutputAddresses outputAddresses = new OutputAddresses();
+
+        // Search for all inputs
+        for (int inputIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
+        {
+            if (isVariableInput(inputIndex))
+            {
+                // Take this address
+                outputAddresses.addOutputAddress(inputIndex, currentDataAddress.clone());
+
+                // Alloc a new address
+                currentDataAddress.alloc();
+            }
+        }
+
+        return outputAddresses;
+    }
+
+    @Override
+    public OutputAddresses createAndAllocOutputs(DataAddress currentDataAddress)
+    {
+        // OutputAddresses are already allocated, do not alloc output
+        return null;
     }
 }

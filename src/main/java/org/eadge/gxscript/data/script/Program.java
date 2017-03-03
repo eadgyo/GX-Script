@@ -157,12 +157,33 @@ public class Program
     }
 
     /**
-     * Get the address of the last pushed levels
-     * @return address of the last pushed levels
+     * Get the address of the last pushed level
+     * @return address of the last pushed level
      */
     public DataAddress getLastPushedLevelAddress()
     {
         return memoryStack.getLastPushedLevelAddress();
+    }
+
+    /**
+     * Get the absolute address, from the last pushed level address
+     * @param dataAddress relative address
+     * @return absolute address
+     */
+    public DataAddress getAbsoluteAddressFromLastPushedLevel(DataAddress dataAddress)
+    {
+        return memoryStack.getAbsoluteAddressFromLastPushedLevel(dataAddress);
+    }
+
+    /**
+     * Get the absolute address, from pushed level address
+     * @param dataAddress relative address
+     * @param levelIndex used pushed level
+     * @return absolute address
+     */
+    public DataAddress getAbsoluteAddressFromPushedLevel(DataAddress dataAddress, int levelIndex)
+    {
+        return memoryStack.getRelativeAddressFromPushedLevel(dataAddress, levelIndex);
     }
 
     /**
@@ -238,7 +259,7 @@ public class Program
      */
     public void addCurrentFuncAddressOffset(int offset)
     {
-        currentFuncAddress.addOffset(offset);
+        currentFuncAddress.selfAddOffset(offset);
     }
 
     /**
@@ -248,7 +269,7 @@ public class Program
      */
     public void addCurrentFuncAddressOffset(FuncAddress offset)
     {
-        currentFuncAddress.addOffset(offset);
+        currentFuncAddress.selfAddOffset(offset);
     }
 
     /**
@@ -256,7 +277,7 @@ public class Program
      */
     public void nextFuncAddress()
     {
-        currentFuncAddress.addOffset(1);
+        currentFuncAddress.selfAddOffset(1);
     }
 
     /**
@@ -264,7 +285,7 @@ public class Program
      */
     public void previousFuncAddress()
     {
-        currentFuncAddress.addOffset(-1);
+        currentFuncAddress.selfAddOffset(-1);
     }
 
     // Funcs Stack
@@ -377,5 +398,17 @@ public class Program
 
         // Reset to
         setCurrentFuncAddress(savedBlockAddress);
+    }
+
+    /**
+     * Reserve space on memory
+     * @param numberOfReservedSlots number of reserved slots
+     */
+    public void reserve(int numberOfReservedSlots)
+    {
+        for (int allocIndex = 0; allocIndex < numberOfReservedSlots; allocIndex++)
+        {
+            pushInMemory(null);
+        }
     }
 }
