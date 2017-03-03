@@ -3,7 +3,7 @@ package org.eadge.gxscript.test.validator;
 import org.eadge.gxscript.classic.entity.displayer.PrintGXEntity;
 import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfGXEntity;
 import org.eadge.gxscript.classic.entity.types.number.RealGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 import org.eadge.gxscript.classic.entity.imbrication.loops.ForGXEntity;
 import org.eadge.gxscript.data.script.RawGXScript;
 import org.eadge.gxscript.data.script.RawGXScriptDebug;

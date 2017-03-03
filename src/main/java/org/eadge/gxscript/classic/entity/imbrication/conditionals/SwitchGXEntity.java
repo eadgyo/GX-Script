@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.imbrication.conditionals;
 
-import org.eadge.gxscript.data.entity.DefaultStartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultStartImbricationGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.FuncAddress;
@@ -229,7 +229,7 @@ public class SwitchGXEntity extends DefaultStartImbricationGXEntity
                 Integer caseOutputIndex = casesMap.get(sourceValue);
 
                 // Save current state of memory
-                program.pushMemoryLevel();
+                program.saveMemoryState();
 
                 FuncAddress caseAddressStart, caseAddressEnd;
 
@@ -250,7 +250,7 @@ public class SwitchGXEntity extends DefaultStartImbricationGXEntity
                 // Run from the start and end of script
                 program.runFromAndUntil(caseAddressStart, caseAddressEnd);
 
-                program.popMemoryLevel();
+                program.restoreMemoryState();
 
                 // Exit the switch case
                 FuncAddress continueAddress = funcParameters.getImbricationAddress(continueOutputIndex);

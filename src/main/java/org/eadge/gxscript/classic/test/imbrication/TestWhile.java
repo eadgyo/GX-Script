@@ -8,7 +8,7 @@ import org.eadge.gxscript.classic.entity.types.bool.transform.InvertBoolGXEntity
 import org.eadge.gxscript.classic.entity.types.number.IntGXEntity;
 import org.eadge.gxscript.classic.entity.types.number.comparison.EqualToNumberGXEntity;
 import org.eadge.gxscript.classic.entity.types.number.operations.maths.AddNumbersGXEntity;
-import org.eadge.gxscript.data.entity.ModifyingGXEntity;
+import org.eadge.gxscript.data.entity.base.ModifyingGXEntity;
 import org.eadge.gxscript.data.script.RawGXScriptDebug;
 import org.eadge.gxscript.test.PrintTest;
 

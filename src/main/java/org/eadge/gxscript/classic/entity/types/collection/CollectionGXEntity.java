@@ -1,7 +1,7 @@
 package org.eadge.gxscript.classic.entity.types.collection;
 
-import org.eadge.gxscript.data.entity.DefaultVariableGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultVariableGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 
 import java.util.Collection;
 

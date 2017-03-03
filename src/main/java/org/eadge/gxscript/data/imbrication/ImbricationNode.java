@@ -1,7 +1,7 @@
 package org.eadge.gxscript.data.imbrication;
 
-import org.eadge.gxscript.data.entity.GXEntity;
-import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.base.StartImbricationGXEntity;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.ArrayList;
@@ -335,15 +335,15 @@ public class ImbricationNode
      * Check if one GXEntity has all inputs treated in HIS actual or lower imbrication
      * HIS mean it will get GXEntity higher imbrication node first
      *
-     * @param GXEntity GXEntity with checked entries
+     * @param gxEntity GXEntity with checked entries
      *
      * @return true if all inputs had been treated in HIS actual or lower imbrication
      */
-    public boolean hasAllInputsTreated(GXEntity GXEntity)
+    public boolean hasAllInputsTreated(GXEntity gxEntity)
     {
-        ImbricationNode highestImbricationNode = getHighestImbricationNode(GXEntity);
+        ImbricationNode highestImbricationNode = getHighestImbricationNode(gxEntity);
         assert (highestImbricationNode != null);
-        return highestImbricationNode.hasAllInputsTreatedAtLevelOrLower(GXEntity);
+        return highestImbricationNode.hasAllInputsTreatedAtLevelOrLower(gxEntity);
     }
 
 

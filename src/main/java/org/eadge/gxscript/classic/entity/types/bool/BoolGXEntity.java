@@ -1,8 +1,8 @@
 package org.eadge.gxscript.classic.entity.types.bool;
 
-import org.eadge.gxscript.data.entity.DefaultVariableGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
-import org.eadge.gxscript.data.entity.ModifyingGXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultVariableGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.base.ModifyingGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 

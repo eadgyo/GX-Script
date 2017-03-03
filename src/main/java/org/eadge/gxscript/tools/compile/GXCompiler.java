@@ -1,9 +1,9 @@
 package org.eadge.gxscript.tools.compile;
 
-import org.eadge.gxscript.data.entity.GXEntity;
-import org.eadge.gxscript.data.entity.InputScriptGXEntity;
-import org.eadge.gxscript.data.entity.OutputScriptGXEntity;
-import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.script.OutputScriptGXEntity;
+import org.eadge.gxscript.data.entity.base.StartImbricationGXEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 import org.eadge.gxscript.data.imbrication.compile.ImbricationNodeC;
 import org.eadge.gxscript.data.script.CompiledGXScript;
@@ -112,8 +112,8 @@ public class GXCompiler
         Collection<OutputScriptGXEntity> outputEntities = rawGXScript.getScriptOutputEntities();
 
         // Generate parameters func
-        ArrayList<Class> outputsScriptClasses = getScriptInputClasses(inputEntities);
-        ArrayList<Class> inputsScriptClasses = getScriptOutputsClasses(outputEntities);
+        ArrayList<Class> outputsScriptClasses = getScriptOutputsClasses(outputEntities);
+        ArrayList<Class> inputsScriptClasses = getScriptInputClasses(inputEntities);
 
         // Reserve input and outputs entities
         Map<GXEntity, OutputAddresses> outputAddressesMap = new HashMap<>();
@@ -122,13 +122,16 @@ public class GXCompiler
         DataAddress startAddress = new DataAddress(0);
 
         // IMPORTANT: START WITH OUTPUTS
-        allocScriptOutputs(outputEntities, outputAddressesMap, startAddress);
+        allocScriptOutputs(outputEntities, outputAddressesMap);
 
         // Then alloc inputs
         allocScriptInputs(inputEntities, outputAddressesMap, startAddress);
 
         // Generate compilation objects
         ImbricationNodeC root = generateCompilationObjects(startAddress, outputAddressesMap, rawGXScript);
+
+        // Don't forget to treat outputs entities at the end of the script
+        treatOutputEntities(root, outputEntities);
 
         // Compile generated object
         return root.compile(inputsScriptClasses, outputsScriptClasses);
@@ -146,15 +149,21 @@ public class GXCompiler
     }
 
     private void allocScriptOutputs(Collection<OutputScriptGXEntity> outputEntities,
-                                    Map<GXEntity, OutputAddresses> outputAddressesMap,
-                                    DataAddress currentAddress)
+                                    Map<GXEntity, OutputAddresses> outputAddressesMap)
     {
+        DataAddress currentAddress = new DataAddress(0);
         for (OutputScriptGXEntity outputEntity : outputEntities)
         {
             OutputAddresses scriptOutputAddresses = outputEntity.createScriptOutputAddresses(currentAddress);
             outputAddressesMap.put(outputEntity, scriptOutputAddresses);
         }
 
+        // Set to relative position
+        int offset = -currentAddress.getAddress();
+        for (OutputAddresses outputAddresses : outputAddressesMap.values())
+        {
+            outputAddresses.addOffset(offset);
+        }
     }
 
     protected ImbricationNodeC createImbricationNode(Collection<GXEntity> entities)
@@ -199,5 +208,18 @@ public class GXCompiler
         }
 
         return outputScriptClasses;
+    }
+
+    /**
+     * Push output entities code at the end of the script
+     * @param root used generated compiled object
+     * @param outputEntities collection of output entities
+     */
+    protected void treatOutputEntities(ImbricationNodeC root, Collection<OutputScriptGXEntity> outputEntities)
+    {
+        for (OutputScriptGXEntity outputEntity : outputEntities)
+        {
+            root.treatOutputEntity(outputEntity);
+        }
     }
 }

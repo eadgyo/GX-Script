@@ -1,8 +1,8 @@
 package org.eadge.gxscript.classic.entity.types.collection.model;
 
 import org.eadge.gxscript.classic.entity.types.collection.ClassItem;
-import org.eadge.gxscript.data.entity.DefaultGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 
 /**
  * Created by eadgyo on 10/09/16.

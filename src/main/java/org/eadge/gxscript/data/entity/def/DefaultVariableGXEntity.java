@@ -1,4 +1,8 @@
-package org.eadge.gxscript.data.entity;
+package org.eadge.gxscript.data.entity.def;
+
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.base.ModifyingGXEntity;
+import org.eadge.gxscript.data.entity.base.VariableGXEntity;
 
 import java.util.HashSet;
 import java.util.Set;

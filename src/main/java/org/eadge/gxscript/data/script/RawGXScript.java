@@ -1,8 +1,8 @@
 package org.eadge.gxscript.data.script;
 
-import org.eadge.gxscript.data.entity.InputScriptGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
-import org.eadge.gxscript.data.entity.OutputScriptGXEntity;
+import org.eadge.gxscript.data.entity.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.script.OutputScriptGXEntity;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.Collection;

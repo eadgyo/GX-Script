@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.text;
 
-import org.eadge.gxscript.data.entity.DefaultVariableGXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultVariableGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 

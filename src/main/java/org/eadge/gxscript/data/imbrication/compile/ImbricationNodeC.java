@@ -1,7 +1,8 @@
 package org.eadge.gxscript.data.imbrication.compile;
 
-import org.eadge.gxscript.data.entity.GXEntity;
-import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.script.OutputScriptGXEntity;
+import org.eadge.gxscript.data.entity.base.StartImbricationGXEntity;
 import org.eadge.gxscript.data.imbrication.ImbricationNode;
 import org.eadge.gxscript.data.script.CompiledGXScript;
 import org.eadge.gxscript.data.script.Func;
@@ -361,28 +362,45 @@ public class ImbricationNodeC extends ImbricationNode
         // Create NOT imbricated outputs and register addresses in map addresses
         OutputAddresses outputAddresses = startImbricationEntity.createAndAllocOutputs(currentDataAddress);
         outputAddressesMap.put(startImbricationEntity, outputAddresses);
-
-        // Get all script necessary output entities addresses
-        Map<GXEntity, OutputAddresses> outputAddressesMap = getOutputAddresses(startImbricationEntity
-                                                                                     .getAllInputEntities());
     }
 
-    public void treatEntity(GXEntity GXEntity)
+    public void treatEntity(GXEntity gxEntity)
     {
-        super.treatEntity(GXEntity);
+        super.treatEntity(gxEntity);
 
         // Get all script necessary output entities addresses
-        Map<GXEntity, OutputAddresses> outputAddressesMap = getOutputAddresses(GXEntity.getAllInputEntities());
+        Map<GXEntity, OutputAddresses> outputAddressesMap = getOutputAddresses(gxEntity.getAllInputEntities());
 
-        // Add funcs and funcsData of GXEntity
-        GXEntity.pushEntityCode(calledFunctions, calledFunctionsParameters, outputAddressesMap);
+        // Add funcs and funcsData of gxEntity
+        gxEntity.pushEntityCode(calledFunctions, calledFunctionsParameters, outputAddressesMap);
 
         // Create outputs and register in  map addresses
-        OutputAddresses outputAddresses = GXEntity.createAndAllocOutputs(currentDataAddress);
+        OutputAddresses outputAddresses = gxEntity.createAndAllocOutputs(currentDataAddress);
 
         if (outputAddresses != null)
         {
-            this.outputAddressesMap.put(GXEntity, outputAddresses);
+            this.outputAddressesMap.put(gxEntity, outputAddresses);
+        }
+    }
+
+    public void treatOutputEntity(OutputScriptGXEntity outputEntity)
+    {
+        super.treatEntity(outputEntity);
+
+        // Get all script necessary output entities addresses
+        Collection<GXEntity>           allInputEntities   = outputEntity.getAllInputEntities();
+        allInputEntities.add(outputEntity);
+        Map<GXEntity, OutputAddresses> outputAddressesMap = getOutputAddresses(allInputEntities);
+
+        // Add funcs and funcsData of gxEntity
+        outputEntity.pushOutputCopyCode(calledFunctions, calledFunctionsParameters, outputAddressesMap);
+
+        // Create outputs and register in  map addresses
+        OutputAddresses outputAddresses = outputEntity.createAndAllocOutputs(currentDataAddress);
+
+        if (outputAddresses != null)
+        {
+            this.outputAddressesMap.put(outputEntity, outputAddresses);
         }
     }
 

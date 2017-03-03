@@ -1,6 +1,6 @@
 package org.eadge.gxscript.data.script;
 
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 
 import java.util.HashMap;
 import java.util.Map;

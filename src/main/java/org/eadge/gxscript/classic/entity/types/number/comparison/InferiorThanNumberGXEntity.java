@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.types.number.comparison;
 
-import org.eadge.gxscript.data.entity.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.tools.check.NumberComparator;

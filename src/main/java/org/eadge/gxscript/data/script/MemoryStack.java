@@ -17,6 +17,12 @@ public class MemoryStack extends ArrayList<Object>
      */
     private Stack<Integer> memoryLevels = new Stack<>();
 
+
+    /**
+     * Store the address of the start of memory
+     */
+    private Stack<Integer> zeroLevels = new Stack<>();
+
     /**
      * Get the object at the data address
      * @param dataAddress data address of object
@@ -24,7 +30,7 @@ public class MemoryStack extends ArrayList<Object>
      */
     public Object get(DataAddress dataAddress)
     {
-        return super.get(dataAddress.getAddress());
+        return super.get(dataAddress.getAddress() + getZeroAddress());
     }
 
     /**
@@ -32,7 +38,7 @@ public class MemoryStack extends ArrayList<Object>
      * @param dataAddress replace data address
      * @param object new object to replace the object at the data address
      */
-    public void set(DataAddress dataAddress, Object object) { set(dataAddress.getAddress(), object); }
+    public void set(DataAddress dataAddress, Object object) { set(dataAddress.getAddress() + getZeroAddress(), object); }
 
     /**
      * Pop elements from memory to the reach the specified size
@@ -54,18 +60,27 @@ public class MemoryStack extends ArrayList<Object>
     }
 
     /**
-     * Save current memory level
+     * Save current memory state
      */
-    public void pushLevel()
+    public void saveState()
     {
         memoryLevels.add(this.size());
     }
 
     /**
-     * Remove all objects from memory after the last level of memory, or all objects in memory if there are no pushed
-     * memory levels
+     * Save the current level address, and set as zero
      */
-    public void popLevel()
+    public void pushLevel()
+    {
+        saveState();
+        pushZeroAddress();
+    }
+
+    /**
+     * Remove all objects from memory after the last level of memory, or all objects in memory if there are no pushed
+     * save state
+     */
+    public void restoreState()
     {
         if (memoryLevels.size() == 0)
         {
@@ -83,9 +98,48 @@ public class MemoryStack extends ArrayList<Object>
      *
      * @return current memory address
      */
-    public DataAddress getCurrentDataAddress()
+    public DataAddress getCurrentAbsoluteDataAddress()
     {
         return new DataAddress(size());
+    }
+
+    /**
+     * Set the zero address representing relative address
+     * @param zeroAddress address offset from absolute memory 0
+     */
+    private void pushZeroAddress(int zeroAddress)
+    {
+        this.zeroLevels.add(zeroAddress);
+    }
+
+    /**
+     * Restore zero address to last used zero address
+     */
+    private void popZeroAddress()
+    {
+        this.zeroLevels.pop();
+    }
+
+    /**
+     * Save the current stack position as the zero address
+     */
+    private void pushZeroAddress()
+    {
+        pushZeroAddress(size());
+    }
+
+    private int getZeroAddress()
+    {
+        return zeroLevels.lastElement();
+    }
+
+    /**
+     * Restore to last level address, and reset last used zero
+     */
+    public void popLevel()
+    {
+        restoreState();
+        popZeroAddress();
     }
 
     /**
@@ -94,51 +148,4 @@ public class MemoryStack extends ArrayList<Object>
      */
     public int getNumberOfLevels() { return memoryLevels.size(); }
 
-    /**
-     * Get the address of the last pushed levels
-     * @return address of the last pushed levels
-     */
-    public DataAddress getLastPushedLevelAddress()
-    {
-        return getPushedLevelAddress(getNumberOfLevels() - 1);
-    }
-
-    /**
-     * Get the data address of the pushed level
-     * @param levelIndex used pushed level index
-     * @return data address of the pushed level
-     */
-    public DataAddress getPushedLevelAddress(int levelIndex)
-    {
-        return new DataAddress(memoryLevels.get(levelIndex));
-    }
-
-    /**
-     * Get the absolute address, from the last pushed level address
-     * @param dataAddress relative address
-     * @return absolute address
-     */
-    public DataAddress getAbsoluteAddressFromLastPushedLevel(DataAddress dataAddress)
-    {
-        // Retrieve last pushed address
-        DataAddress lastPushedLevelAddress = getLastPushedLevelAddress();
-
-        // Add offset absolute address
-        return lastPushedLevelAddress.addOffset(dataAddress);
-    }
-
-    /**
-     * Get the absolute address, from pushed level address
-     * @param dataAddress relative address
-     * @param levelIndex used pushed level
-     * @return absolute address
-     */
-    public DataAddress getRelativeAddressFromPushedLevel(DataAddress dataAddress, int levelIndex)
-    {
-        // Retrieve corresponding pushed address
-        DataAddress lastPushedLevelAddress = getPushedLevelAddress(levelIndex);
-
-        // Add offset absolute address
-        return lastPushedLevelAddress.addOffset(dataAddress);
-    }
 }

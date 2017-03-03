@@ -1,5 +1,7 @@
-package org.eadge.gxscript.data.entity;
+package org.eadge.gxscript.data.entity.script;
 
+import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.DataAddress;
@@ -59,11 +61,8 @@ public class OutputScriptGXEntity extends DefaultGXEntity
                 // Get object to copy on memory
                 Object copiedObject = program.loadCurrentParametersObjects()[SCRIPT_OUTPUT_INPUT];
 
-                // Get the absolute address from the relative script Output Address
-                DataAddress outputAddress = program.getAbsoluteAddressFromLastPushedLevel(scriptOutputAddress);
-
                 // Use scriptOutputAddress
-                program.setObject(outputAddress, copiedObject);
+                program.setObject(scriptOutputAddress, copiedObject);
             }
         }.init(outputAddresses);
     }
@@ -106,6 +105,19 @@ public class OutputScriptGXEntity extends DefaultGXEntity
      * @param addressesMap                      map to link GXEntity to corresponding GXEntity output addresses
      */
     public void pushEntityCode(ArrayList<Func> calledFunctions,
+                               ArrayList<FuncDataAddresses> calledFunctionAddresses,
+                               Map<GXEntity, OutputAddresses> addressesMap)
+    {
+    }
+
+    /**
+     * Default add funcs and funcs params
+     *
+     * @param calledFunctions          list of called script
+     * @param calledFunctionAddresses list of used called script data
+     * @param addressesMap                      map to link GXEntity to corresponding GXEntity output addresses
+     */
+    public void pushOutputCopyCode(ArrayList<Func> calledFunctions,
                                ArrayList<FuncDataAddresses> calledFunctionAddresses,
                                Map<GXEntity, OutputAddresses> addressesMap)
     {

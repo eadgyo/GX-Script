@@ -4,15 +4,17 @@ import org.eadge.gxscript.classic.entity.displayer.PrintGXEntity;
 import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfGXEntity;
 import org.eadge.gxscript.classic.entity.imbrication.loops.ForGXEntity;
 import org.eadge.gxscript.classic.entity.types.number.IntGXEntity;
+import org.eadge.gxscript.classic.entity.types.number.ModifyNumberGXEntity;
 import org.eadge.gxscript.classic.entity.types.number.RealGXEntity;
 import org.eadge.gxscript.classic.entity.types.number.comparison.EqualToNumberGXEntity;
-import org.eadge.gxscript.data.entity.DefaultGXEntity;
-import org.eadge.gxscript.data.entity.ModifyingGXEntity;
-import org.eadge.gxscript.classic.entity.types.number.ModifyNumberGXEntity;
-import org.eadge.gxscript.data.script.Func;
-import org.eadge.gxscript.data.script.Program;
-import org.eadge.gxscript.data.script.RawGXScript;
-import org.eadge.gxscript.data.script.RawGXScriptDebug;
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.base.ModifyingGXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.script.OutputScriptGXEntity;
+import org.eadge.gxscript.data.script.*;
+import org.eadge.gxscript.tools.compile.GXCompiler;
+import org.eadge.gxscript.tools.compile.GXEntityCreator;
 
 /**
  * Created by eadgyo on 11/08/16.
@@ -185,6 +187,104 @@ public class CreateGXScript
         rawGXScript.addEntity("intSetter", intSetter);
         rawGXScript.addEntity("printChange", printChange);
         rawGXScript.addEntity("modifying", modificationInt);
+
+        rawGXScript.updateEntities();
+
+        return rawGXScript;
+    }
+
+    public static RawGXScript createScriptEntityScript()
+    {
+        RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
+
+        // Create 2 inputs variables
+        InputScriptGXEntity inputScriptGXEntity1 = new InputScriptGXEntity();
+        InputScriptGXEntity inputScriptGXEntity2 = new InputScriptGXEntity();
+
+        // Create real comparison
+        EqualToNumberGXEntity equalToNumberEntity = new EqualToNumberGXEntity();
+        inputScriptGXEntity1.linkAsOutput(InputScriptGXEntity.SCRIPT_INPUT_OUTPUT, EqualToNumberGXEntity.V0_INPUT_INDEX, equalToNumberEntity);
+        inputScriptGXEntity2.linkAsOutput(InputScriptGXEntity.SCRIPT_INPUT_OUTPUT, EqualToNumberGXEntity.V1_INPUT_INDEX, equalToNumberEntity);
+
+        // Create if GXEntity block control
+        IfGXEntity ifEntity = new IfGXEntity();
+        ifEntity.linkAsInput(IfGXEntity.TEST_INPUT_INDEX, EqualToNumberGXEntity.RESULT_OUTPUT_INDEX, equalToNumberEntity);
+
+        RealGXEntity outputReal = new RealGXEntity(0);
+        // Create 3 prints for each path
+        PrintGXEntity success = new PrintGXEntity("EQUAL");
+        success.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.SUCCESS_OUTPUT_INDEX, ifEntity);
+        RealGXEntity successReal = new RealGXEntity(1);
+        ModifyNumberGXEntity modifySuccess = new ModifyNumberGXEntity();
+        modifySuccess.linkAsInput(ModifyNumberGXEntity.MODIFIED_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, outputReal);
+        modifySuccess.linkAsInput(ModifyNumberGXEntity.SOURCE_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, successReal);
+
+
+        PrintGXEntity fail = new PrintGXEntity("DIFF");
+        fail.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.FAIL_OUTPUT_INDEX, ifEntity);
+        RealGXEntity failReal = new RealGXEntity(2);
+        ModifyNumberGXEntity modifyFail = new ModifyNumberGXEntity();
+        modifyFail.linkAsInput(ModifyNumberGXEntity.MODIFIED_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, outputReal);
+        modifyFail.linkAsInput(ModifyNumberGXEntity.SOURCE_INPUT_INDEX, RealGXEntity.REAL_OUTPUT_INDEX, failReal);
+
+
+        // Create output entities
+        OutputScriptGXEntity outputScriptGXEntity = new OutputScriptGXEntity();
+        outputScriptGXEntity.linkAsInput(OutputScriptGXEntity.SCRIPT_OUTPUT_INPUT, RealGXEntity.REAL_OUTPUT_INDEX, outputReal);
+
+        PrintGXEntity continueP = new PrintGXEntity("Continue");
+        continueP.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, IfGXEntity.CONTINUE_OUTPUT_INDEX, ifEntity);
+
+        // Add all created entities to raw gx script
+        rawGXScript.addEntity("input1", inputScriptGXEntity1);
+        rawGXScript.addEntity("input2", inputScriptGXEntity2);
+        rawGXScript.addEntity("equal1", equalToNumberEntity);
+        rawGXScript.addEntity("if", ifEntity);
+        rawGXScript.addEntity("success", success);
+        rawGXScript.addEntity("fail", fail);
+        rawGXScript.addEntity("successReal", successReal);
+        rawGXScript.addEntity("failReal", failReal);
+        rawGXScript.addEntity("successModify", modifySuccess);
+        rawGXScript.addEntity("fail", modifyFail);
+        rawGXScript.addEntity("continue", continueP);
+        rawGXScript.addEntity("outputReal", outputReal);
+        rawGXScript.addEntity("output", outputScriptGXEntity);
+
+        rawGXScript.updateEntities();
+
+        return rawGXScript;
+
+    }
+
+    public static RawGXScript createFullScriptWithCompiledScript()
+    {
+        RawGXScript scriptEntityScript = createScriptEntityScript();
+        RawGXScriptDebug rawGXScript = new RawGXScriptDebug();
+
+        // Compile this script:
+        GXCompiler compiler = new GXCompiler();
+        CompiledGXScript compiledGXScript = compiler.compile(scriptEntityScript);
+
+        // Create entity from compiled script
+        GXEntityCreator gxEntityCreator = new GXEntityCreator();
+        GXEntity        gxEntity        = gxEntityCreator.createGXEntity(compiledGXScript);
+
+        // Create 2 reals
+        RealGXEntity realGXEntity1 = new RealGXEntity(20);
+        RealGXEntity realGXEntity2  = new RealGXEntity(21);
+
+        gxEntity.linkAsInput(0, RealGXEntity.REAL_OUTPUT_INDEX, realGXEntity1);
+        gxEntity.linkAsInput(1, RealGXEntity.REAL_OUTPUT_INDEX, realGXEntity2);
+
+        // Create print result
+        PrintGXEntity printGXEntity = new PrintGXEntity();
+        printGXEntity.linkAsInput(PrintGXEntity.SOURCE_INPUT_INDEX, 0, gxEntity);
+
+
+        rawGXScript.addEntity("Real1", realGXEntity1);
+        rawGXScript.addEntity("Real2", realGXEntity2);
+        rawGXScript.addEntity("Script", gxEntity);
+        rawGXScript.addEntity("Print", printGXEntity);
 
         rawGXScript.updateEntities();
 

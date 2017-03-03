@@ -1,6 +1,6 @@
 package org.eadge.gxscript.tools.check;
 
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 import org.eadge.gxscript.tools.Tools;
 
 /**

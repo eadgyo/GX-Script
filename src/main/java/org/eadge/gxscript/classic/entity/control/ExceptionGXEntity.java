@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.control;
 
-import org.eadge.gxscript.data.entity.DefaultStartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultStartImbricationGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.FuncAddress;
@@ -54,7 +54,7 @@ public class ExceptionGXEntity extends DefaultStartImbricationGXEntity
                 FuncAddress tryAddress = funcParameters.getImbricationAddress(TRY_OUTPUT_INDEX);
                 FuncAddress continueAddress = funcParameters.getImbricationAddress(CONTINUE_OUTPUT_INDEX);
 
-                program.pushMemoryLevel();
+                program.saveMemoryState();
 
                 // Launch program
                 try
@@ -66,7 +66,7 @@ public class ExceptionGXEntity extends DefaultStartImbricationGXEntity
                     e.printStackTrace();
                 }
 
-                program.popMemoryLevel();
+                program.restoreMemoryState();
             }
         };
     }

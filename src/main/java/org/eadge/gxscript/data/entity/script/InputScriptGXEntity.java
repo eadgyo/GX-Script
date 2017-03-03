@@ -1,7 +1,8 @@
-package org.eadge.gxscript.data.entity;
+package org.eadge.gxscript.data.entity.script;
 
+import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 import org.eadge.gxscript.data.script.Func;
-import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.DataAddress;
 import org.eadge.gxscript.data.script.address.FuncDataAddresses;
 import org.eadge.gxscript.data.script.address.OutputAddresses;
@@ -30,21 +31,13 @@ public class InputScriptGXEntity extends DefaultGXEntity
     @Override
     public Func getFunc()
     {
-        return new Func()
-        {
-            @Override
-            public void run(Program program)
-            {
-                // Copy is done by the script launcher
-            }
-        };
+        return null;
     }
 
     @Override
-    public void addLinkOutput(int outputIndex, int inputEntityIndex, GXEntity GXEntity)
+    public void addLinkOutput(int outputIndex, int inputEntityIndex, GXEntity gxEntity)
     {
-        super.addLinkOutput(outputIndex, inputEntityIndex, GXEntity);
-
+        super.addLinkOutput(outputIndex, inputEntityIndex, gxEntity);
         updateOutputName(SCRIPT_INPUT_OUTPUT);
     }
 

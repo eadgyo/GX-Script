@@ -1,4 +1,6 @@
-package org.eadge.gxscript.data.entity;
+package org.eadge.gxscript.data.entity.base;
+
+import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
 
 /**
  * Created by eadgyo on 11/08/16.

@@ -1,7 +1,7 @@
 package org.eadge.gxscript.data.entity.model;
 
-import org.eadge.gxscript.data.entity.DefaultGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 
 /**
  * Created by eadgyo on 05/09/16.

@@ -1,8 +1,8 @@
 package org.eadge.gxscript.classic.entity.imbrication.loops;
 
 import org.eadge.gxscript.classic.entity.types.collection.ClassItem;
-import org.eadge.gxscript.data.entity.DefaultStartImbricationGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultStartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.FuncAddress;
@@ -83,7 +83,7 @@ public class ForEachGXEntity extends DefaultStartImbricationGXEntity
                 for (Object item : collection)
                 {
                     // Save memory state
-                    program.pushMemoryLevel();
+                    program.saveMemoryState();
 
                     // Push item on the memory
                     program.pushInMemory(item);
@@ -92,7 +92,7 @@ public class ForEachGXEntity extends DefaultStartImbricationGXEntity
                     program.runFromAndUntil(doAddress, endAddress);
 
                     // Remove added memory level
-                    program.popMemoryLevel();
+                    program.restoreMemoryState();
                 }
 
                 // Move the cursor to the end

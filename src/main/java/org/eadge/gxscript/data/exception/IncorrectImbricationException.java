@@ -1,6 +1,6 @@
 package org.eadge.gxscript.data.exception;
 
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 
 /**
  * Created by eadgyo on 04/08/16.

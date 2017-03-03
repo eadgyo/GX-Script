@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.imbrication.loops;
 
-import org.eadge.gxscript.data.entity.DefaultStartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultStartImbricationGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.FuncAddress;

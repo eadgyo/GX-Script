@@ -1,5 +1,6 @@
-package org.eadge.gxscript.data.entity;
+package org.eadge.gxscript.data.entity.def;
 
+import org.eadge.gxscript.data.entity.base.ModifyingGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.DataAddress;

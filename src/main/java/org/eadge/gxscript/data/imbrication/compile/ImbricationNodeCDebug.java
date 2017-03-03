@@ -1,7 +1,8 @@
 package org.eadge.gxscript.data.imbrication.compile;
 
-import org.eadge.gxscript.data.entity.GXEntity;
-import org.eadge.gxscript.data.entity.StartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.script.OutputScriptGXEntity;
+import org.eadge.gxscript.data.entity.base.StartImbricationGXEntity;
 import org.eadge.gxscript.data.script.DebugCompiledGXScript;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.address.DataAddress;
@@ -98,9 +99,16 @@ public class ImbricationNodeCDebug extends ImbricationNodeC
         }
     }
 
-    public void treatEntity(GXEntity GXEntity)
+    public void treatEntity(GXEntity gxEntity)
     {
-        super.treatEntity(GXEntity);
+        super.treatEntity(gxEntity);
+
+        debugMemoriesAddresses.add(new DebugMemory(currentDataAddress));
+    }
+
+    public void treatOutputEntity(OutputScriptGXEntity outputEntity)
+    {
+        super.treatOutputEntity(outputEntity);
 
         debugMemoriesAddresses.add(new DebugMemory(currentDataAddress));
     }

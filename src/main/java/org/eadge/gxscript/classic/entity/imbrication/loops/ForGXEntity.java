@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.imbrication.loops;
 
-import org.eadge.gxscript.data.entity.DefaultStartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultStartImbricationGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.FuncAddress;
@@ -101,7 +101,7 @@ public class ForGXEntity extends DefaultStartImbricationGXEntity
                         index += getAdd(objects, addIndexObj))
                 {
                     // Save state of memory
-                    program.pushMemoryLevel();
+                    program.saveMemoryState();
 
                     // Push in memory index
                     program.pushInMemory(index);
@@ -110,7 +110,7 @@ public class ForGXEntity extends DefaultStartImbricationGXEntity
                     program.runFromAndUntil(doStart, doEnd);
 
                     // Restore state of memory
-                    program.popMemoryLevel();
+                    program.restoreMemoryState();
                 }
 
                 // Don't need to move the current read address to the continue address, it's already on

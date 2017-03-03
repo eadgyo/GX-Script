@@ -1,4 +1,4 @@
-package org.eadge.gxscript.data.entity;
+package org.eadge.gxscript.data.entity.base;
 
 /**
  * Created by eadgyo on 11/08/16.

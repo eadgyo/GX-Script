@@ -1,5 +1,7 @@
-package org.eadge.gxscript.data.entity;
+package org.eadge.gxscript.data.entity.def;
 
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.base.StartImbricationGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.address.*;
 

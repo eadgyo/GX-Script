@@ -1,8 +1,8 @@
 package org.eadge.gxscript.classic.entity.types.collection2.map;
 
 import org.eadge.gxscript.classic.entity.types.collection.ClassItem;
-import org.eadge.gxscript.data.entity.DefaultGXEntity;
-import org.eadge.gxscript.data.entity.GXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.base.GXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 

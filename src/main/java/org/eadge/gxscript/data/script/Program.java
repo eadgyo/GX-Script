@@ -5,6 +5,8 @@ import org.eadge.gxscript.data.script.address.FuncAddress;
 import org.eadge.gxscript.data.script.address.FuncDataAddresses;
 import org.eadge.gxscript.data.script.address.FuncImbricationDataAddresses;
 
+import java.util.Stack;
+
 /**
  * Created by eadgyo on 11/08/16.
  *
@@ -27,14 +29,23 @@ public class Program
      */
     private FuncsStack funcsStack;
 
+    /**
+     * Store funcs levels
+     */
+    private Stack<Integer> funcsLevels = new Stack<>();
+
     public Program(FuncsStack funcsStack)
     {
         this.funcsStack = funcsStack;
+        memoryStack.pushLevel();
+        funcsLevels.add(0);
     }
 
     public Program(Func[] funcs, FuncDataAddresses[] funcDataAddresses)
     {
         this.funcsStack = new FuncsStack(funcs, funcDataAddresses);
+        memoryStack.pushLevel();
+        funcsLevels.add(0);
     }
 
     /**
@@ -116,7 +127,7 @@ public class Program
      */
     public DataAddress getCurrentDataAddress()
     {
-        return memoryStack.getCurrentDataAddress();
+        return memoryStack.getCurrentAbsoluteDataAddress();
     }
 
     /**
@@ -131,20 +142,20 @@ public class Program
     }
 
     /**
-     * Save current memory level
+     * Save current memory state
      */
-    public void pushMemoryLevel()
+    public void saveMemoryState()
     {
-        memoryStack.pushLevel();
+        memoryStack.saveState();
     }
 
     /**
      * Remove all objects from memory after the last level of memory, or all objects in memory if there are no pushed
-     * memory levels
+     * memory state
      */
-    public void popMemoryLevel()
+    public void restoreMemoryState()
     {
-        memoryStack.popLevel();
+        memoryStack.restoreState();
     }
 
     /**
@@ -157,43 +168,36 @@ public class Program
     }
 
     /**
-     * Get the address of the last pushed level
-     * @return address of the last pushed level
+     * Save the current level address, and set as zero
      */
-    public DataAddress getLastPushedLevelAddress()
+    public void pushLevel()
     {
-        return memoryStack.getLastPushedLevelAddress();
+        memoryStack.pushLevel();
+        pushFuncLevel();
     }
 
     /**
-     * Get the absolute address, from the last pushed level address
-     * @param dataAddress relative address
-     * @return absolute address
+     * Restore to last level address, and reset last used zero
      */
-    public DataAddress getAbsoluteAddressFromLastPushedLevel(DataAddress dataAddress)
+    public void popLevel()
     {
-        return memoryStack.getAbsoluteAddressFromLastPushedLevel(dataAddress);
+        memoryStack.popLevel();
     }
 
-    /**
-     * Get the absolute address, from pushed level address
-     * @param dataAddress relative address
-     * @param levelIndex used pushed level
-     * @return absolute address
-     */
-    public DataAddress getAbsoluteAddressFromPushedLevel(DataAddress dataAddress, int levelIndex)
+    private void pushFuncLevel()
     {
-        return memoryStack.getRelativeAddressFromPushedLevel(dataAddress, levelIndex);
+        funcsLevels.add(getCurrentAbsoluteFuncAddress().getAddress() + 1);
+        currentFuncAddress.setAddress(0);
     }
 
-    /**
-     * Get the data address of the pushed level
-     * @param levelIndex used pushed level index
-     * @return data address of the pushed level
-     */
-    public DataAddress getPushedLevelAddress(int levelIndex)
+    private void popFuncLevel()
     {
-        return memoryStack.getPushedLevelAddress(levelIndex);
+        currentFuncAddress.setAddress(funcsLevels.pop());
+    }
+
+    private int getFuncOffset()
+    {
+        return funcsLevels.lastElement();
     }
 
     // Current Func Address
@@ -227,7 +231,7 @@ public class Program
      */
     public boolean hasPassedAddress(FuncAddress testedFuncAddress)
     {
-        return currentFuncAddress.isAfter(testedFuncAddress);
+        return getCurrentFuncAddress().isAfter(testedFuncAddress);
     }
 
     /**
@@ -239,7 +243,7 @@ public class Program
      */
     public boolean isOnAddress(FuncAddress testedFuncAddress)
     {
-        return currentFuncAddress.equals(testedFuncAddress);
+        return getCurrentFuncAddress().equals(testedFuncAddress);
     }
 
     /**
@@ -250,6 +254,16 @@ public class Program
     public FuncAddress getCurrentFuncAddress()
     {
         return currentFuncAddress;
+    }
+
+    /**
+     * Get the current read absolute func address
+     *
+     * @return current read absolute func address
+     */
+    public FuncAddress getCurrentAbsoluteFuncAddress()
+    {
+        return currentFuncAddress.addOffset(getFuncOffset());
     }
 
     /**
@@ -297,7 +311,7 @@ public class Program
      */
     public Func getCurrentFunc()
     {
-        return funcsStack.getFunc(currentFuncAddress);
+        return funcsStack.getFunc(getCurrentAbsoluteFuncAddress());
     }
 
     /**
@@ -307,7 +321,7 @@ public class Program
      */
     public FuncDataAddresses getCurrentFuncParameters()
     {
-        return funcsStack.getFuncParameters(currentFuncAddress);
+        return funcsStack.getFuncParameters(getCurrentAbsoluteFuncAddress());
     }
 
     /**
@@ -317,7 +331,7 @@ public class Program
      */
     public FuncImbricationDataAddresses getCurrentFuncImbricationParameters()
     {
-        return funcsStack.getFuncImbricationParameters(currentFuncAddress);
+        return funcsStack.getFuncImbricationParameters(getCurrentAbsoluteFuncAddress());
     }
 
     /**
@@ -347,7 +361,7 @@ public class Program
      */
     public boolean hasFinished()
     {
-        return currentFuncAddress.getAddress() >= funcsStack.size();
+        return getCurrentAbsoluteFuncAddress().getAddress() >= funcsStack.size();
     }
 
     /**
@@ -388,13 +402,13 @@ public class Program
     public void runImbrication(FuncAddress sourceAddress, FuncAddress targetAddress, FuncAddress savedBlockAddress)
     {
         // Save the current state of memory
-        pushMemoryLevel();
+        saveMemoryState();
 
         // Call functions
         runFromAndUntil(sourceAddress, targetAddress);
 
         // Remove added memory
-        popMemoryLevel();
+        restoreMemoryState();
 
         // Reset to
         setCurrentFuncAddress(savedBlockAddress);

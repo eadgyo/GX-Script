@@ -1,4 +1,4 @@
-package org.eadge.gxscript.data.entity;
+package org.eadge.gxscript.data.entity.base;
 
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.address.DataAddress;

@@ -1,5 +1,7 @@
-package org.eadge.gxscript.data.entity;
+package org.eadge.gxscript.data.entity.def;
 
+import org.eadge.gxscript.data.entity.base.GXEntity;
+import org.eadge.gxscript.data.entity.script.InputScriptGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.address.DataAddress;
 import org.eadge.gxscript.data.script.address.FuncDataAddresses;
@@ -637,7 +639,7 @@ public abstract class DefaultGXEntity implements GXEntity
         }
 
         // Change script class
-        inputClasses.set(outputIndex, cl);
+        outputClasses.set(outputIndex, cl);
     }
 
     /**
@@ -685,20 +687,20 @@ public abstract class DefaultGXEntity implements GXEntity
     }
 
     @Override
-    public void linkAsInput(int inputIndex, int entityOutput, GXEntity GXEntity)
+    public void linkAsInput(int inputIndex, int entityOutput, GXEntity gxEntity)
     {
         try
         {
             // Get classes
             Class inputClass = getInputClass(inputIndex);
-            Class outputClass = GXEntity.getOutputClass(entityOutput);
+            Class outputClass = gxEntity.getOutputClass(entityOutput);
 
             // If they have not matching classes
-            if (!Tools.isEqualOrDerivedFrom(outputClass, inputClass))
+            if (!Tools.isEqualOrDerivedFrom(outputClass, inputClass) && !(gxEntity instanceof InputScriptGXEntity))
                 throw new NotMatchingInputOutputClasses();
 
-            addLinkInput(inputIndex, entityOutput, GXEntity);
-            GXEntity.addLinkOutput(entityOutput, inputIndex, this);
+            addLinkInput(inputIndex, entityOutput, gxEntity);
+            gxEntity.addLinkOutput(entityOutput, inputIndex, this);
         }
         catch (NotMatchingInputOutputClasses notMatchingInputOutputClasses)
         {

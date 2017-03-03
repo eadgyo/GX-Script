@@ -1,6 +1,6 @@
 package org.eadge.gxscript.classic.entity.imbrication.conditionals;
 
-import org.eadge.gxscript.data.entity.DefaultStartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.def.DefaultStartImbricationGXEntity;
 import org.eadge.gxscript.data.script.Func;
 import org.eadge.gxscript.data.script.Program;
 import org.eadge.gxscript.data.script.address.FuncAddress;
@@ -64,7 +64,7 @@ public class IfGXEntity extends DefaultStartImbricationGXEntity
                 FuncAddress continueAddress = funcParameters.getImbricationAddress(CONTINUE_OUTPUT_INDEX);
 
                 // Save current state of memory
-                program.pushMemoryLevel();
+                program.saveMemoryState();
 
                 if (test)
                 {
@@ -78,7 +78,7 @@ public class IfGXEntity extends DefaultStartImbricationGXEntity
                 }
 
                 // Remove added memory
-                program.popMemoryLevel();
+                program.restoreMemoryState();
 
                 program.setNextFuncAddress(continueAddress);
             }
