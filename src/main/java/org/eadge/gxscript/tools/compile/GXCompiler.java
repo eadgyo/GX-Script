@@ -1,15 +1,15 @@
 package org.eadge.gxscript.tools.compile;
 
-import org.eadge.gxscript.data.entity.base.GXEntity;
-import org.eadge.gxscript.data.entity.script.InputScriptGXEntity;
-import org.eadge.gxscript.data.entity.script.OutputScriptGXEntity;
-import org.eadge.gxscript.data.entity.base.StartImbricationGXEntity;
-import org.eadge.gxscript.data.imbrication.ImbricationNode;
-import org.eadge.gxscript.data.imbrication.compile.ImbricationNodeC;
-import org.eadge.gxscript.data.script.CompiledGXScript;
-import org.eadge.gxscript.data.script.RawGXScript;
-import org.eadge.gxscript.data.script.address.DataAddress;
-import org.eadge.gxscript.data.script.address.OutputAddresses;
+import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
+import org.eadge.gxscript.data.entity.model.base.StartImbricationGXEntity;
+import org.eadge.gxscript.data.compile.imbrication.ImbricationNode;
+import org.eadge.gxscript.data.compile.imbrication.compile.ImbricationNodeC;
+import org.eadge.gxscript.data.compile.script.CompiledGXScript;
+import org.eadge.gxscript.data.compile.script.RawGXScript;
+import org.eadge.gxscript.data.compile.script.address.DataAddress;
+import org.eadge.gxscript.data.compile.script.address.OutputAddresses;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.*;

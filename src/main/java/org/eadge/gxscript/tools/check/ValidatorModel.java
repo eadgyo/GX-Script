@@ -1,7 +1,7 @@
 package org.eadge.gxscript.tools.check;
 
-import org.eadge.gxscript.data.entity.base.GXEntity;
-import org.eadge.gxscript.data.script.RawGXScript;
+import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.compile.script.RawGXScript;
 
 import java.util.Collection;
 import java.util.HashSet;

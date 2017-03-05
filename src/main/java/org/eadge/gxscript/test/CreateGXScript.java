@@ -1,18 +1,20 @@
 package org.eadge.gxscript.test;
 
-import org.eadge.gxscript.classic.entity.displayer.PrintGXEntity;
-import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfGXEntity;
-import org.eadge.gxscript.classic.entity.imbrication.loops.ForGXEntity;
-import org.eadge.gxscript.classic.entity.types.number.IntGXEntity;
-import org.eadge.gxscript.classic.entity.types.number.ModifyNumberGXEntity;
-import org.eadge.gxscript.classic.entity.types.number.RealGXEntity;
-import org.eadge.gxscript.classic.entity.types.number.comparison.EqualToNumberGXEntity;
-import org.eadge.gxscript.data.entity.base.GXEntity;
-import org.eadge.gxscript.data.entity.base.ModifyingGXEntity;
-import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
-import org.eadge.gxscript.data.entity.script.InputScriptGXEntity;
-import org.eadge.gxscript.data.entity.script.OutputScriptGXEntity;
-import org.eadge.gxscript.data.script.*;
+import org.eadge.gxscript.data.compile.program.Program;
+import org.eadge.gxscript.data.compile.script.func.Func;
+import org.eadge.gxscript.data.entity.classic.entity.displayer.PrintGXEntity;
+import org.eadge.gxscript.data.entity.classic.entity.imbrication.conditionals.IfGXEntity;
+import org.eadge.gxscript.data.entity.classic.entity.imbrication.loops.ForGXEntity;
+import org.eadge.gxscript.data.entity.classic.entity.types.number.IntGXEntity;
+import org.eadge.gxscript.data.entity.classic.entity.types.number.ModifyNumberGXEntity;
+import org.eadge.gxscript.data.entity.classic.entity.types.number.RealGXEntity;
+import org.eadge.gxscript.data.entity.classic.entity.types.number.comparison.EqualToNumberGXEntity;
+import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.entity.model.base.ModifyingGXEntity;
+import org.eadge.gxscript.data.entity.model.def.DefaultGXEntity;
+import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
+import org.eadge.gxscript.data.compile.script.*;
 import org.eadge.gxscript.tools.compile.GXCompiler;
 import org.eadge.gxscript.tools.compile.GXEntityCreator;
 

@@ -1,7 +1,7 @@
 package org.eadge.gxscript.test.compilator;
 
-import org.eadge.gxscript.data.script.CompiledGXScript;
-import org.eadge.gxscript.data.script.RawGXScriptDebug;
+import org.eadge.gxscript.data.compile.script.CompiledGXScript;
+import org.eadge.gxscript.data.compile.script.RawGXScriptDebug;
 import org.eadge.gxscript.test.CreateGXScript;
 import org.eadge.gxscript.test.PrintTest;
 import org.eadge.gxscript.tools.compile.GXCompiler;

@@ -1,7 +1,7 @@
 package org.eadge.gxscript.tools.check.validator;
 
-import org.eadge.gxscript.data.entity.script.InputScriptGXEntity;
-import org.eadge.gxscript.data.script.RawGXScript;
+import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.compile.script.RawGXScript;
 import org.eadge.gxscript.tools.check.ValidatorModel;
 
 import java.util.Collection;

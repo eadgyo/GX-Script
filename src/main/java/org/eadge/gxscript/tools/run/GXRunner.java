@@ -1,7 +1,7 @@
 package org.eadge.gxscript.tools.run;
 
-import org.eadge.gxscript.data.script.CompiledGXScript;
-import org.eadge.gxscript.data.script.Program;
+import org.eadge.gxscript.data.compile.script.CompiledGXScript;
+import org.eadge.gxscript.data.compile.program.Program;
 
 /**
  * Created by eadgyo on 02/08/16.

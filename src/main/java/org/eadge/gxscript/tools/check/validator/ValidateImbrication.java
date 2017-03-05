@@ -1,9 +1,9 @@
 package org.eadge.gxscript.tools.check.validator;
 
-import org.eadge.gxscript.data.entity.base.GXEntity;
-import org.eadge.gxscript.data.entity.base.StartImbricationGXEntity;
-import org.eadge.gxscript.data.imbrication.ImbricationNode;
-import org.eadge.gxscript.data.script.RawGXScript;
+import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.entity.model.base.StartImbricationGXEntity;
+import org.eadge.gxscript.data.compile.imbrication.ImbricationNode;
+import org.eadge.gxscript.data.compile.script.RawGXScript;
 import org.eadge.gxscript.tools.Tools;
 import org.eadge.gxscript.tools.check.ValidatorModel;
 

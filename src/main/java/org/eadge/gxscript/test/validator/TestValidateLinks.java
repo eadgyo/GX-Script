@@ -1,10 +1,10 @@
 package org.eadge.gxscript.test.validator;
 
-import org.eadge.gxscript.classic.entity.imbrication.conditionals.IfGXEntity;
-import org.eadge.gxscript.classic.entity.types.number.RealGXEntity;
-import org.eadge.gxscript.data.entity.def.DefaultGXEntity;
-import org.eadge.gxscript.data.script.Func;
-import org.eadge.gxscript.data.script.RawGXScript;
+import org.eadge.gxscript.data.entity.classic.entity.imbrication.conditionals.IfGXEntity;
+import org.eadge.gxscript.data.entity.classic.entity.types.number.RealGXEntity;
+import org.eadge.gxscript.data.entity.model.def.DefaultGXEntity;
+import org.eadge.gxscript.data.compile.script.func.Func;
+import org.eadge.gxscript.data.compile.script.RawGXScript;
 import org.eadge.gxscript.test.CreateGXScript;
 import org.eadge.gxscript.test.PrintTest;
 import org.eadge.gxscript.tools.check.validator.ValidateLinks;

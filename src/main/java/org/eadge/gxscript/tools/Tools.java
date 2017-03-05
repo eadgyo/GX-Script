@@ -1,10 +1,10 @@
 package org.eadge.gxscript.tools;
 
-import org.eadge.gxscript.data.entity.script.InputScriptGXEntity;
-import org.eadge.gxscript.data.entity.base.GXEntity;
-import org.eadge.gxscript.data.entity.script.OutputScriptGXEntity;
-import org.eadge.gxscript.data.entity.base.StartImbricationGXEntity;
-import org.eadge.gxscript.data.imbrication.ImbricationNode;
+import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
+import org.eadge.gxscript.data.entity.model.base.StartImbricationGXEntity;
+import org.eadge.gxscript.data.compile.imbrication.ImbricationNode;
 
 import java.util.ArrayList;
 import java.util.Collection;
