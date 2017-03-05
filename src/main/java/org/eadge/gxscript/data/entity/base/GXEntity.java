@@ -5,6 +5,7 @@ import org.eadge.gxscript.data.script.address.DataAddress;
 import org.eadge.gxscript.data.script.address.FuncDataAddresses;
 import org.eadge.gxscript.data.script.address.OutputAddresses;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Map;
  *
  * GXEntity can have one GXEntity per script and multiples entities per output
  */
-public interface GXEntity extends Cloneable
+public interface GXEntity extends Cloneable, Serializable
 {
     /**
      * Used to reset class
