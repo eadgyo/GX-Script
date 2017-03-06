@@ -144,7 +144,7 @@ public class IOGXManager
         return obj;
     }
 
-    public IOGXManager getInstance()
+    public static IOGXManager getInstance()
     {
         if (iogxManager == null)
             iogxManager = new IOGXManager();
