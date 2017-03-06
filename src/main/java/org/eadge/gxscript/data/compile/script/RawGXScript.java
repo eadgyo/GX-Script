@@ -42,6 +42,14 @@ public class RawGXScript implements Serializable
     {
     }
 
+    public void clear()
+    {
+        entities.clear();
+        startingEntities.clear();
+        inputScriptGXEntities.clear();
+        outputScriptGXEntities.clear();
+    }
+
     public void addEntity(GXEntity GXEntity)
     {
         entities.add(GXEntity);

@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class IOGXManager
 {
+    protected static IOGXManager iogxManager = null;
+
     public EGX loadEGX(String path)
     {
         Object object = getObject(path);
@@ -140,5 +142,12 @@ public class IOGXManager
             }
         }
         return obj;
+    }
+
+    public IOGXManager getInstance()
+    {
+        if (iogxManager == null)
+            iogxManager = new IOGXManager();
+        return iogxManager;
     }
 }
