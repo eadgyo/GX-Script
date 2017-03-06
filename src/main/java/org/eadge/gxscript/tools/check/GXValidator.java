@@ -15,6 +15,7 @@ public class GXValidator extends ValidatorModel
     private ValidatorModel             validatorLinks;
     private ValidatorModel             validatorNoInterdependency;
     private ValidatorModel             validatorImbrications;
+    private ValidatorModel             validatorParameters;
 
     public GXValidator()
     {
@@ -23,6 +24,7 @@ public class GXValidator extends ValidatorModel
         validatorLinks = new ValidateLinks();
         validatorNoInterdependency = new ValidateNoInterdependency();
         validatorImbrications = new ValidateImbrication();
+        validatorParameters = new ValidateValidParameters();
     }
 
     @Override
@@ -40,6 +42,9 @@ public class GXValidator extends ValidatorModel
             return false;
 
         if (!super.validate(validatorNoInterdependency, gxScript))
+            return false;
+
+        if (!super.validate(validatorParameters, gxScript))
             return false;
 
         return super.validate(validatorImbrications, gxScript);
