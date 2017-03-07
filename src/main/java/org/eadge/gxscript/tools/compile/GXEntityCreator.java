@@ -18,7 +18,7 @@ public class GXEntityCreator
      *
      * @return GXEntity from raw GXScript
      */
-    public GXEntity createGXEntity(final CompiledGXScript compiledGXScript)
+    public static GXEntity createGXEntity(final CompiledGXScript compiledGXScript)
     {
         // Create the entity
         return new ScriptGXEntity(compiledGXScript);

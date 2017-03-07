@@ -10,4 +10,13 @@ import java.util.HashMap;
  */
 public class EGX extends HashMap<String, EGXGroup>
 {
+    public void add(EGXGroup egxGroup)
+    {
+        put(egxGroup.getName(), egxGroup);
+    }
+
+    public void remove(EGXGroup egxGroup)
+    {
+        remove(egxGroup.getName());
+    }
 }
