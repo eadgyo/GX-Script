@@ -95,7 +95,29 @@ public abstract class DefaultGXEntity implements GXEntity
     {
         try
         {
-            return super.clone();
+            DefaultGXEntity clone = (DefaultGXEntity) super.clone();
+            clone.inputsNames = new ArrayList<>(inputsNames);
+            clone.indicesNeededInputs = new HashSet<>(indicesNeededInputs);
+            clone.indicesVariableInputs = new HashSet<>(indicesVariableInputs);
+            clone.inputClasses = new ArrayList<>(inputClasses);
+            clone.inputEntities = new ArrayList<>(inputEntities);
+            clone.outputsNames = new ArrayList<>(outputsNames);
+            clone.outputFromInputEntitiesIndices = new ArrayList<>(outputFromInputEntitiesIndices);
+            clone.indicesVariableOutputs = new HashSet<>(indicesVariableOutputs);
+            clone.outputClasses = new ArrayList<>(outputClasses);
+            clone.outputEntities = new ArrayList<>();
+            for (Set<GXEntity> outputEntity : outputEntities)
+            {
+                clone.outputEntities.add(new HashSet<GXEntity>(outputEntity));
+            }
+
+            clone.inputFromOutputEntitiesIndices = new ArrayList<>();
+            for (Map<GXEntity, Integer> inputFromOutputEntitiesIndex : inputFromOutputEntitiesIndices)
+            {
+                clone.inputFromOutputEntitiesIndices.add(new HashMap<GXEntity, Integer>(inputFromOutputEntitiesIndex));
+            }
+
+            return clone;
         }
         catch (CloneNotSupportedException e)
         {
@@ -132,6 +154,28 @@ public abstract class DefaultGXEntity implements GXEntity
     public int getNumberOfInputs()
     {
         return inputClasses.size();
+    }
+
+    /**
+     * Replace entities on input, doesn't create or remove link from removed and replaced entities
+     * @param replacedMap replaced entities
+     */
+    public void replaceOnInputEntities(Map<GXEntity, GXEntity> replacedMap)
+    {
+
+        int numberOfInputs = getNumberOfInputs();
+        for (int inputIndex = 0; inputIndex < numberOfInputs; inputIndex++)
+        {
+            GXEntity inputEntity = getInputEntity(inputIndex);
+            if (inputEntity != null)
+            {
+                // Search for replace entity
+                GXEntity replaceEntity = replacedMap.get(inputEntity);
+
+                // Replace corresponding entity
+                inputEntities.set(inputIndex, replaceEntity);
+            }
+        }
     }
 
     @Override
@@ -278,6 +322,49 @@ public abstract class DefaultGXEntity implements GXEntity
     public Collection<Class> getOutputClasses()
     {
         return outputClasses;
+    }
+
+    /**
+     * Replace entities on outputs, doesn't create or remove link from removed and replaced entities
+     * @param replacedMap replaced entities
+     */
+    public void replaceOnOutputEntities(Map<GXEntity, GXEntity> replacedMap)
+    {
+        int numberOfOutputs = getNumberOfOutputs();
+        for (int outputIndex = 0; outputIndex < numberOfOutputs; outputIndex++)
+        {
+            Set<GXEntity> outputEntitiesSet = outputEntities.get(outputIndex);
+
+            for (GXEntity outputEntity : outputEntitiesSet)
+            {
+                // Remove the corresponding element
+                outputEntitiesSet.remove(outputEntity);
+
+                // Try to add replacement
+                GXEntity inputEntity = getInputEntity(outputIndex);
+                if (inputEntity != null)
+                {
+                    // Search for replace entity
+                    GXEntity replaceEntity = replacedMap.get(inputEntity);
+
+                    if (replaceEntity != null)
+                    {
+                        // Replace corresponding entity
+                        outputEntitiesSet.add(replaceEntity);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Replace entities on input and on output, doesn't create or remove link from removed and replaced entities
+     * @param replacedMap replaced entities
+     */
+    public void replaceEntities(Map<GXEntity, GXEntity> replacedMap)
+    {
+        replaceOnInputEntities(replacedMap);
+        replaceOnOutputEntities(replacedMap);
     }
 
     @Override
