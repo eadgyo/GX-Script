@@ -32,7 +32,7 @@ public class IntGXEntity extends DefaultVariableGXEntity
 
     public IntGXEntity()
     {
-        super("Create Real");
+        super("Create Int");
 
         // Inputs
         addInputEntryNotNeeded(SET_INPUT_INDEX, "Set", Number.class);

@@ -126,56 +126,6 @@ public abstract class DefaultGXEntity implements GXEntity
         }
     }
 
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DefaultGXEntity that = (DefaultGXEntity) o;
-
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (inputsNames != null ? !inputsNames.equals(that.inputsNames) : that.inputsNames != null) return false;
-        if (indicesNeededInputs != null ? !indicesNeededInputs.equals(that.indicesNeededInputs) : that
-                .indicesNeededInputs != null)
-            return false;
-        if (indicesVariableInputs != null ? !indicesVariableInputs.equals(that.indicesVariableInputs) : that
-                .indicesVariableInputs != null)
-            return false;
-        if (inputClasses != null ? !inputClasses.equals(that.inputClasses) : that.inputClasses != null) return false;
-        if (inputEntities != null ? !inputEntities.equals(that.inputEntities) : that.inputEntities != null)
-            return false;
-        if (outputsNames != null ? !outputsNames.equals(that.outputsNames) : that.outputsNames != null) return false;
-        if (outputFromInputEntitiesIndices != null ? !outputFromInputEntitiesIndices.equals(that.outputFromInputEntitiesIndices) : that.outputFromInputEntitiesIndices != null)
-            return false;
-        if (indicesVariableOutputs != null ? !indicesVariableOutputs.equals(that.indicesVariableOutputs) : that
-                .indicesVariableOutputs != null)
-            return false;
-        if (outputClasses != null ? !outputClasses.equals(that.outputClasses) : that.outputClasses != null)
-            return false;
-        if (outputEntities != null ? !outputEntities.equals(that.outputEntities) : that.outputEntities != null)
-            return false;
-        return inputFromOutputEntitiesIndices != null ? inputFromOutputEntitiesIndices.equals(that.inputFromOutputEntitiesIndices) : that.inputFromOutputEntitiesIndices == null;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (inputsNames != null ? inputsNames.hashCode() : 0);
-        result = 31 * result + (indicesNeededInputs != null ? indicesNeededInputs.hashCode() : 0);
-        result = 31 * result + (indicesVariableInputs != null ? indicesVariableInputs.hashCode() : 0);
-        result = 31 * result + (inputClasses != null ? inputClasses.hashCode() : 0);
-        result = 31 * result + (inputEntities != null ? inputEntities.hashCode() : 0);
-        result = 31 * result + (outputsNames != null ? outputsNames.hashCode() : 0);
-        result = 31 * result + (outputFromInputEntitiesIndices != null ? outputFromInputEntitiesIndices.hashCode() : 0);
-        result = 31 * result + (indicesVariableOutputs != null ? indicesVariableOutputs.hashCode() : 0);
-        result = 31 * result + (outputClasses != null ? outputClasses.hashCode() : 0);
-        result = 31 * result + (outputEntities != null ? outputEntities.hashCode() : 0);
-        result = 31 * result + (inputFromOutputEntitiesIndices != null ? inputFromOutputEntitiesIndices.hashCode() : 0);
-        return result;
-    }
-
     public String getName()
     {
         return name;
