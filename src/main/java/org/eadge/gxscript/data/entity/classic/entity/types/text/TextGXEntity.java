@@ -26,7 +26,7 @@ public class TextGXEntity extends DefaultVariableGXEntity
     {
         super("Create text");
 
-        addInputEntryNotNeeded(SET_INPUT_INDEX, "Set", String.class);
+        addInputEntryNotNeeded(SET_INPUT_INDEX, "Set", String.class, true);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         addOutputEntry(TEXT_OUTPUT_INDEX, "Variable", String.class);

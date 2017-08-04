@@ -36,7 +36,7 @@ public class BoolGXEntity extends DefaultVariableGXEntity
         super("Create Bool");
 
         // Inputs
-        addInputEntryNotNeeded(SET_INPUT_INDEX, "Set", Boolean.class);
+        addInputEntryNotNeeded(SET_INPUT_INDEX, "Set", Boolean.class, true);
         addInputEntryNotNeeded(NUMBER_INPUT_INDEX, "Number", Number.class);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 

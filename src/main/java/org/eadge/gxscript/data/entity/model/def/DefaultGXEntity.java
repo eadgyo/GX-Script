@@ -31,6 +31,11 @@ public abstract class DefaultGXEntity implements GXEntity
     protected Set<Integer> indicesNeededInputs = new HashSet<>();
 
     /**
+     * Indices of all options inputs
+     */
+    protected Set<Integer> indicesOptionInputs = new HashSet<>();
+
+    /**
      * Indices of all inputs taking variables
      */
     protected Set<Integer> indicesVariableInputs = new HashSet<>();
@@ -494,10 +499,27 @@ public abstract class DefaultGXEntity implements GXEntity
         addInputEntryNotNeeded(getNumberOfInputs(), inputName, cl);
     }
 
+    public void addInputEntryNotNeeded(String inputName, Class cl, boolean optionInput)
+    {
+        addInputEntryNotNeeded(getNumberOfInputs(), inputName, cl, optionInput);
+    }
+
     public void addInputEntry(int inputIndex, String inputName, Class cl)
     {
         addInputEntryNotNeeded(inputIndex, inputName, cl);
         indicesNeededInputs.add(inputIndex);
+    }
+
+    public void setOptionInput(int inputIndex, boolean optionInput)
+    {
+        if (optionInput)
+        {
+            indicesOptionInputs.add(inputIndex);
+        }
+        else
+        {
+            indicesOptionInputs.remove(inputIndex);
+        }
     }
 
     @Override
@@ -540,6 +562,28 @@ public abstract class DefaultGXEntity implements GXEntity
         inputsNames.add(inputIndex, inputName);
     }
 
+    /**
+     * Add not needed script entry at the given index
+     * @param inputIndex script index
+     * @param inputName name of script entry
+     * @param cl class of the script, void if it's just a link to another GXEntity
+     * @param isOption test if it's an option index
+     */
+    public void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl, boolean isOption)
+    {
+        addInputEntryNotNeeded(inputIndex,inputName, cl);
+        setOptionInput(inputIndex, isOption);
+    }
+
+    public boolean getOptionInput(int inputIndex)
+    {
+        return indicesOptionInputs.contains(inputIndex);
+    }
+
+    public Set<Integer> getIndicesOptionInputs()
+    {
+        return indicesOptionInputs;
+    }
 
     /**
      * Change script entry name
