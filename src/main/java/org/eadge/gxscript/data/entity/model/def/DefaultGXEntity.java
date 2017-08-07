@@ -33,7 +33,7 @@ public abstract class DefaultGXEntity implements GXEntity
     /**
      * Indices of all options inputs
      */
-    protected Set<Integer> indicesOptionInputs = new HashSet<>();
+    protected Map<Integer, Object> indicesOptionInputs = new HashMap<>();
 
     /**
      * Indices of all inputs taking variables
@@ -90,10 +90,6 @@ public abstract class DefaultGXEntity implements GXEntity
         this.name = name;
     }
 
-    /*public DefaultGXEntity()
-    {
-        this.name = "";
-    }*/
 
     @Override
     public Object clone()
@@ -499,9 +495,9 @@ public abstract class DefaultGXEntity implements GXEntity
         addInputEntryNotNeeded(getNumberOfInputs(), inputName, cl);
     }
 
-    public void addInputEntryNotNeeded(String inputName, Class cl, boolean optionInput)
+    public void addInputEntryNotNeeded(String inputName, Class cl, Object inputValue)
     {
-        addInputEntryNotNeeded(getNumberOfInputs(), inputName, cl, optionInput);
+        addInputEntryNotNeeded(getNumberOfInputs(), inputName, cl, inputValue);
     }
 
     public void addInputEntry(int inputIndex, String inputName, Class cl)
@@ -510,16 +506,14 @@ public abstract class DefaultGXEntity implements GXEntity
         indicesNeededInputs.add(inputIndex);
     }
 
-    public void setOptionInput(int inputIndex, boolean optionInput)
+    public void addOptionInput(int inputIndex, Object optionValue)
     {
-        if (optionInput)
-        {
-            indicesOptionInputs.add(inputIndex);
-        }
-        else
-        {
-            indicesOptionInputs.remove(inputIndex);
-        }
+        indicesOptionInputs.put(inputIndex, optionValue);
+    }
+
+    public void removeOptionInput(int inputIndex)
+    {
+        indicesOptionInputs.remove(inputIndex);
     }
 
     @Override
@@ -567,22 +561,24 @@ public abstract class DefaultGXEntity implements GXEntity
      * @param inputIndex script index
      * @param inputName name of script entry
      * @param cl class of the script, void if it's just a link to another GXEntity
-     * @param isOption test if it's an option index
+     * @param optionValue saved reference to option value
      */
-    public void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl, boolean isOption)
+    public void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl, Object optionValue)
     {
         addInputEntryNotNeeded(inputIndex,inputName, cl);
-        setOptionInput(inputIndex, isOption);
+        addOptionInput(inputIndex, optionValue);
     }
 
     public boolean getOptionInput(int inputIndex)
     {
-        return indicesOptionInputs.contains(inputIndex);
+        return indicesOptionInputs.containsKey(inputIndex);
     }
+
+    public Object getOptionValue(int inputIndex) { return indicesOptionInputs.get(inputIndex); }
 
     public Set<Integer> getIndicesOptionInputs()
     {
-        return indicesOptionInputs;
+        return indicesOptionInputs.keySet();
     }
 
     /**

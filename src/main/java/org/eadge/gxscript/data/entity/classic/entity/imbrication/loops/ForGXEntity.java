@@ -22,17 +22,17 @@ public class ForGXEntity extends DefaultStartImbricationGXEntity
     public static final int INDEX_FOR_OUTPUT_INDEX = 1;
     public static final int CONTINUE_OUTPUT_INDEX  = 2;
 
-    private int start = 0;
-    private int add   = 1;
-    private int max   = 10;
+    private Integer start = 0;
+    private Integer add   = 1;
+    private Integer max   = 10;
 
     public ForGXEntity()
     {
         super("For");
 
-        addInputEntryNotNeeded(START_INPUT_INDEX, "Start", Integer.class);
-        addInputEntryNotNeeded(ADD_INPUT_INDEX, "Add", Integer.class);
-        addInputEntryNotNeeded(MAX_INPUT_INDEX, "Max", Integer.class);
+        addInputEntryNotNeeded(START_INPUT_INDEX, "Start", Integer.class, start);
+        addInputEntryNotNeeded(ADD_INPUT_INDEX, "Add", Integer.class, add);
+        addInputEntryNotNeeded(MAX_INPUT_INDEX, "Max", Integer.class, max);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         addOutputImbricatedEntry(DO_OUTPUT_INDEX, 0, "Do", Void.class);

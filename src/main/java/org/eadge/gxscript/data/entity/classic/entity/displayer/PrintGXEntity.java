@@ -29,7 +29,7 @@ public class PrintGXEntity extends DefaultGXEntity
         super("Print");
 
         // Add source script
-        addInputEntryNotNeeded(SOURCE_INPUT_INDEX, "Source", Object.class);
+        addInputEntryNotNeeded(SOURCE_INPUT_INDEX, "Source", Object.class, defaultString);
 
         // Add next script
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);

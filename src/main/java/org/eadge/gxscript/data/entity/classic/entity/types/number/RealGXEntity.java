@@ -35,7 +35,7 @@ public class RealGXEntity extends DefaultVariableGXEntity
         super("Create Real");
 
         // Inputs
-        addInputEntryNotNeeded(SET_INPUT_INDEX, "Set", Number.class, true);
+        addInputEntryNotNeeded(SET_INPUT_INDEX, "Set", Number.class, defaultFloat);
 
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
