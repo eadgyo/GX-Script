@@ -569,7 +569,7 @@ public abstract class DefaultGXEntity implements GXEntity
         addOptionInput(inputIndex, optionValue);
     }
 
-    public boolean getOptionInput(int inputIndex)
+    public boolean isOptionInput(int inputIndex)
     {
         return indicesOptionInputs.containsKey(inputIndex);
     }
