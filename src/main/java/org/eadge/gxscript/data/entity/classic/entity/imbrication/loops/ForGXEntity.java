@@ -22,17 +22,17 @@ public class ForGXEntity extends DefaultStartImbricationGXEntity
     public static final int INDEX_FOR_OUTPUT_INDEX = 1;
     public static final int CONTINUE_OUTPUT_INDEX  = 2;
 
-    private Integer start = 0;
-    private Integer add   = 1;
-    private Integer max   = 10;
+    public final static Integer START = 0;
+    public final static  Integer ADD   = 1;
+    public final static  Integer MAX   = 10;
 
     public ForGXEntity()
     {
         super("For");
 
-        addInputEntryNotNeeded(START_INPUT_INDEX, "Start", Integer.class, start);
-        addInputEntryNotNeeded(ADD_INPUT_INDEX, "Add", Integer.class, add);
-        addInputEntryNotNeeded(MAX_INPUT_INDEX, "Max", Integer.class, max);
+        addInputEntryNotNeeded(START_INPUT_INDEX, "Start", Integer.class, START);
+        addInputEntryNotNeeded(ADD_INPUT_INDEX, "Add", Integer.class, ADD);
+        addInputEntryNotNeeded(MAX_INPUT_INDEX, "Max", Integer.class, MAX);
         addInputEntryNotNeeded(NEXT_INPUT_INDEX, "Next", Void.class);
 
         addOutputImbricatedEntry(DO_OUTPUT_INDEX, 0, "Do", Void.class);
@@ -43,9 +43,9 @@ public class ForGXEntity extends DefaultStartImbricationGXEntity
     @Override
     public Func getFunc()
     {
-        final Integer startIndex = (getInputEntity(START_INPUT_INDEX) != null) ? null : this.start;
-        Integer       add        = (getInputEntity(ADD_INPUT_INDEX) != null) ? null : this.add;
-        final Integer endIndex   = (getInputEntity(MAX_INPUT_INDEX) != null) ? null : this.max;
+        final Integer startIndex = (getInputEntity(START_INPUT_INDEX) != null) ? null : this.getStart();
+        Integer       add        = (getInputEntity(ADD_INPUT_INDEX) != null) ? null : this.getAdd();
+        final Integer endIndex   = (getInputEntity(MAX_INPUT_INDEX) != null) ? null : this.getMax();
 
         return new Func()
         {
@@ -119,33 +119,33 @@ public class ForGXEntity extends DefaultStartImbricationGXEntity
         }.init(startIndex, add, endIndex);
     }
 
-    public int getStart()
-    {
-        return start;
-    }
-
     public void setStart(int start)
     {
-        this.start = start;
-    }
-
-    public int getAdd()
-    {
-        return add;
+        setOptionValue(START_INPUT_INDEX, start);
     }
 
     public void setAdd(int add)
     {
-        this.add = add;
-    }
-
-    public int getMax()
-    {
-        return max;
+        setOptionValue(ADD_INPUT_INDEX, add);
     }
 
     public void setMax(int max)
     {
-        this.max = max;
+        setOptionValue(MAX_INPUT_INDEX, max);
+    }
+
+    public int getStart()
+    {
+        return (int) getOptionValue(START_INPUT_INDEX);
+    }
+
+    public int getAdd()
+    {
+        return (int) getOptionValue(ADD_INPUT_INDEX);
+    }
+
+    public int getMax()
+    {
+        return (int) getOptionValue(MAX_INPUT_INDEX);
     }
 }

@@ -21,16 +21,9 @@ public class IntGXEntity extends DefaultVariableGXEntity
     /**
      * Integer holding default value
      */
-    private Integer defaultInt = 0;
+    public final static Integer DEFAULT_INT = 0;
 
     public IntGXEntity(int defaultInt)
-    {
-        this();
-
-        this.defaultInt = defaultInt;
-    }
-
-    public IntGXEntity()
     {
         super("Create Int");
 
@@ -43,6 +36,11 @@ public class IntGXEntity extends DefaultVariableGXEntity
         addOutputEntry(INT_OUTPUT_INDEX, "Variable", Integer.class);
 
         addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
+    }
+
+    public IntGXEntity()
+    {
+        this(DEFAULT_INT);
     }
 
     @Override
@@ -85,19 +83,19 @@ public class IntGXEntity extends DefaultVariableGXEntity
                 {
                     program.pushInMemory(integer);
                 }
-            }.init(defaultInt);
+            }.init(getDefaultInt());
 
         }
     }
 
     public Integer getDefaultInt()
     {
-        return defaultInt;
+        return (Integer) getOptionValue(SET_INPUT_INDEX);
     }
 
     public void setDefaultInt(Integer defaultInt)
     {
-        this.defaultInt = defaultInt;
+        setOptionValue(SET_INPUT_INDEX, defaultInt);
     }
 
     @Override

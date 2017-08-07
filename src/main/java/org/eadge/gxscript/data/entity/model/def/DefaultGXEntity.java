@@ -576,6 +576,8 @@ public abstract class DefaultGXEntity implements GXEntity
 
     public Object getOptionValue(int inputIndex) { return indicesOptionInputs.get(inputIndex); }
 
+    public void setOptionValue(int inputIndex, Object object) { indicesOptionInputs.put(inputIndex, object); }
+
     public Set<Integer> getIndicesOptionInputs()
     {
         return indicesOptionInputs.keySet();

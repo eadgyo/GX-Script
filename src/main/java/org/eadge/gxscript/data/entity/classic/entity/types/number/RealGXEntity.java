@@ -21,16 +21,14 @@ public class RealGXEntity extends DefaultVariableGXEntity
     /**
      * Float holding default value
      */
-    private Float defaultFloat = 0f;
-
-    public RealGXEntity(float defaultFloat)
-    {
-        this();
-
-        this.defaultFloat = defaultFloat;
-    }
+    public final static Float DEFAULT_FLOAT = 0f;
 
     public RealGXEntity()
+    {
+        this(DEFAULT_FLOAT);
+    }
+
+    public RealGXEntity(float defaultFloat)
     {
         super("Create Real");
 
@@ -85,18 +83,19 @@ public class RealGXEntity extends DefaultVariableGXEntity
                 {
                     program.pushInMemory(real);
                 }
-            }.init(defaultFloat);
+            }.init(getDefaultFloat());
         }
     }
 
-    public Float getDefaultFloat()
+
+    public float getDefaultFloat()
     {
-        return defaultFloat;
+        return (float) getOptionValue(SET_INPUT_INDEX);
     }
 
-    public void setDefaultFloat(Float defaultFloat)
+    public void setDefaultFloat(float defaultFloat)
     {
-        this.defaultFloat = defaultFloat;
+        setOptionValue(SET_INPUT_INDEX, defaultFloat);
     }
 
     @Override

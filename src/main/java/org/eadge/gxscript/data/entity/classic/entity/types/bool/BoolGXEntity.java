@@ -22,16 +22,14 @@ public class BoolGXEntity extends DefaultVariableGXEntity
     /**
      * Integer holding default value
      */
-    private Boolean defaultBool = false;
-
-    public BoolGXEntity(Boolean defaultBool)
-    {
-        this();
-
-        this.defaultBool = defaultBool;
-    }
+    public final static Boolean DEFAULT_BOOL = false;
 
     public BoolGXEntity()
+    {
+        this(DEFAULT_BOOL);
+    }
+
+    public BoolGXEntity(boolean defaultBool)
     {
         super("Create Bool");
 
@@ -125,19 +123,19 @@ public class BoolGXEntity extends DefaultVariableGXEntity
                 {
                     program.pushInMemory(bool);
                 }
-            }.init(defaultBool);
+            }.init(getDefaultBool());
 
         }
     }
 
-    public Boolean getDefaultBool()
+    public boolean getDefaultBool()
     {
-        return defaultBool;
+        return (boolean) getOptionValue(SET_INPUT_INDEX);
     }
 
-    public void setDefaultBool(Boolean defaultBool)
+    public void setDefaultBool(boolean defaultBool)
     {
-        this.defaultBool = defaultBool;
+        setOptionValue(SET_INPUT_INDEX, defaultBool);
     }
 
     @Override

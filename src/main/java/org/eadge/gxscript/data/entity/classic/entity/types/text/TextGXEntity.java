@@ -20,9 +20,9 @@ public class TextGXEntity extends DefaultVariableGXEntity
     /**
      * String holding default value
      */
-    private String defaultString = "Text";
+    public final static String DEFAULT_STRING = "Text";
 
-    public TextGXEntity()
+    public TextGXEntity(String defaultString)
     {
         super("Create text");
 
@@ -33,11 +33,9 @@ public class TextGXEntity extends DefaultVariableGXEntity
         addOutputEntry(CONTINUE_OUTPUT_INDEX, "Continue", Void.class);
     }
 
-    public TextGXEntity(String defaultString)
+    public TextGXEntity()
     {
-        this();
-
-        this.defaultString = defaultString;
+        this(DEFAULT_STRING);
     }
 
     @Override
@@ -80,7 +78,17 @@ public class TextGXEntity extends DefaultVariableGXEntity
                 {
                     program.pushInMemory(string);
                 }
-            }.init(defaultString);
+            }.init(getDefaultString());
         }
+    }
+
+    public void setDefaultString(String defaultString)
+    {
+        setOptionValue(SET_INPUT_INDEX, defaultString);
+    }
+
+    public String getDefaultString()
+    {
+        return (String) getOptionValue(SET_INPUT_INDEX);
     }
 }

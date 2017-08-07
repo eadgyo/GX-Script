@@ -15,16 +15,14 @@ public class PrintGXEntity extends DefaultGXEntity
 
     public final static int CONTINUE_OUTPUT_INDEX = 0;
 
-    private String defaultString = "";
-
-    public PrintGXEntity(String defaultString)
-    {
-        this();
-
-        this.defaultString = defaultString;
-    }
+    public final static String DEFAULT_STRING = "";
 
     public PrintGXEntity()
+    {
+        this(DEFAULT_STRING);
+    }
+
+    public PrintGXEntity(String defaultString)
     {
         super("Print");
 
@@ -77,17 +75,17 @@ public class PrintGXEntity extends DefaultGXEntity
                     // Print default string
                     System.out.println(text);
                 }
-            }.init(defaultString);
+            }.init(getDefaultString());
         }
     }
 
     public String getDefaultString()
     {
-        return defaultString;
+        return (String) getOptionValue(SOURCE_INPUT_INDEX);
     }
 
     public void setDefaultString(String defaultString)
     {
-        this.defaultString = defaultString;
+        setOptionValue(SOURCE_INPUT_INDEX, defaultString);
     }
 }
