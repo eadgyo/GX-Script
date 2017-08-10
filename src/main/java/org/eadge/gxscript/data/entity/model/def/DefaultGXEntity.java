@@ -341,19 +341,24 @@ public abstract class DefaultGXEntity implements GXEntity
                 // Remove the corresponding element
                 outputEntitiesSet.remove(outputEntity);
 
-                // Try to add replacement
-                GXEntity inputEntity = getInputEntity(outputIndex);
-                if (inputEntity != null)
-                {
-                    // Search for replace entity
-                    GXEntity replaceEntity = replacedMap.get(inputEntity);
+                // Search for replace entity
+                GXEntity replaceEntity = replacedMap.get(outputEntity);
 
-                    if (replaceEntity != null)
+                // Replace corresponding entity
+                outputEntitiesSet.add(replaceEntity);
+
+                List<Map.Entry<GXEntity, Integer>> entries = inputFromOutputEntitiesIndices.get(outputIndex);
+                Map.Entry<GXEntity, Integer>       entry   = null;
+
+                for (Map.Entry<GXEntity, Integer> gxEntityIntegerEntry : entries)
+                {
+                    if (gxEntityIntegerEntry.getKey() == outputEntity)
                     {
-                        // Replace corresponding entity
-                        outputEntitiesSet.add(replaceEntity);
+                        entry = gxEntityIntegerEntry;
                     }
                 }
+
+                ((MyEntry) entry).setKey(replaceEntity);
             }
         }
     }
