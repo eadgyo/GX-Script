@@ -1,15 +1,12 @@
 package org.eadge.gxscript.tools;
 
-import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
-import org.eadge.gxscript.data.entity.model.base.GXEntity;
-import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
-import org.eadge.gxscript.data.entity.model.base.StartImbricationGXEntity;
 import org.eadge.gxscript.data.compile.imbrication.ImbricationNode;
+import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.entity.model.base.StartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by eadgyo on 03/08/16.
@@ -170,7 +167,7 @@ public class Tools
      * @param entities used collection of entities
      * @return collection of output GXScript entities
      */
-    public static Collection<? extends OutputScriptGXEntity> getOutputGXScriptEntities(Set<GXEntity> entities)
+    public static Collection<? extends OutputScriptGXEntity> getOutputGXScriptEntities(List<GXEntity> entities)
     {
         ArrayList<OutputScriptGXEntity> outputScriptGXEntities = new ArrayList<>();
 

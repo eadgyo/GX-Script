@@ -1,15 +1,12 @@
 package org.eadge.gxscript.data.compile.script;
 
-import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
 import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
 import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
 import org.eadge.gxscript.tools.Tools;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by eadgyo on 03/08/16.
@@ -21,22 +18,22 @@ public class RawGXScript implements Serializable
     /**
      * Keeps all entities
      */
-    private Set<GXEntity> entities = new HashSet<>();
+    private List<GXEntity> entities = new ArrayList<>();
 
     /**
      * Keeps all entities with no inputs used
      */
-    private Set<GXEntity> startingEntities = new HashSet<>();
+    private List<GXEntity> startingEntities = new ArrayList<>();
 
     /**
      * Keeps all parameters entities
      */
-    private Set<InputScriptGXEntity> inputScriptGXEntities = new HashSet<>();
+    private List<InputScriptGXEntity> inputScriptGXEntities = new ArrayList<>();
 
     /**
      * Keeps all outputs entities
      */
-    private Set<OutputScriptGXEntity> outputScriptGXEntities = new HashSet<>();
+    private List<OutputScriptGXEntity> outputScriptGXEntities = new ArrayList<>();
 
     public RawGXScript()
     {
@@ -70,7 +67,7 @@ public class RawGXScript implements Serializable
         return entities;
     }
 
-    public void setEntities(Set<GXEntity> entities)
+    public void setEntities(List<GXEntity> entities)
     {
         this.entities = entities;
     }

@@ -73,12 +73,12 @@ public abstract class DefaultGXEntity implements GXEntity
     /**
      * Linked on outputs entities
      */
-    protected ArrayList<Set<GXEntity>> outputEntities = new ArrayList<>();
+    protected ArrayList<List<GXEntity>> outputEntities = new ArrayList<>();
 
     /**
      * Hold the inputs indices of the outputs entities
      */
-    protected ArrayList<Map<GXEntity, Integer>> inputFromOutputEntitiesIndices = new ArrayList<>();
+    protected ArrayList<List<Map.Entry<GXEntity, Integer>>> inputFromOutputEntitiesIndices = new ArrayList<>();
 
     public DefaultGXEntity()
     {
@@ -107,15 +107,15 @@ public abstract class DefaultGXEntity implements GXEntity
             clone.indicesVariableOutputs = new HashSet<>(indicesVariableOutputs);
             clone.outputClasses = new ArrayList<>(outputClasses);
             clone.outputEntities = new ArrayList<>();
-            for (Set<GXEntity> outputEntity : outputEntities)
+            for (List<GXEntity> outputEntity : outputEntities)
             {
-                clone.outputEntities.add(new HashSet<GXEntity>(outputEntity));
+                clone.outputEntities.add(new ArrayList<GXEntity>(outputEntity));
             }
 
             clone.inputFromOutputEntitiesIndices = new ArrayList<>();
-            for (Map<GXEntity, Integer> inputFromOutputEntitiesIndex : inputFromOutputEntitiesIndices)
+            for (List<Map.Entry<GXEntity, Integer>> inputFromOutputEntitiesIndex : inputFromOutputEntitiesIndices)
             {
-                clone.inputFromOutputEntitiesIndices.add(new HashMap<GXEntity, Integer>(inputFromOutputEntitiesIndex));
+                clone.inputFromOutputEntitiesIndices.add(new ArrayList<>(inputFromOutputEntitiesIndex));
             }
 
             return clone;
@@ -334,7 +334,7 @@ public abstract class DefaultGXEntity implements GXEntity
         int numberOfOutputs = getNumberOfOutputs();
         for (int outputIndex = 0; outputIndex < numberOfOutputs; outputIndex++)
         {
-            Set<GXEntity> outputEntitiesSet = outputEntities.get(outputIndex);
+            List<GXEntity> outputEntitiesSet = outputEntities.get(outputIndex);
 
             for (GXEntity outputEntity : outputEntitiesSet)
             {
@@ -423,7 +423,14 @@ public abstract class DefaultGXEntity implements GXEntity
     @Override
     public int getIndexOfInputFromEntityOnOutput(int outputIndex, GXEntity outputGXEntity)
     {
-        return inputFromOutputEntitiesIndices.get(outputIndex).get(outputGXEntity);
+        List<Map.Entry<GXEntity, Integer>> entries = inputFromOutputEntitiesIndices.get(outputIndex);
+
+        for (Map.Entry<GXEntity, Integer> entry : entries)
+        {
+            if (entry.getKey() == outputGXEntity)
+                return entry.getValue();
+        }
+        return -1;
     }
 
     @Override
@@ -736,8 +743,8 @@ public abstract class DefaultGXEntity implements GXEntity
             indicesVariableOutputs.add(outputIndex);
         }
 
-        outputEntities.add(outputIndex, new HashSet<GXEntity>());
-        inputFromOutputEntitiesIndices.add(outputIndex, new HashMap<GXEntity, Integer>());
+        outputEntities.add(outputIndex, new ArrayList<GXEntity>());
+        inputFromOutputEntitiesIndices.add(outputIndex, new ArrayList<Map.Entry<GXEntity, Integer>>());
         outputClasses.add(outputIndex, cl);
         outputsNames.add(outputIndex, outputName);
     }
@@ -815,26 +822,31 @@ public abstract class DefaultGXEntity implements GXEntity
         return indicesVariableOutputs.contains(outputIndex);
     }
 
-    @Override
-    public void linkAsInput(int inputIndex, int entityOutput, GXEntity gxEntity)
+    public static void linkAsInput(int inputIndex, GXEntity inputEntity, int entityOutput, GXEntity gxEntity)
     {
         try
         {
             // Get classes
-            Class inputClass = getInputClass(inputIndex);
+            Class inputClass = inputEntity.getInputClass(inputIndex);
             Class outputClass = gxEntity.getOutputClass(entityOutput);
 
             // If they have not matching classes
             if (!Tools.isEqualOrDerivedFrom(outputClass, inputClass) && !(gxEntity instanceof InputScriptGXEntity))
                 throw new NotMatchingInputOutputClasses();
 
-            addLinkInput(inputIndex, entityOutput, gxEntity);
-            gxEntity.addLinkOutput(entityOutput, inputIndex, this);
+            inputEntity.addLinkInput(inputIndex, entityOutput, gxEntity);
+            gxEntity.addLinkOutput(entityOutput, inputIndex, inputEntity);
         }
         catch (NotMatchingInputOutputClasses notMatchingInputOutputClasses)
         {
             notMatchingInputOutputClasses.printStackTrace();
         }
+    }
+
+    @Override
+    public void linkAsInput(int inputIndex, int entityOutput, GXEntity gxEntity)
+    {
+        linkAsInput(inputIndex, this, entityOutput, gxEntity);
     }
 
     @Override
@@ -865,7 +877,8 @@ public abstract class DefaultGXEntity implements GXEntity
     public void addLinkOutput(int outputIndex, int inputEntityIndex, GXEntity GXEntity)
     {
         outputEntities.get(outputIndex).add(GXEntity);
-        inputFromOutputEntitiesIndices.get(outputIndex).put(GXEntity, inputEntityIndex);
+        inputFromOutputEntitiesIndices.get(outputIndex).add(new MyEntry<GXEntity, Integer>(GXEntity,
+                                                                                           inputEntityIndex));
     }
 
     @Override
@@ -884,7 +897,7 @@ public abstract class DefaultGXEntity implements GXEntity
     @Override
     public void changeIndexOfInputFromEntityOnOutput(int outputIndex, GXEntity outputGXEntity, int newInputIndex)
     {
-        inputFromOutputEntitiesIndices.get(outputIndex).put(outputGXEntity, newInputIndex);
+        inputFromOutputEntitiesIndices.get(outputIndex).add(new MyEntry<>(outputGXEntity, newInputIndex));
     }
 
     /**

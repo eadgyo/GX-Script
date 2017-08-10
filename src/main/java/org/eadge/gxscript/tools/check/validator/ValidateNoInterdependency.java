@@ -130,10 +130,8 @@ public class ValidateNoInterdependency extends ValidatorModel
                 // There is interdependency
                 // Add all lane to error
                 Set<GXEntity> onLaneEntities = firstElement.getOnLaneEntities();
-                for (GXEntity onLaneGXEntity : onLaneEntities)
-                {
-                    entitiesWithError.add(onLaneGXEntity);
-                }
+                entitiesWithError.addAll(onLaneEntities);
+
                 // Stop process, it's not validated
                 return false;
             }
