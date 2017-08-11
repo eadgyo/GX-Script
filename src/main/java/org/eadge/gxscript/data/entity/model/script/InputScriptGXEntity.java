@@ -114,4 +114,16 @@ public class InputScriptGXEntity extends DefaultGXEntity
         // OutputAddresses are already allocated, do not alloc output
         return null;
     }
+
+    @Override
+    public boolean isScriptInput()
+    {
+        return true;
+    }
+
+    @Override
+    public InputScriptGXEntity getScriptInputEntity()
+    {
+        return this;
+    }
 }

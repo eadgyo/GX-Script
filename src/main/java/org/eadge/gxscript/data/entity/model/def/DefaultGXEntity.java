@@ -1,14 +1,15 @@
 package org.eadge.gxscript.data.entity.model.def;
 
-import org.eadge.gxscript.data.entity.model.base.GXEntity;
-import org.eadge.gxscript.data.entity.model.base.StartImbricationGXEntity;
-import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
-import org.eadge.gxscript.data.compile.script.func.Func;
 import org.eadge.gxscript.data.compile.script.address.DataAddress;
 import org.eadge.gxscript.data.compile.script.address.FuncDataAddresses;
 import org.eadge.gxscript.data.compile.script.address.OutputAddresses;
-import org.eadge.gxscript.tools.Tools;
+import org.eadge.gxscript.data.compile.script.func.Func;
+import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.entity.model.base.StartImbricationGXEntity;
+import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
 import org.eadge.gxscript.data.exception.NotMatchingInputOutputClasses;
+import org.eadge.gxscript.tools.Tools;
 
 import java.util.*;
 
@@ -1214,5 +1215,29 @@ public abstract class DefaultGXEntity implements GXEntity
     public boolean isScriptInput()
     {
         return this instanceof InputScriptGXEntity;
+    }
+
+    @Override
+    public StartImbricationGXEntity getStartImbricationEntity()
+    {
+        return isImbrication() ? (StartImbricationGXEntity) this : null;
+    }
+
+    @Override
+    public InputScriptGXEntity getScriptInputEntity()
+    {
+        return isScriptInput() ? (InputScriptGXEntity) this : null;
+    }
+
+    @Override
+    public boolean isScriptOutput()
+    {
+        return this instanceof OutputScriptGXEntity;
+    }
+
+    @Override
+    public OutputScriptGXEntity getScriptOutputEntity()
+    {
+        return isScriptOutput() ? (OutputScriptGXEntity) this : null;
     }
 }

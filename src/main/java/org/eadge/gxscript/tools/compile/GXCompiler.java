@@ -1,15 +1,14 @@
 package org.eadge.gxscript.tools.compile;
 
-import org.eadge.gxscript.data.entity.model.base.GXEntity;
-import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
-import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
-import org.eadge.gxscript.data.entity.model.base.StartImbricationGXEntity;
 import org.eadge.gxscript.data.compile.imbrication.ImbricationNode;
 import org.eadge.gxscript.data.compile.imbrication.compile.ImbricationNodeC;
 import org.eadge.gxscript.data.compile.script.CompiledGXScript;
 import org.eadge.gxscript.data.compile.script.RawGXScript;
 import org.eadge.gxscript.data.compile.script.address.DataAddress;
 import org.eadge.gxscript.data.compile.script.address.OutputAddresses;
+import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
 import org.eadge.gxscript.tools.Tools;
 
 import java.util.*;
@@ -91,7 +90,7 @@ public class GXCompiler
                 if (beingTreated.isImbrication())
                 {
                     // Start a new imbrication node on top of the highest imbrication node
-                    highestImbricationNode.startImbricationNode((StartImbricationGXEntity) beingTreated);
+                    highestImbricationNode.startImbricationNode(beingTreated.getStartImbricationEntity());
                 }
                 else
                 {

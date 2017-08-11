@@ -154,9 +154,9 @@ public class Tools
 
         for (GXEntity entity : entities)
         {
-            if (Tools.isEqualOrDerivedFrom(InputScriptGXEntity.class, entity.getClass()))
+            if (entity.isScriptInput())
             {
-                inputScriptGXEntities.add((InputScriptGXEntity) entity);
+                inputScriptGXEntities.add(entity.getScriptInputEntity());
             }
         }
         return inputScriptGXEntities;
@@ -173,9 +173,9 @@ public class Tools
 
         for (GXEntity entity : entities)
         {
-            if (Tools.isEqualOrDerivedFrom(OutputScriptGXEntity.class, entity.getClass()))
+            if (entity.isScriptOutput())
             {
-                outputScriptGXEntities.add((OutputScriptGXEntity) entity);
+                outputScriptGXEntities.add(entity.getScriptOutputEntity());
             }
         }
         return outputScriptGXEntities;

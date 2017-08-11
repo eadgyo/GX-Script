@@ -177,4 +177,16 @@ public class OutputScriptGXEntity extends DefaultGXEntity
         // OutputAddresses are already allocated, do not alloc output
         return null;
     }
+
+    @Override
+    public boolean isScriptOutput()
+    {
+        return true;
+    }
+
+    @Override
+    public OutputScriptGXEntity getScriptOutputEntity()
+    {
+        return this;
+    }
 }

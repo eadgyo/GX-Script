@@ -196,4 +196,16 @@ public abstract class DefaultStartImbricationGXEntity extends DefaultGXEntity im
         // Add link parameters to calledFunctionParameters
         calledFunctionsParameters.add(funcParameters);
     }
+
+    @Override
+    public boolean isImbrication()
+    {
+        return true;
+    }
+
+    @Override
+    public StartImbricationGXEntity getStartImbricationEntity()
+    {
+        return this;
+    }
 }

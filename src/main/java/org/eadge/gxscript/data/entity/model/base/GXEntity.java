@@ -4,6 +4,8 @@ import org.eadge.gxscript.data.compile.script.func.Func;
 import org.eadge.gxscript.data.compile.script.address.DataAddress;
 import org.eadge.gxscript.data.compile.script.address.FuncDataAddresses;
 import org.eadge.gxscript.data.compile.script.address.OutputAddresses;
+import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
+import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -409,4 +411,28 @@ public interface GXEntity extends Cloneable, Serializable
      * @return true if it is a script input entity, false otherwise
      */
     public boolean isScriptInput();
+
+    /**
+     * If the element is an imbrication entity
+     * @return the element converted
+     */
+    public StartImbricationGXEntity getStartImbricationEntity();
+
+    /**
+     * If the element is a script input entity
+     * @return the element converted
+     */
+    public InputScriptGXEntity getScriptInputEntity();
+
+    /**
+     * Check if the entity is a script output entity
+     * @return true if it is a script output entity, false otherwise
+     */
+    public boolean isScriptOutput();
+
+    /**
+     * If the element is a script output entity
+     * @return the element converted
+     */
+    public OutputScriptGXEntity getScriptOutputEntity();
 }
