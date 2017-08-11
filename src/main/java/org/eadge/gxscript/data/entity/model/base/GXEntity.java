@@ -397,4 +397,16 @@ public interface GXEntity extends Cloneable, Serializable
      * @return true if one or more inputs are used, false otherwise
      */
     public boolean hasInputsUsed();
+
+    /**
+     * Check if the entity is a imbrication entity
+     * @return true if it is an imbrication entity, false otherwise
+     */
+    public boolean isImbrication();
+
+    /**
+     * Check if the entity is a script input entity
+     * @return true if it is a script input entity, false otherwise
+     */
+    public boolean isScriptInput();
 }

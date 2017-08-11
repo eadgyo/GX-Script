@@ -67,7 +67,7 @@ public class ValidateImbrication extends ValidatorModel
                 }
 
                 // If the GXEntity is a start imbrication GXEntity
-                if (beingTreated instanceof StartImbricationGXEntity)
+                if (beingTreated.isImbrication())
                 {
                     // Start a new imbrication node on top of the highest imbrication node
                     highestImbricationNode.startImbricationNode((StartImbricationGXEntity) beingTreated);

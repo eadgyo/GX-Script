@@ -1,6 +1,7 @@
 package org.eadge.gxscript.data.entity.model.def;
 
 import org.eadge.gxscript.data.entity.model.base.GXEntity;
+import org.eadge.gxscript.data.entity.model.base.StartImbricationGXEntity;
 import org.eadge.gxscript.data.entity.model.script.InputScriptGXEntity;
 import org.eadge.gxscript.data.compile.script.func.Func;
 import org.eadge.gxscript.data.compile.script.address.DataAddress;
@@ -836,7 +837,7 @@ public abstract class DefaultGXEntity implements GXEntity
             Class outputClass = gxEntity.getOutputClass(entityOutput);
 
             // If they have not matching classes
-            if (!Tools.isEqualOrDerivedFrom(outputClass, inputClass) && !(gxEntity instanceof InputScriptGXEntity))
+            if (!Tools.isEqualOrDerivedFrom(outputClass, inputClass) && !(gxEntity.isScriptInput()))
                 throw new NotMatchingInputOutputClasses();
 
             inputEntity.addLinkInput(inputIndex, entityOutput, gxEntity);
@@ -1176,8 +1177,6 @@ public abstract class DefaultGXEntity implements GXEntity
         return true;
     }
 
-
-
     /**
      * Check if all the outputs of are valid
      *
@@ -1203,5 +1202,17 @@ public abstract class DefaultGXEntity implements GXEntity
         return "GXEntity{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean isImbrication()
+    {
+        return this instanceof StartImbricationGXEntity;
+    }
+
+    @Override
+    public boolean isScriptInput()
+    {
+        return this instanceof InputScriptGXEntity;
     }
 }
