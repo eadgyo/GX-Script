@@ -113,7 +113,7 @@ public class ForGXEntity extends DefaultStartImbricationGXEntity
                     program.restoreMemoryState();
                 }
 
-                // Don't need to move the current read address to the continue address, it's already on
+                program.setNextFuncAddress(doEnd);
             }
 
         }.init(startIndex, add, endIndex);

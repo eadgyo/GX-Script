@@ -151,10 +151,15 @@ public class CreateGXScript
         RawGXScript rawGXScript = new RawGXScript();
         ForGXEntity forEntity = new ForGXEntity();
         PrintGXEntity printGXEntity = new PrintGXEntity();
+        PrintGXEntity printGXEntityOut = new PrintGXEntity();
         printGXEntity.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, ForGXEntity.DO_OUTPUT_INDEX, forEntity);
         printGXEntity.linkAsInput(PrintGXEntity.SOURCE_INPUT_INDEX, ForGXEntity.INDEX_FOR_OUTPUT_INDEX, forEntity);
+        printGXEntityOut.linkAsInput(PrintGXEntity.NEXT_INPUT_INDEX, ForGXEntity.CONTINUE_OUTPUT_INDEX, forEntity);
+        printGXEntityOut.setDefaultString("Bonjour");
+
         rawGXScript.addEntity(forEntity);
         rawGXScript.addEntity(printGXEntity);
+        rawGXScript.addEntity(printGXEntityOut);
 
         rawGXScript.updateEntities();
         return rawGXScript;

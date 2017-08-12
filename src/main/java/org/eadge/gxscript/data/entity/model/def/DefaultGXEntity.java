@@ -108,6 +108,7 @@ public abstract class DefaultGXEntity implements GXEntity
             clone.outputFromInputEntitiesIndices = new ArrayList<>(outputFromInputEntitiesIndices);
             clone.indicesVariableOutputs = new HashSet<>(indicesVariableOutputs);
             clone.outputClasses = new ArrayList<>(outputClasses);
+            clone.indicesOptionInputs = new HashMap<>(indicesOptionInputs);
             clone.outputEntities = new ArrayList<>();
             for (List<GXEntity> outputEntity : outputEntities)
             {
@@ -117,7 +118,15 @@ public abstract class DefaultGXEntity implements GXEntity
             clone.inputFromOutputEntitiesIndices = new ArrayList<>();
             for (List<Map.Entry<GXEntity, Integer>> inputFromOutputEntitiesIndex : inputFromOutputEntitiesIndices)
             {
-                clone.inputFromOutputEntitiesIndices.add(new ArrayList<>(inputFromOutputEntitiesIndex));
+                ArrayList<Map.Entry<GXEntity, Integer>> copyInputFromOutputEntitiesIndex = new ArrayList<>();
+                for (Map.Entry<GXEntity, Integer> fromOutputEntitiesIndex : inputFromOutputEntitiesIndex)
+                {
+                    copyInputFromOutputEntitiesIndex.add(new MyEntry<GXEntity, Integer>(fromOutputEntitiesIndex
+                                                                                                .getKey(),
+                                                                                        fromOutputEntitiesIndex
+                                                                                                .getValue()));
+                }
+                clone.inputFromOutputEntitiesIndices.add(copyInputFromOutputEntitiesIndex);
             }
 
             return clone;
@@ -139,7 +148,10 @@ public abstract class DefaultGXEntity implements GXEntity
         this.name = name;
     }
 
-    public String getInputName(int index) { return inputsNames.get(index); }
+    public String getInputName(int index)
+    {
+        return inputsNames.get(index);
+    }
 
     @Override
     public Class getInputClass(int index)
@@ -161,6 +173,7 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Replace entities on input, doesn't create or remove link from removed and replaced entities
+     *
      * @param replacedMap replaced entities
      */
     public void replaceOnInputEntities(Map<GXEntity, GXEntity> replacedMap)
@@ -278,7 +291,9 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Find the least derived output object classes from all linked on output entities on the given output index
+     *
      * @param outputIndex output index
+     *
      * @return least derived output object class
      */
     public Class findOutputClassFromLinkedEntities(int outputIndex)
@@ -289,10 +304,10 @@ public abstract class DefaultGXEntity implements GXEntity
         Collection<GXEntity> allOutputEntitiesCollection = getAllOutputEntitiesCollection();
 
         // Search the less derived object
-        for(GXEntity outputEntity : allOutputEntitiesCollection)
+        for (GXEntity outputEntity : allOutputEntitiesCollection)
         {
-            int indexOfInput = getIndexOfInputFromEntityOnOutput(outputIndex, outputEntity);
-            Class inputClass = outputEntity.getInputClass(indexOfInput);
+            int   indexOfInput = getIndexOfInputFromEntityOnOutput(outputIndex, outputEntity);
+            Class inputClass   = outputEntity.getInputClass(indexOfInput);
 
             // If the inputClass is less derived from the classParameter
             if (classOutput == null || Tools.isEqualOrDerivedFrom(inputClass, classOutput))
@@ -329,6 +344,7 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Replace entities on outputs, doesn't create or remove link from removed and replaced entities
+     *
      * @param replacedMap replaced entities
      */
     public void replaceOnOutputEntities(Map<GXEntity, GXEntity> replacedMap)
@@ -338,16 +354,16 @@ public abstract class DefaultGXEntity implements GXEntity
         {
             List<GXEntity> outputEntitiesSet = outputEntities.get(outputIndex);
 
-            for (GXEntity outputEntity : outputEntitiesSet)
+            for (int i = 0; i < outputEntitiesSet.size(); i++)
             {
-                // Remove the corresponding element
-                outputEntitiesSet.remove(outputEntity);
+                // Get the corresponding element
+                GXEntity outputEntity = outputEntitiesSet.get(i);
 
                 // Search for replace entity
                 GXEntity replaceEntity = replacedMap.get(outputEntity);
 
                 // Replace corresponding entity
-                outputEntitiesSet.add(replaceEntity);
+                outputEntitiesSet.set(i, replaceEntity);
 
                 List<Map.Entry<GXEntity, Integer>> entries = inputFromOutputEntitiesIndices.get(outputIndex);
                 Map.Entry<GXEntity, Integer>       entry   = null;
@@ -367,6 +383,7 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Replace entities on input and on output, doesn't create or remove link from removed and replaced entities
+     *
      * @param replacedMap replaced entities
      */
     public void replaceEntities(Map<GXEntity, GXEntity> replacedMap)
@@ -544,9 +561,10 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Add not needed script entry at the given index
+     *
      * @param inputIndex script index
-     * @param inputName name of script entry
-     * @param cl class of the script, void if it's just a link to another GXEntity
+     * @param inputName  name of script entry
+     * @param cl         class of the script, void if it's just a link to another GXEntity
      */
     public void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl)
     {
@@ -572,14 +590,15 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Add not needed script entry at the given index
-     * @param inputIndex script index
-     * @param inputName name of script entry
-     * @param cl class of the script, void if it's just a link to another GXEntity
+     *
+     * @param inputIndex  script index
+     * @param inputName   name of script entry
+     * @param cl          class of the script, void if it's just a link to another GXEntity
      * @param optionValue saved reference to option value
      */
     public void addInputEntryNotNeeded(int inputIndex, String inputName, Class cl, Object optionValue)
     {
-        addInputEntryNotNeeded(inputIndex,inputName, cl);
+        addInputEntryNotNeeded(inputIndex, inputName, cl);
         addOptionInput(inputIndex, optionValue);
     }
 
@@ -588,9 +607,15 @@ public abstract class DefaultGXEntity implements GXEntity
         return indicesOptionInputs.containsKey(inputIndex);
     }
 
-    public Object getOptionValue(int inputIndex) { return indicesOptionInputs.get(inputIndex); }
+    public Object getOptionValue(int inputIndex)
+    {
+        return indicesOptionInputs.get(inputIndex);
+    }
 
-    public void setOptionValue(int inputIndex, Object object) { indicesOptionInputs.put(inputIndex, object); }
+    public void setOptionValue(int inputIndex, Object object)
+    {
+        indicesOptionInputs.put(inputIndex, object);
+    }
 
     public Set<Integer> getIndicesOptionInputs()
     {
@@ -601,7 +626,7 @@ public abstract class DefaultGXEntity implements GXEntity
      * Change script entry name
      *
      * @param inputIndex script index
-     * @param inputName new script name
+     * @param inputName  new script name
      */
     public void setInputName(int inputIndex, String inputName)
     {
@@ -610,8 +635,9 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Change set script class and remove script if the new class is not compatible with the old one
+     *
      * @param inputIndex script entry index
-     * @param cl new class
+     * @param cl         new class
      */
     public void setInputClass(int inputIndex, Class cl)
     {
@@ -633,12 +659,12 @@ public abstract class DefaultGXEntity implements GXEntity
      */
     public void clearLinkedInput(int inputIndex)
     {
-        // Remove linked to script entry entities
-        unlinkAsInput(inputIndex);
+       DefaultGXEntity.clearLinkedInput(this, inputIndex);
     }
 
     /**
      * Remove one script entry
+     *
      * @param inputIndex script index
      */
     public void removeInputEntry(int inputIndex)
@@ -652,6 +678,7 @@ public abstract class DefaultGXEntity implements GXEntity
         outputFromInputEntitiesIndices.remove(inputIndex);
         inputClasses.remove(inputIndex);
         inputsNames.remove(inputIndex);
+        indicesOptionInputs.remove(inputIndex);
 
         // If the script is not the last
         if (inputIndex != getNumberOfInputs())
@@ -663,8 +690,9 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Add offset on script indices
+     *
      * @param startInputIndex inclusive start script index
-     * @param offset offset to add to index
+     * @param offset          offset to add to index
      */
     protected void addOffsetInput(int startInputIndex, int offset)
     {
@@ -698,8 +726,9 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Add offset on output indices
+     *
      * @param startOutputIndex inclusive start output index
-     * @param offset offset to add to index
+     * @param offset           offset to add to index
      */
     protected void addOffsetOutput(int startOutputIndex, int offset)
     {
@@ -731,9 +760,10 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Add not needed output entry at the given index
+     *
      * @param outputIndex output index
-     * @param outputName name of output entry
-     * @param cl class of the output, void if it's just a link to another GXEntity
+     * @param outputName  name of output entry
+     * @param cl          class of the output, void if it's just a link to another GXEntity
      */
     public void addOutputEntry(int outputIndex, String outputName, Class cl)
     {
@@ -760,7 +790,7 @@ public abstract class DefaultGXEntity implements GXEntity
      * Change output entry name
      *
      * @param outputIndex output index
-     * @param outputName new output name
+     * @param outputName  new output name
      */
     public void setOutputName(int outputIndex, String outputName)
     {
@@ -769,8 +799,9 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Change set output class and remove outputs if the new class is not compatible with the old one
+     *
      * @param outputIndex output entry index
-     * @param cl new class
+     * @param cl          new class
      */
     public void setOutputClass(int outputIndex, Class cl)
     {
@@ -792,16 +823,12 @@ public abstract class DefaultGXEntity implements GXEntity
      */
     public void clearLinkedOutputs(int outputIndex)
     {
-        // Remove linked to entry entities
-        Collection<GXEntity> removedOutputEntities = getOutputEntities(outputIndex);
-        for (GXEntity outputGXEntity : removedOutputEntities)
-        {
-            unlinkAsOutput(outputIndex, outputGXEntity);
-        }
+        DefaultGXEntity.clearLinkedOutputs(this, outputIndex);
     }
 
     /**
      * Remove one output entry
+     *
      * @param outputIndex output index
      */
     public void removeOutputEntry(int outputIndex)
@@ -829,41 +856,15 @@ public abstract class DefaultGXEntity implements GXEntity
         return indicesVariableOutputs.contains(outputIndex);
     }
 
-    public static void linkAsInput(int inputIndex, GXEntity inputEntity, int entityOutput, GXEntity gxEntity)
-    {
-        try
-        {
-            // Get classes
-            Class inputClass = inputEntity.getInputClass(inputIndex);
-            Class outputClass = gxEntity.getOutputClass(entityOutput);
-
-            // If they have not matching classes
-            if (!Tools.isEqualOrDerivedFrom(outputClass, inputClass) && !(gxEntity.isScriptInput()))
-                throw new NotMatchingInputOutputClasses();
-
-            inputEntity.addLinkInput(inputIndex, entityOutput, gxEntity);
-            gxEntity.addLinkOutput(entityOutput, inputIndex, inputEntity);
-        }
-        catch (NotMatchingInputOutputClasses notMatchingInputOutputClasses)
-        {
-            notMatchingInputOutputClasses.printStackTrace();
-        }
-    }
-
-    @Override
     public void linkAsInput(int inputIndex, int entityOutput, GXEntity gxEntity)
     {
-        linkAsInput(inputIndex, this, entityOutput, gxEntity);
+        DefaultGXEntity.linkAsInput(inputIndex, this, entityOutput, gxEntity);
     }
 
     @Override
     public void unlinkAsInput(int inputIndex)
     {
-        GXEntity GXEntity    = getInputEntity(inputIndex);
-        int      outputIndex = getIndexOfOutputFromEntityOnInput(inputIndex);
-
-        GXEntity.removeLinkOutput(outputIndex, this);
-        removeLinkInput(inputIndex);
+        DefaultGXEntity.unlinkAsInput(this, inputIndex);
     }
 
     @Override
@@ -909,7 +910,9 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Create collection of addresses containing parameters addresses of script
+     *
      * @param addressesMap map to get script memory stack
+     *
      * @return created parameters addresses of script
      */
     protected FuncDataAddresses createFuncDataAddresses(Map<GXEntity, OutputAddresses> addressesMap)
@@ -921,10 +924,12 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Fill parameters Data addresses of script
-     * @param addressesMap map to get script memory stack
+     *
+     * @param addressesMap      map to get script memory stack
      * @param funcDataAddresses filled Data parameters addresses for script call
      */
-    protected void initFuncDataAddresses(Map<GXEntity, OutputAddresses> addressesMap, FuncDataAddresses funcDataAddresses)
+    protected void initFuncDataAddresses(Map<GXEntity, OutputAddresses> addressesMap,
+                                         FuncDataAddresses funcDataAddresses)
     {
         // For each variable script
         for (int inputIndex = 0, variableIndex = 0; inputIndex < getNumberOfInputs(); inputIndex++)
@@ -951,9 +956,10 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Create a link between this GXEntity considered as output and one other script GXEntity
+     *
      * @param outputIndex output index
      * @param entityInput other GXEntity script index
-     * @param GXEntity script GXEntity
+     * @param GXEntity    script GXEntity
      */
     public void linkAsOutput(int outputIndex, int entityInput, GXEntity GXEntity)
     {
@@ -962,13 +968,13 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Remove link on output at the given output index
+     *
      * @param outputIndex output index
-     * @param GXEntity removed link on output GXEntity
+     * @param GXEntity    removed link on output GXEntity
      */
     public void unlinkAsOutput(int outputIndex, GXEntity GXEntity)
     {
-        int inputIndex = getIndexOfInputFromEntityOnOutput(outputIndex, GXEntity);
-        GXEntity.unlinkAsInput(inputIndex);
+        DefaultGXEntity.unlinkAsOutput(this, outputIndex, GXEntity);
     }
 
     /**
@@ -978,18 +984,15 @@ public abstract class DefaultGXEntity implements GXEntity
      */
     public void unlinkAsOutput(int outputIndex)
     {
-        for (GXEntity outputGXEntity : getOutputEntities(outputIndex))
-        {
-            unlinkAsOutput(outputIndex, outputGXEntity);
-        }
+        DefaultGXEntity.unlinkAsOutput(this, outputIndex);
     }
 
     /**
      * Default add funcs and funcs params
      *
-     * @param calledFunctions          list of called script
+     * @param calledFunctions         list of called script
      * @param calledFunctionAddresses list of used called script data
-     * @param addressesMap                      map to link GXEntity to corresponding GXEntity output addresses
+     * @param addressesMap            map to link GXEntity to corresponding GXEntity output addresses
      */
     public void pushEntityCode(ArrayList<Func> calledFunctions,
                                ArrayList<FuncDataAddresses> calledFunctionAddresses,
@@ -1006,7 +1009,9 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Create outputs and alloc outputs in stack
+     *
      * @param currentDataAddress current address on stack of data addresses
+     *
      * @return created output addresses
      */
     public OutputAddresses createAndAllocOutputs(DataAddress currentDataAddress)
@@ -1030,7 +1035,9 @@ public abstract class DefaultGXEntity implements GXEntity
 
     /**
      * Create funcDataAddresses and link inputs to the corresponding outputs addresses
+     *
      * @param addressesMap map GXEntity to outputAddresses
+     *
      * @return created and linked func data addresses
      */
     public FuncDataAddresses createAndLinkFuncDataAddresses(Map<GXEntity, OutputAddresses> addressesMap)
@@ -1073,6 +1080,7 @@ public abstract class DefaultGXEntity implements GXEntity
         }
         return funcDataAddresses;
     }
+
     /**
      * Get all the output entities
      *
@@ -1239,5 +1247,108 @@ public abstract class DefaultGXEntity implements GXEntity
     public OutputScriptGXEntity getScriptOutputEntity()
     {
         return isScriptOutput() ? (OutputScriptGXEntity) this : null;
+    }
+
+    @Override
+    public void clearInputs()
+    {
+        DefaultGXEntity.clearInputs(this);
+    }
+
+    @Override
+    public void clearOutputs()
+    {
+        DefaultGXEntity.clearOutputs(this);
+    }
+
+    @Override
+    public void clearLinks()
+    {
+        DefaultGXEntity.clearLinks(this);
+    }
+
+    public static void clearLinkedInput(GXEntity entity, int inputIndex)
+    {
+        DefaultGXEntity.unlinkAsInput(entity, inputIndex);
+    }
+
+    public static void clearLinkedOutputs(GXEntity entity, int outputIndex)
+    {
+        // Remove linked to entry entities
+        Collection<GXEntity> removedOutputEntities = new ArrayList<>(entity.getOutputEntities(outputIndex));
+        for (GXEntity outputGXEntity : removedOutputEntities)
+        {
+            DefaultGXEntity.unlinkAsOutput(entity, outputIndex, outputGXEntity);
+        }
+    }
+
+    public static void linkAsInput(int inputIndex, GXEntity inputEntity, int outputIndex, GXEntity outputEntity)
+    {
+        try
+        {
+            // Get classes
+            Class inputClass  = inputEntity.getInputClass(inputIndex);
+            Class outputClass = outputEntity.getOutputClass(outputIndex);
+
+            // If they have not matching classes
+            if (!Tools.isEqualOrDerivedFrom(outputClass, inputClass) && !(outputEntity.isScriptInput()))
+                throw new NotMatchingInputOutputClasses();
+
+            inputEntity.addLinkInput(inputIndex, outputIndex, outputEntity);
+            outputEntity.addLinkOutput(outputIndex, inputIndex, inputEntity);
+        }
+        catch (NotMatchingInputOutputClasses notMatchingInputOutputClasses)
+        {
+            notMatchingInputOutputClasses.printStackTrace();
+        }
+    }
+
+    public static void unlinkAsInput(GXEntity inputEntity, int inputIndex)
+    {
+        GXEntity onInputEntity = inputEntity.getInputEntity(inputIndex);
+        if (onInputEntity != null)
+        {
+            int outputIndex = inputEntity.getIndexOfOutputFromEntityOnInput(inputIndex);
+
+            onInputEntity.removeLinkOutput(outputIndex, inputEntity);
+            inputEntity.removeLinkInput(inputIndex);
+        }
+    }
+
+    public static void clearInputs(GXEntity entity)
+    {
+        for (int inputIndex = 0; inputIndex < entity.getNumberOfInputs(); ++inputIndex)
+        {
+            DefaultGXEntity.clearLinkedInput(entity, inputIndex);
+        }
+    }
+
+    public static void unlinkAsOutput(GXEntity entity, int outputIndex, GXEntity inputEntity)
+    {
+        int inputIndex = entity.getIndexOfInputFromEntityOnOutput(outputIndex, inputEntity);
+        DefaultGXEntity.unlinkAsInput(inputEntity, inputIndex);
+    }
+
+    public static void unlinkAsOutput(GXEntity entity, int outputIndex)
+    {
+        Collection<GXEntity> outputEntities = new ArrayList<>(entity.getOutputEntities(outputIndex));
+        for (GXEntity outputGXEntity : outputEntities)
+        {
+            DefaultGXEntity.unlinkAsOutput(entity, outputIndex, outputGXEntity);
+        }
+    }
+
+    public static void clearOutputs(GXEntity gxEntity)
+    {
+        for(int outputIndex = 0; outputIndex < gxEntity.getNumberOfOutputs(); ++outputIndex)
+        {
+            DefaultGXEntity.clearLinkedOutputs(gxEntity, outputIndex);
+        }
+    }
+
+    public static void clearLinks(GXEntity gxEntity)
+    {
+        DefaultGXEntity.clearInputs(gxEntity);
+        DefaultGXEntity.clearOutputs(gxEntity);
     }
 }

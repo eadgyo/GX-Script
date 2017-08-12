@@ -161,6 +161,11 @@ public interface GXEntity extends Cloneable, Serializable
     public abstract void unlinkAsInput(int inputIndex);
 
     /**
+     * Remove all link on input
+     */
+    public abstract void clearInputs();
+
+    /**
      * Check if all the inputs of are valid
      *
      * @return true if inputs are valid, false otherwise
@@ -339,6 +344,16 @@ public interface GXEntity extends Cloneable, Serializable
      * @param GXEntity removed link on output GXEntity
      */
     void unlinkAsOutput(int outputIndex, GXEntity GXEntity);
+
+    /**
+     * Remove all links on output
+     */
+    void clearOutputs();
+
+    /**
+     * Remove all links
+     */
+    void clearLinks();
 
     /**
      * Default add funcs and funcs params
