@@ -77,8 +77,6 @@ public class ImbricationNodeCDebug extends ImbricationNodeC
 
         ImbricationNodeCDebug imbricationNodeCDebug = (ImbricationNodeCDebug) imbricationNodeC;
 
-        ArrayList list = new ArrayList();
-
         // Update memory addresses of this imbrication node
         updateDebugMemoryAddresses(imbricationNodeCDebug.getDebugMemoriesAddresses());
 

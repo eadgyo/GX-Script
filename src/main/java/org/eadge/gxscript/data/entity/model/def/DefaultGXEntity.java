@@ -617,7 +617,8 @@ public abstract class DefaultGXEntity implements GXEntity
         indicesOptionInputs.put(inputIndex, object);
     }
 
-    public Set<Integer> getIndicesOptionInputs()
+    public Set
+    getIndicesOptionInputs()
     {
         return indicesOptionInputs.keySet();
     }
@@ -1208,9 +1209,7 @@ public abstract class DefaultGXEntity implements GXEntity
     @Override
     public String toString()
     {
-        return "GXEntity{" +
-                "name='" + name + '\'' +
-                '}';
+        return name;
     }
 
     @Override

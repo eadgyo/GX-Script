@@ -21,10 +21,10 @@ public class TestCompiler
     {
         System.out.println("Test compilator");
 
-//        PrintTest.printResult(testCorrect0(), "Check valid script, 1 level of imbrication");
-//        PrintTest.printResult(testCorrect1(), "Check valid script, 1 level of imbrication");
-//
-//        PrintTest.printResult(testCorrect2(), "Check valid script, 2 levels of imbrication");
+        PrintTest.printResult(testCorrect0(), "Check valid script, 1 level of imbrication");
+        PrintTest.printResult(testCorrect1(), "Check valid script, 1 level of imbrication");
+
+        PrintTest.printResult(testCorrect2(), "Check valid script, 2 levels of imbrication");
         PrintTest.printResult(testCorrect3(), "Check valid script, 1 levels of imbrication");
 
     }
