@@ -9,6 +9,8 @@ public class ObjectConverter
     {
         if (requestedClass.equals(Object.class))
             return s;
+        if (requestedClass.equals(Number.class))
+            return Double.parseDouble(s);
 
         try
         {

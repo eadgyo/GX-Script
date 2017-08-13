@@ -159,6 +159,8 @@ public abstract class DefaultGXEntity implements GXEntity
         return inputClasses.get(index);
     }
 
+    public Class getOptionClass(int index) { return getOptionValue(index).getClass(); }
+
     @Override
     public Collection<Class> getAllInputClasses()
     {
@@ -320,9 +322,43 @@ public abstract class DefaultGXEntity implements GXEntity
                 return null;
             }
         }
-
         return classOutput;
     }
+
+    /**
+     * Find the least derived output object name from all linked on output entities on the given output index
+     *
+     * @param outputIndex output index
+     *
+     * @return least derived output object class
+     */
+    public String findOutputNameFromLinkedEntities(int outputIndex)
+    {
+        // Set the class to default object
+        Class classOutput = null;
+        Collection<GXEntity> allOutputEntitiesCollection = getAllOutputEntitiesCollection();
+
+        // Search the less derived object
+        for (GXEntity outputEntity : allOutputEntitiesCollection)
+        {
+            int   indexOfInput = getIndexOfInputFromEntityOnOutput(outputIndex, outputEntity);
+            Class inputClass   = outputEntity.getInputClass(indexOfInput);
+
+            // If the inputClass is less derived from the classParameter
+            if (classOutput == null || Tools.isEqualOrDerivedFrom(inputClass, classOutput))
+            {
+                // Change the inputClass
+                return outputEntity.toString();
+            }
+            else if (Tools.isEqualOrDerivedFrom(classOutput, inputClass))
+            {
+                return "";
+            }
+        }
+        return "";
+    }
+
+
 
     @Override
     public Collection<GXEntity> getAllInputEntities()

@@ -42,6 +42,15 @@ public interface GXEntity extends Cloneable, Serializable
     public abstract Class getInputClass(int index);
 
     /**
+     * Get the class of the script value object at the index
+     *
+     * @param index script index
+     *
+     * @return class of the script value object at the index
+     */
+    public abstract Class getOptionClass(int index);
+
+    /**
      * Get all the classes of the script objects
      *
      * @return classes of the script objects

@@ -102,7 +102,7 @@ public class ImbricationNodeCDisplay extends ImbricationNodeC
     {
         super.treatStartImbricationEntity(startImbricationEntity);
 
-        calledFunctionsName.add(startImbricationEntity.toString());
+        calledFunctionsName.add(0, startImbricationEntity.toString());
     }
 
     public DisplayCompiledGXScript compile()

@@ -20,7 +20,14 @@ public class GXLiaisonChecker
      */
     public static boolean canConnect(GXEntity onOutputGXEntity, int indexOfOutputEntity, GXEntity onInputGXEntity, int indexOfInputEntity)
     {
-        // If they have no matching intput/output types
-        return Tools.isEqualOrDerivedFrom(onOutputGXEntity.getOutputClass(indexOfOutputEntity), onInputGXEntity.getInputClass(indexOfInputEntity));
+        if (onOutputGXEntity.isScriptInput())
+        {
+            return onInputGXEntity.getInputClass(indexOfOutputEntity) != void.class;
+        }
+        else
+        {
+            // If they have no matching intput/output types
+            return Tools.isEqualOrDerivedFrom(onOutputGXEntity.getOutputClass(indexOfOutputEntity), onInputGXEntity.getInputClass(indexOfInputEntity));
+        }
     }
 }

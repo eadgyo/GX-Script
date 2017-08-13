@@ -169,4 +169,14 @@ public class RawGXScript implements Serializable
             }
         }
     }
+
+    public boolean containsInput()
+    {
+        for (GXEntity entity : entities)
+        {
+            if (entity.isScriptInput())
+                return true;
+        }
+        return false;
+    }
 }

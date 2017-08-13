@@ -1,8 +1,9 @@
 package org.eadge.gxscript.data.entity.model.def;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class MyEntry<T1, T2> implements Map.Entry<T1, T2>
+public class MyEntry<T1, T2> implements Map.Entry<T1, T2>, Serializable
 {
     T1 key;
     T2 value;
