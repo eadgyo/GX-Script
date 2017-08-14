@@ -94,7 +94,7 @@ public class MemoryStack extends ArrayList<Object>
 
     /**
      * Get the top memory stack address
-     * I's the address of the next added object.
+     * It's the address of the next added object.
      *
      * @return current memory address
      */
@@ -132,6 +132,8 @@ public class MemoryStack extends ArrayList<Object>
     {
         return zeroLevels.lastElement();
     }
+
+    public DataAddress getLastMemoryLevel() { return new DataAddress(memoryLevels.lastElement()); }
 
     /**
      * Restore to last level address, and reset last used zero

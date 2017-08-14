@@ -208,4 +208,10 @@ public abstract class DefaultStartImbricationGXEntity extends DefaultGXEntity im
     {
         return this;
     }
+
+    @Override
+    public void treatNameAdding(List<String> names)
+    {
+        names.add(0, name);
+    }
 }

@@ -64,7 +64,7 @@ public class InputScriptGXEntity extends DefaultGXEntity
         }
         else
         {
-            setOutputName(outputIndex, outputClassFromLinkedEntities.getName());
+            setOutputName(outputIndex, outputClassFromLinkedEntities.getSimpleName());
             setOutputClass(outputIndex, outputClassFromLinkedEntities);
         }
     }

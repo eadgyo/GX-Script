@@ -113,6 +113,8 @@ public class GXCompiler
         // Generate parameters func
         ArrayList<Class> outputsScriptClasses = getScriptOutputsClasses(outputEntities);
         ArrayList<Class> inputsScriptClasses = getScriptInputClasses(inputEntities);
+        ArrayList<String> outputNames = getScriptOutputNames(outputEntities);
+        ArrayList<String> inputNames = getScriptInputNames(inputEntities);
 
         // Reserve input and outputs entities
         Map<GXEntity, OutputAddresses> outputAddressesMap = new HashMap<>();
@@ -133,7 +135,7 @@ public class GXCompiler
         treatOutputEntities(root, outputEntities);
 
         // Compile generated object
-        return root.compile(inputsScriptClasses, outputsScriptClasses);
+        return root.compile(inputsScriptClasses, outputsScriptClasses, inputNames, outputNames);
     }
 
     private void allocScriptInputs(Collection<InputScriptGXEntity> inputEntities,
@@ -204,6 +206,40 @@ public class GXCompiler
         for (OutputScriptGXEntity gxEntity : outputEntities)
         {
             outputScriptClasses.addAll(gxEntity.getScriptOutputClasses());
+        }
+
+        return outputScriptClasses;
+    }
+
+    /**
+     * Get names from inputs
+     * @param inputScriptGXEntities used parameter entities
+     * @return inputScriptClasses store script's inputs
+     */
+    protected ArrayList<String> getScriptInputNames(Collection<InputScriptGXEntity> inputScriptGXEntities)
+    {
+        ArrayList<String> inputScriptClasses = new ArrayList<>();
+
+        for (InputScriptGXEntity gxEntity : inputScriptGXEntities)
+        {
+            inputScriptClasses.add(gxEntity.getName());
+        }
+
+        return inputScriptClasses;
+    }
+
+    /**
+     * Get names from outputs
+     * @param outputEntities used parameter entities
+     * @return outputScriptClasses store script's outputs
+     */
+    protected ArrayList<String> getScriptOutputNames(Collection<OutputScriptGXEntity> outputEntities)
+    {
+        ArrayList<String> outputScriptClasses = new ArrayList<>();
+
+        for (OutputScriptGXEntity gxEntity : outputEntities)
+        {
+            outputScriptClasses.add(gxEntity.getName());
         }
 
         return outputScriptClasses;

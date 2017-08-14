@@ -1386,4 +1386,10 @@ public abstract class DefaultGXEntity implements GXEntity
         DefaultGXEntity.clearInputs(gxEntity);
         DefaultGXEntity.clearOutputs(gxEntity);
     }
+
+    @Override
+    public void treatNameAdding(List<String> names)
+    {
+        names.add(name);
+    }
 }

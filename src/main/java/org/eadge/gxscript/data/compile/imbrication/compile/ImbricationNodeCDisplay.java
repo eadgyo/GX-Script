@@ -85,34 +85,37 @@ public class ImbricationNodeCDisplay extends ImbricationNodeC
     public void treatEntity(GXEntity gxEntity)
     {
         super.treatEntity(gxEntity);
-
-        calledFunctionsName.add(gxEntity.toString());
+        gxEntity.treatNameAdding(calledFunctionsName);
     }
 
     @Override
     public void treatOutputEntity(OutputScriptGXEntity outputEntity)
     {
         super.treatOutputEntity(outputEntity);
-
-        calledFunctionsName.add(outputEntity.toString());
+        outputEntity.treatNameAdding(calledFunctionsName);
     }
 
     @Override
     public void treatStartImbricationEntity(StartImbricationGXEntity startImbricationEntity)
     {
         super.treatStartImbricationEntity(startImbricationEntity);
-
-        calledFunctionsName.add(0, startImbricationEntity.toString());
+        startImbricationEntity.treatNameAdding(calledFunctionsName);
     }
 
     public DisplayCompiledGXScript compile()
     {
-        return new DisplayCompiledGXScript(new ArrayList<Class>(), new ArrayList<Class>(), calledFunctions, calledFunctionsParameters, calledFunctionsName);
+        return new DisplayCompiledGXScript(new ArrayList<Class>(), new ArrayList<Class>(), new ArrayList<String>(), new
+                ArrayList<String>(),calledFunctions, calledFunctionsParameters, calledFunctionsName);
     }
 
-    public DisplayCompiledGXScript compile(Collection<Class> inputsScriptClasses, Collection<Class> outputsScriptClasses)
+    public DisplayCompiledGXScript compile(Collection<Class> inputsScriptClasses,
+                                           Collection<Class> outputsScriptClasses,
+                                           Collection<String> inputsScriptNames,
+                                           Collection<String> outputsScriptNames)
     {
-        return new DisplayCompiledGXScript(inputsScriptClasses, outputsScriptClasses, calledFunctions,
+        return new DisplayCompiledGXScript(inputsScriptClasses, outputsScriptClasses, inputsScriptNames,
+                                           outputsScriptNames,
+                                           calledFunctions,
                                            calledFunctionsParameters, calledFunctionsName);
     }
 }

@@ -121,11 +121,17 @@ public class ImbricationNodeCDebug extends ImbricationNodeC
 
     public DebugCompiledGXScript compile()
     {
-        return new DebugCompiledGXScript(new ArrayList<Class>(), new ArrayList<Class>(), calledFunctions, calledFunctionsParameters, debugMemoriesAddresses);
+        return new DebugCompiledGXScript(new ArrayList<Class>(), new ArrayList<Class>(), new ArrayList<String>(), new
+                ArrayList<String>(), calledFunctions, calledFunctionsParameters, debugMemoriesAddresses);
     }
 
-    public DebugCompiledGXScript compile(Collection<Class> inputsScriptClasses, Collection<Class> outputsScriptClasses)
+    public DebugCompiledGXScript compile(Collection<Class> inputsScriptClasses,
+                                         Collection<Class> outputsScriptClasses,
+                                         Collection<String> inputsScriptNames,
+                                         Collection<String> outputsScriptNames)
     {
-        return new DebugCompiledGXScript(inputsScriptClasses, outputsScriptClasses, calledFunctions, calledFunctionsParameters, debugMemoriesAddresses);
+        return new DebugCompiledGXScript(inputsScriptClasses, outputsScriptClasses, inputsScriptNames,
+                                         outputsScriptNames, calledFunctions,
+                                         calledFunctionsParameters, debugMemoriesAddresses);
     }
 }

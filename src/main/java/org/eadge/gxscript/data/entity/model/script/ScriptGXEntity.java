@@ -10,6 +10,7 @@ import org.eadge.gxscript.data.compile.script.address.FuncDataAddresses;
 import org.eadge.gxscript.data.compile.script.address.OutputAddresses;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,17 +28,23 @@ public class ScriptGXEntity extends DefaultGXEntity
 
         Class[] classInputs = compiledGXScript.getInputsScriptClasses();
         Class[] classOutputs = compiledGXScript.getOutputsScriptClasses();
+        String[] inputsNames = compiledGXScript.getInputsScriptNames();
+        String[] outputNames = compiledGXScript.getOutputsScriptNames();
 
         // Add used inputs
-        for (Class classInput : classInputs)
+        for (int i = 0; i < inputsNames.length; i++)
         {
-            addInputEntry(classInput.getName(), classInput);
+            String inputName = inputsNames[i];
+            Class classInput = classInputs[i];
+            addInputEntry(inputName, classInput);
         }
 
         // Add used outputs
-        for (Class classOutput : classOutputs)
+        for (int i = 0; i < outputNames.length; i++)
         {
-            addOutputEntry(classOutput.getName(), classOutput);
+            String outputName = outputNames[i];
+            Class classInput = classOutputs[i];
+            addOutputEntry(outputName, classInput);
         }
     }
 
@@ -82,6 +89,7 @@ public class ScriptGXEntity extends DefaultGXEntity
 
                 // Unpush level
                 program.popLevel();
+                program.setNextFuncAddress(new FuncAddress(numberOfFuncs));
             }
         }.init();
     }
@@ -103,6 +111,17 @@ public class ScriptGXEntity extends DefaultGXEntity
 
             calledFunctions.add(scriptCalledFunction);
             calledFunctionAddresses.add(scriptCalledFunctionsAddress);
+        }
+    }
+
+    @Override
+    public void treatNameAdding(List<String> names)
+    {
+        names.add(name);
+
+        for (int i = 0; i < compiledGXScript.getNumberOfFuncs(); i++)
+        {
+            names.add(name);
         }
     }
 }

@@ -91,18 +91,24 @@ public class ImbricationNodeC extends ImbricationNode
      */
     public CompiledGXScript compile()
     {
-        return new CompiledGXScript(new ArrayList<Class>(), new ArrayList<Class>(), calledFunctions, calledFunctionsParameters);
+        return new CompiledGXScript(new ArrayList<Class>(), new ArrayList<Class>(), new ArrayList<String>(), new
+                ArrayList<String>(), calledFunctions, calledFunctionsParameters);
     }
 
     /**
      * Compile script with his parameters
      * @param inputsScriptClasses classes of script's inputs
      * @param outputsScriptClasses classes of script's outputs
-     * @return compiled GXScript
+     * @param inputNames
+     *@param outputNames @return compiled GXScript
      */
-    public CompiledGXScript compile(Collection<Class> inputsScriptClasses, Collection<Class> outputsScriptClasses)
+    public CompiledGXScript compile(Collection<Class> inputsScriptClasses,
+                                    Collection<Class> outputsScriptClasses,
+                                    Collection<String> inputNames, Collection<String> outputNames)
     {
-        return new CompiledGXScript(inputsScriptClasses, outputsScriptClasses, calledFunctions, calledFunctionsParameters);
+        return new CompiledGXScript(inputsScriptClasses, outputsScriptClasses, inputNames, outputNames,
+                                    calledFunctions,
+                                    calledFunctionsParameters);
     }
 
     @Override

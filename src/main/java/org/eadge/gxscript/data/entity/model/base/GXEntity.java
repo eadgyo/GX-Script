@@ -10,6 +10,7 @@ import org.eadge.gxscript.data.entity.model.script.OutputScriptGXEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -459,4 +460,9 @@ public interface GXEntity extends Cloneable, Serializable
      * @return the element converted
      */
     public OutputScriptGXEntity getScriptOutputEntity();
+
+    /**
+     * Add displayed name for Display runner
+     */
+    public void treatNameAdding(List<String> names);
 }

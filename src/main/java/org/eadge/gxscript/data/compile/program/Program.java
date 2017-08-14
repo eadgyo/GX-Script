@@ -134,6 +134,17 @@ public class Program
     }
 
     /**
+     * Get current data address at the top of memory stack.
+     * It's the address of the next added object.
+     *
+     * @return current data address
+     */
+    public DataAddress getLastSavedDataAddress()
+    {
+        return memoryStack.getLastMemoryLevel();
+    }
+
+    /**
      * Replace the object at the specified address by another object
      *
      * @param dataAddress address of the replaced object

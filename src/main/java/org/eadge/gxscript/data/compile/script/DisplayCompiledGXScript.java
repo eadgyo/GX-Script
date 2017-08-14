@@ -12,11 +12,14 @@ public class DisplayCompiledGXScript extends CompiledGXScript
 
     public DisplayCompiledGXScript(Collection<Class> inputsScriptClasses,
                                    Collection<Class> outputsScriptClasses,
+                                   Collection<String> inputsScriptNames,
+                                   Collection<String> outputsScriptNames,
                                    Collection<Func> calledFunctions,
                                    Collection<FuncDataAddresses> calledFunctionsParameters,
                                    ArrayList<String> funcNames)
     {
-        super(inputsScriptClasses, outputsScriptClasses, calledFunctions, calledFunctionsParameters);
+        super(inputsScriptClasses, outputsScriptClasses, inputsScriptNames, outputsScriptNames, calledFunctions,
+              calledFunctionsParameters);
         this.funcNames = funcNames;
     }
 

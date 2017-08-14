@@ -14,6 +14,16 @@ import java.util.Collection;
 public class CompiledGXScript implements Serializable
 {
     /**
+     * Holds the name of compiledGXScript
+     */
+    private String name = "";
+
+    /**
+     * Holds the group of compiledGXScript
+     */
+    private String group = "";
+
+    /**
      * Keeps called functions in script
      */
     private Func calledFunctions[];
@@ -33,8 +43,20 @@ public class CompiledGXScript implements Serializable
      */
     private Class outputsScriptClasses[];
 
+    /**
+     * Keeps names for script's inputs
+     */
+    private String inputsScriptNames[];
+
+    /**
+     * Keeps names for script's outputs
+     */
+    private String outputsScriptNames[];
+
     public CompiledGXScript(Collection<Class> inputsScriptClasses,
                             Collection<Class> outputsScriptClasses,
+                            Collection<String> inputsScriptNames,
+                            Collection<String> outputsScriptNames,
                             Collection<Func> calledFunctions,
                             Collection<FuncDataAddresses> calledFunctionsParameters)
     {
@@ -44,11 +66,25 @@ public class CompiledGXScript implements Serializable
         this.outputsScriptClasses = new Class[outputsScriptClasses.size()];
         this.calledFunctions = new Func[calledFunctions.size()];
         this.calledFunctionsParameters = new FuncDataAddresses[calledFunctions.size()];
+        this.inputsScriptNames = new String[inputsScriptNames.size()];
+        this.outputsScriptNames = new String[outputsScriptNames.size()];
 
         inputsScriptClasses.toArray(this.inputsScriptClasses);
         outputsScriptClasses.toArray(this.outputsScriptClasses);
         calledFunctions.toArray(this.calledFunctions);
         calledFunctionsParameters.toArray(this.calledFunctionsParameters);
+        inputsScriptNames.toArray(this.inputsScriptNames);
+        outputsScriptNames.toArray(this.outputsScriptNames);
+    }
+
+    public String[] getInputsScriptNames()
+    {
+        return inputsScriptNames;
+    }
+
+    public String[] getOutputsScriptNames()
+    {
+        return outputsScriptNames;
     }
 
     public Class[] getInputsScriptClasses()
@@ -84,5 +120,25 @@ public class CompiledGXScript implements Serializable
     public int getNumberOfFuncs()
     {
         return calledFunctions.length;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getGroup()
+    {
+        return group;
+    }
+
+    public void setGroup(String group)
+    {
+        this.group = group;
     }
 }

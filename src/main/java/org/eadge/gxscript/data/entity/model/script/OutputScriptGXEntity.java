@@ -94,7 +94,7 @@ public class OutputScriptGXEntity extends DefaultGXEntity
         if (outputClassFromLinkedEntities == null)
             setOutputName(outputIndex, "NULL");
         else
-            setOutputName(outputIndex, outputClassFromLinkedEntities.getName());
+            setOutputName(outputIndex, outputClassFromLinkedEntities.getSimpleName());
     }
 
     /**
