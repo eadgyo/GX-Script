@@ -11,3 +11,5 @@ You can create and add your own Visual box.
 Two methods are available
 - Create a JAVA box
 - Create a BOX embedding GX-Script
+
+## C
