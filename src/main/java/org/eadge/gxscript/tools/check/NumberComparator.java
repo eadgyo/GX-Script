@@ -9,9 +9,11 @@ import java.util.Comparator;
  */
 public class NumberComparator<T extends Number & Comparable> implements Comparator<T>
 {
-    public int compare( T a, T b ) throws ClassCastException
-    {
+    public int compare( T a, T b ) throws ClassCastException {
         //noinspection unchecked
-        return a.compareTo( b );
+        Double a1 = a.doubleValue();
+        Double b1 = b.doubleValue();
+        return a1.compareTo(b1.doubleValue());
     }
 }
+
